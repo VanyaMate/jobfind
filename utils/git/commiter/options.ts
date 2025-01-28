@@ -4,7 +4,7 @@ import type { CommiterOptions } from '@vanyamate/commiter';
 
 /// @ts-ignore
 const __dirname = import.meta.dirname;
-const gitFolder = resolve(__dirname, '..', '..');
+const gitFolder = resolve(__dirname, '..', '..', '..');
 
 export default {
     types                  : [ '💡 Update', '🙏 Fix', '🔥 New feature' ],
