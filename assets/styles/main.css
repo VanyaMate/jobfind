@@ -1,6 +1,18 @@
+@import "variables/font-size.css";
+@import "variables/offset.css";
+@import "variables/palette.css";
+@import "variables/speed.css";
+@import "variables/themes/dark.css";
+@import "variables/themes/light.css";
+
 * {
     margin      : 0;
     padding     : 0;
     box-sizing  : border-box;
     font-family : Consolas, 'ui-monospace', 'monospace', 'sans-serif';
+}
+
+body {
+    background : var(--bg-main);
+    color      : var(--color-main);
 }
