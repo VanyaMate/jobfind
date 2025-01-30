@@ -1,5 +1,5 @@
 <template>
-    <form v-bind="props">
+    <form>
         <slot/>
     </form>
 </template>
@@ -9,11 +9,10 @@
 import type { FormHTMLAttributes } from 'vue';
 
 
-type Props = /* @vue-ignore */
-    FormHTMLAttributes
-    & {}
+interface Props extends /* @vue-ignore */FormHTMLAttributes {
+}
 
-const props = defineProps<Props>();
+defineProps<Props>();
 </script>
 
 <style scoped>

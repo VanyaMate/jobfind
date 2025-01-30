@@ -1,6 +1,5 @@
 <template>
     <input
-        v-bind="props"
         @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
     />
 </template>
@@ -9,11 +8,10 @@
 import type { InputHTMLAttributes } from 'vue';
 
 
-type Props = /* @vue-ignore */
-    InputHTMLAttributes
-    & {}
+interface Props extends /* @vue-ignore */ InputHTMLAttributes {
+}
 
-const props = defineProps<Props>();
+defineProps<Props>();
 defineEmits([ 'update:modelValue' ]);
 
 </script>
@@ -27,7 +25,7 @@ input {
     outline       : none;
     transition    : box-shadow, border var(--fast);
     color         : var(--color-main);
-    height        : 30px;
+    height        : var(--all-input-height);
 
     &:focus {
         border     : 1px solid var(--primary-color);
