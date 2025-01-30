@@ -1,28 +1,29 @@
 <template>
-    <button :class="[props.styleType, { quad: props.quad }]">
+    <button :class="[props.styleType, props.size, { quad: props.quad }]">
         <slot/>
     </button>
 </template>
 
 <script lang="ts" setup>
 import type { ButtonHTMLAttributes } from 'vue';
-import { AppButtonStyleTypeTypes } from '~/components/app/buttons/types/AppButtonStyleType.types';
+import { AppButtonStyleType } from '~/components/app/buttons/types/AppButtonStyleType';
+import { AppButtonSize } from '~/components/app/buttons/types/AppButtonSize';
 
 
 interface Props extends /* @vue-ignore */ ButtonHTMLAttributes {
-    styleType?: AppButtonStyleTypeTypes;
+    styleType?: AppButtonStyleType;
+    size?: AppButtonSize;
     quad?: boolean;
 };
 
 const props = withDefaults(
     defineProps<Props>(),
     {
-        styleType: AppButtonStyleTypeTypes.DEFAULT,
+        styleType: AppButtonStyleType.DEFAULT,
+        size     : AppButtonSize.MEDIUM,
         quad     : false,
     },
 );
-
-console.log('Props is', props);
 
 </script>
 
@@ -32,6 +33,21 @@ button {
     padding       : var(--offset-small);
     border-radius : var(--offset-small);
     cursor        : pointer;
+
+    &.small {
+        min-height : calc(var(--all-input-height) * .7);
+        font-size  : var(--font-size-s);
+    }
+
+    &.medium {
+        min-height : var(--all-input-height);
+        font-size  : var(--font-size-m);
+    }
+
+    &.large {
+        min-height : calc(var(--all-input-height) * 1.3);
+        font-size  : var(--font-size-l);
+    }
 
     &.quad {
         height     : var(--all-input-height);

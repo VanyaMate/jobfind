@@ -25,7 +25,7 @@ import SwitchTheme from '~/components/app/theme/SwitchTheme.vue';
 import AppInput from '~/components/app/inputs/AppInput/AppInput.vue';
 import AppForm from '~/components/app/forms/AppForm/AppForm.vue';
 import AppButton from '~/components/app/buttons/AppButton.vue';
-import { AppButtonStyleTypeTypes } from '~/components/app/buttons/types/AppButtonStyleType.types';
+import { AppButtonStyleType } from '~/components/app/buttons/types/AppButtonStyleType';
 import { useForm } from 'vee-validate';
 
 
@@ -58,7 +58,7 @@ export default {
         });
 
         return {
-            email, emailProps, form, AppButtonStyleTypeTypes,
+            email, emailProps, form, AppButtonStyleTypeTypes: AppButtonStyleType,
         };
     },
 };

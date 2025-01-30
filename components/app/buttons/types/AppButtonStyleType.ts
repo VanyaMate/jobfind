@@ -1,4 +1,4 @@
-export enum AppButtonStyleTypeTypes {
+export enum AppButtonStyleType {
     PRIMARY   = 'primary',
     SECONDARY = 'secondary',
     DANGER    = 'danger',
