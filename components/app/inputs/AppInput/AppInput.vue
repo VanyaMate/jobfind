@@ -1,5 +1,8 @@
 <template>
-    <input v-bind="props"/>
+    <input
+        v-bind="props"
+        @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+    />
 </template>
 
 <script lang="ts" setup>
@@ -11,6 +14,7 @@ type Props = /* @vue-ignore */
     & {}
 
 const props = defineProps<Props>();
+defineEmits([ 'update:modelValue' ]);
 
 </script>
 
@@ -21,7 +25,7 @@ input {
     border-radius : var(--offset-small);
     padding       : var(--offset-small);
     outline       : none;
-    transition    : var(--fast);
+    transition    : box-shadow, border var(--fast);
     color         : var(--color-main);
     height        : 30px;
 
