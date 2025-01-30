@@ -4,9 +4,19 @@
     <AppForm @submit.prevent="form.handleSubmit(onSubmit)">
         <AppInput placeholder="Email" v-model="email" v-bind="emailProps"/>
         {{ form.errors }}
-        <AppButton type="submit" :style-type="AppButtonStyleTypeTypes.PRIMARY">
-            Submit
-        </AppButton>
+        <AppButton type="submit" :style-type="AppButtonStyleTypeTypes.DEFAULT">Default</AppButton>
+        <AppButton type="submit" :style-type="AppButtonStyleTypeTypes.SECONDARY">Secondary</AppButton>
+        <AppButton type="submit" :style-type="AppButtonStyleTypeTypes.PRIMARY">Primary</AppButton>
+        <AppButton type="submit" :style-type="AppButtonStyleTypeTypes.DANGER">Danger</AppButton>
+        <AppButton type="submit" :style-type="AppButtonStyleTypeTypes.WARNING">Warning</AppButton>
+        <AppButton type="submit" :style-type="AppButtonStyleTypeTypes.INVISIBLE">Invisible</AppButton>
+
+        <AppButton type="submit" :style-type="AppButtonStyleTypeTypes.DEFAULT" quad>D</AppButton>
+        <AppButton type="submit" :style-type="AppButtonStyleTypeTypes.SECONDARY" quad>S</AppButton>
+        <AppButton type="submit" :style-type="AppButtonStyleTypeTypes.PRIMARY" quad>P</AppButton>
+        <AppButton type="submit" :style-type="AppButtonStyleTypeTypes.DANGER" quad>D</AppButton>
+        <AppButton type="submit" :style-type="AppButtonStyleTypeTypes.WARNING" quad>W</AppButton>
+        <AppButton type="submit" :style-type="AppButtonStyleTypeTypes.INVISIBLE" quad>I</AppButton>
     </AppForm>
 </template>
 

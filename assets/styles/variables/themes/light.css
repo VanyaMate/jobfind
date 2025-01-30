@@ -1,49 +1,29 @@
 :root body[data-theme="auto"] {
     @media (prefers-color-scheme : light) {
         /* Background */
-        --bg-main           : rgba(var(--white), 1);
-        --bg-second         : rgba(var(--white-dark), 1);
+        --bg-main         : rgba(var(--white), 1);
+        --bg-second       : rgba(var(--white-dark), 1);
 
         /* Text Color */
-        --color-main        : rgba(var(--black), 1);
-        --color-second      : rgba(var(--black-light), 1);
-        --color-invisible   : rgba(var(--gray), 1);
+        --color-main      : rgba(var(--black), 1);
+        --color-second    : rgba(var(--black-light), 1);
+        --color-invisible : rgba(var(--gray), 1);
 
         /* Border Color */
-        --border-color      : rgba(var(--gray), 1);
-
-        /* Colors */
-        --primary-color     : rgba(var(--blue), 1);
-        --primary-color-inv : rgba(var(--white), 1);
-        --danger-color      : rgba(var(--red), 1);
-        --danger-color-inv  : rgba(var(--white), 1);
-        --warning-color     : rgba(var(--orange), 1);
-        --warning-color-inv : rgba(var(--white), 1);
-        --default-color     : rgba(var(--gray-dark), 1);
-        --default-color-inv : rgba(var(--white), 1);
+        --border-color    : rgba(var(--gray-light), 1);
     }
 }
 
 :root body[data-theme="light"] {
     /* Background */
-    --bg-main           : rgba(var(--white), 1);
-    --bg-second         : rgba(var(--white-dark), 1);
+    --bg-main         : rgba(var(--white), 1);
+    --bg-second       : rgba(var(--white-dark), 1);
 
     /* Text Color */
-    --color-main        : rgba(var(--black), 1);
-    --color-second      : rgba(var(--black-light), 1);
-    --color-invisible   : rgba(var(--gray), 1);
+    --color-main      : rgba(var(--black), 1);
+    --color-second    : rgba(var(--black-light), 1);
+    --color-invisible : rgba(var(--gray), 1);
 
     /* Border Color */
-    --border-color      : rgba(var(--gray), 1);
-
-    /* Colors */
-    --primary-color     : rgba(var(--blue), 1);
-    --primary-color-inv : rgba(var(--white), 1);
-    --danger-color      : rgba(var(--red), 1);
-    --danger-color-inv  : rgba(var(--white), 1);
-    --warning-color     : rgba(var(--orange), 1);
-    --warning-color-inv : rgba(var(--white), 1);
-    --default-color     : rgba(var(--gray-dark), 1);
-    --default-color-inv : rgba(var(--white), 1);
+    --border-color    : rgba(var(--gray-light), 1);
 }
