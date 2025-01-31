@@ -2,8 +2,13 @@
     <h1>HomePage</h1>
     <SwitchTheme/>
     <AppForm @submit.prevent="form.handleSubmit(onSubmit)">
+        <h2>Inputs</h2>
+        <AppInput placeholder="Email" v-model="email" v-bind="emailProps" :size="AppInputSize.SMALL"/>
         <AppInput placeholder="Email" v-model="email" v-bind="emailProps"/>
+        <AppInput placeholder="Email" v-model="email" v-bind="emailProps" :size="AppInputSize.LARGE"/>
         {{ form.errors }}
+
+        <h2>Buttons</h2>
         <AppButton type="submit" :style-type="AppButtonStyleType.DEFAULT">Default</AppButton>
         <AppButton type="submit" :style-type="AppButtonStyleType.SECONDARY">Secondary</AppButton>
         <AppButton type="submit" :style-type="AppButtonStyleType.PRIMARY" :size="AppButtonSize.SMALL">Primary
@@ -13,6 +18,7 @@
         </AppButton>
         <AppButton type="submit" :style-type="AppButtonStyleType.INVISIBLE">Invisible</AppButton>
 
+        <h2>Buttons:quad</h2>
         <AppButton type="submit" :style-type="AppButtonStyleType.DEFAULT" quad>D</AppButton>
         <AppButton type="submit" :style-type="AppButtonStyleType.SECONDARY" quad>S</AppButton>
         <AppButton type="submit" :style-type="AppButtonStyleType.PRIMARY" quad :size="AppButtonSize.SMALL">P</AppButton>
@@ -31,9 +37,15 @@ import AppButton from '~/components/app/buttons/AppButton.vue';
 import { AppButtonStyleType } from '~/components/app/buttons/types/AppButtonStyleType';
 import { useForm } from 'vee-validate';
 import { AppButtonSize } from '~/components/app/buttons/types/AppButtonSize';
+import { AppInputSize } from '~/components/app/inputs/AppInput/types/AppInputSize';
 
 
 export default {
+    computed  : {
+        AppInputSize () {
+            return AppInputSize;
+        },
+    },
     components: { AppButton, AppForm, AppInput, SwitchTheme },
     methods   : {
         onSubmit (data: any) {
