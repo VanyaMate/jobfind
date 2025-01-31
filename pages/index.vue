@@ -4,19 +4,22 @@
     <AppForm @submit.prevent="form.handleSubmit(onSubmit)">
         <AppInput placeholder="Email" v-model="email" v-bind="emailProps"/>
         {{ form.errors }}
-        <AppButton type="submit" :style-type="AppButtonStyleTypeTypes.DEFAULT">Default</AppButton>
-        <AppButton type="submit" :style-type="AppButtonStyleTypeTypes.SECONDARY">Secondary</AppButton>
-        <AppButton type="submit" :style-type="AppButtonStyleTypeTypes.PRIMARY">Primary</AppButton>
-        <AppButton type="submit" :style-type="AppButtonStyleTypeTypes.DANGER">Danger</AppButton>
-        <AppButton type="submit" :style-type="AppButtonStyleTypeTypes.WARNING">Warning</AppButton>
-        <AppButton type="submit" :style-type="AppButtonStyleTypeTypes.INVISIBLE">Invisible</AppButton>
+        <AppButton type="submit" :style-type="AppButtonStyleType.DEFAULT">Default</AppButton>
+        <AppButton type="submit" :style-type="AppButtonStyleType.SECONDARY">Secondary</AppButton>
+        <AppButton type="submit" :style-type="AppButtonStyleType.PRIMARY" :size="AppButtonSize.SMALL">Primary
+        </AppButton>
+        <AppButton type="submit" :style-type="AppButtonStyleType.DANGER" :size="AppButtonSize.MEDIUM">Danger</AppButton>
+        <AppButton type="submit" :style-type="AppButtonStyleType.WARNING" :size="AppButtonSize.LARGE">Warning
+        </AppButton>
+        <AppButton type="submit" :style-type="AppButtonStyleType.INVISIBLE">Invisible</AppButton>
 
-        <AppButton type="submit" :style-type="AppButtonStyleTypeTypes.DEFAULT" quad>D</AppButton>
-        <AppButton type="submit" :style-type="AppButtonStyleTypeTypes.SECONDARY" quad>S</AppButton>
-        <AppButton type="submit" :style-type="AppButtonStyleTypeTypes.PRIMARY" quad>P</AppButton>
-        <AppButton type="submit" :style-type="AppButtonStyleTypeTypes.DANGER" quad>D</AppButton>
-        <AppButton type="submit" :style-type="AppButtonStyleTypeTypes.WARNING" quad>W</AppButton>
-        <AppButton type="submit" :style-type="AppButtonStyleTypeTypes.INVISIBLE" quad>I</AppButton>
+        <AppButton type="submit" :style-type="AppButtonStyleType.DEFAULT" quad>D</AppButton>
+        <AppButton type="submit" :style-type="AppButtonStyleType.SECONDARY" quad>S</AppButton>
+        <AppButton type="submit" :style-type="AppButtonStyleType.PRIMARY" quad :size="AppButtonSize.SMALL">P</AppButton>
+        <AppButton type="submit" :style-type="AppButtonStyleType.DANGER" quad :size="AppButtonSize.MEDIUM">D</AppButton>
+        <AppButton type="submit" :style-type="AppButtonStyleType.WARNING" quad :size="AppButtonSize.LARGE">W</AppButton>
+        <AppButton type="submit" :style-type="AppButtonStyleType.INVISIBLE" quad>I
+        </AppButton>
     </AppForm>
 </template>
 
@@ -27,6 +30,7 @@ import AppForm from '~/components/app/forms/AppForm/AppForm.vue';
 import AppButton from '~/components/app/buttons/AppButton.vue';
 import { AppButtonStyleType } from '~/components/app/buttons/types/AppButtonStyleType';
 import { useForm } from 'vee-validate';
+import { AppButtonSize } from '~/components/app/buttons/types/AppButtonSize';
 
 
 export default {
@@ -58,7 +62,7 @@ export default {
         });
 
         return {
-            email, emailProps, form, AppButtonStyleTypeTypes: AppButtonStyleType,
+            email, emailProps, form, AppButtonStyleType, AppButtonSize,
         };
     },
 };

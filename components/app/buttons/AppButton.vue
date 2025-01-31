@@ -29,32 +29,47 @@ const props = withDefaults(
 
 <style scoped>
 button {
-    min-height    : var(--all-input-height);
-    padding       : var(--offset-small);
+    min-height    : var(--all-input-height-medium);
+    height        : var(--all-input-height-medium);
+    padding       : 0 var(--offset-small);
     border-radius : var(--offset-small);
     cursor        : pointer;
 
     &.small {
-        min-height : calc(var(--all-input-height) * .7);
+        min-height : var(--all-input-height-small);
+        height     : var(--all-input-height-small);
         font-size  : var(--font-size-s);
     }
 
     &.medium {
-        min-height : var(--all-input-height);
+        min-height : var(--all-input-height-medium);
+        height     : var(--all-input-height-medium);
         font-size  : var(--font-size-m);
     }
 
     &.large {
-        min-height : calc(var(--all-input-height) * 1.3);
-        font-size  : var(--font-size-l);
+        min-height    : var(--all-input-height-large);
+        height        : var(--all-input-height-large);
+        font-size     : var(--font-size-l);
+        border-radius : var(--offset-small);
     }
 
     &.quad {
-        height     : var(--all-input-height);
-        width      : var(--all-input-height);
         overflow   : hidden;
         text-align : center;
         padding    : 0;
+
+        &.small {
+            width : var(--all-input-height-small);
+        }
+
+        &.medium {
+            width : var(--all-input-height-medium);
+        }
+
+        &.large {
+            width : var(--all-input-height-large);
+        }
     }
 
     &.default {
