@@ -3,15 +3,6 @@
     <SwitchTheme/>
     <AppForm @submit="onSubmit">
         <h2>Inputs</h2>
-        <input v-model="email" v-bind="emailProps"/>
-        <input v-model="email" v-bind="emailProps"/>
-        <input v-model="email" v-bind="emailProps"/>
-        <AppInput
-            placeholder="Email"
-            v-model="email"
-            v-bind="emailProps"
-            :error="form.errors.value.email"
-        />
         <AppInput
             placeholder="Email"
             v-model="email"
@@ -37,29 +28,28 @@ import AppButton from '~/components/app/buttons/AppButton.vue';
 import { AppButtonStyleType } from '~/components/app/buttons/types/AppButtonStyleType';
 import { useForm } from 'vee-validate';
 import { AppButtonSize } from '~/components/app/buttons/types/AppButtonSize';
+import { emailValidator } from '~/lib/validator/email.validator';
 
 
 const simpleSchema = {
-    email (value: string) {
-        if (value?.length > 5) {
-            return true;
-        }
-
-        return 'Длина не такая';
-    },
+    email: emailValidator,
 };
 
 const form = useForm<{ email: string }>({
     validationSchema: simpleSchema,
 });
 
-const onSubmit = form.handleSubmit(async (data: any) => {
+const onSubmit = form.handleSubmit(async (data: any, actions) => {
     await new Promise(resolve => setTimeout(resolve, 1000));
     alert(JSON.stringify(data));
+    actions.resetForm();
 });
 
 const [ email, emailProps ] = form.defineField('email', {
-    validateOnChange: true,
+    validateOnBlur       : true,
+    validateOnChange     : false,
+    validateOnInput      : false,
+    validateOnModelUpdate: false,
 });
 
 </script>

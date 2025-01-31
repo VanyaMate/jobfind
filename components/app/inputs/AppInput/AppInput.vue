@@ -3,6 +3,8 @@
         <input
             :class="[props.size, { error: hasError }]"
             @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+            @change="$emit('change', $event)"
+            @blur="$emit('blur', $event)"
             v-bind="$attrs"
             :value="props.modelValue"
         />

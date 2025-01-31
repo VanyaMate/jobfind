@@ -11,9 +11,9 @@
         "commit": "tsx utils/git/commiter"
     },
     "dependencies": {
-        "@vee-validate/nuxt": "^4.15.0",
         "js-cookie": "^3.0.5",
         "nuxt": "^3.15.3",
+        "vee-validate": "^4.15.0",
         "vue": "latest",
         "vue-router": "latest"
     },
