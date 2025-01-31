@@ -13,7 +13,6 @@
             type="submit"
             :style-type="AppButtonStyleType.DEFAULT"
             :loading="form.isSubmitting.value"
-            :size="AppButtonSize.LARGE"
         >
             Submit
         </AppButton>
@@ -27,7 +26,6 @@ import AppForm from '~/components/app/forms/AppForm/AppForm.vue';
 import AppButton from '~/components/app/buttons/AppButton.vue';
 import { AppButtonStyleType } from '~/components/app/buttons/types/AppButtonStyleType';
 import { useForm } from 'vee-validate';
-import { AppButtonSize } from '~/components/app/buttons/types/AppButtonSize';
 import { emailValidator } from '~/lib/validator/email.validator';
 
 
