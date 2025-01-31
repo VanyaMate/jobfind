@@ -12,8 +12,4 @@
     --default-color     : rgba(var(--gray-dark), 1);
     --default-color-inv : rgba(var(--white), 1);
     --default-color-op  : rgba(var(--gray-dark), .8);
-
-    /* Mix color */
-    --mix-dark        : rgba(var(--black), 1);
-    --mix-light       : rgba(var(--white), 1);
 }

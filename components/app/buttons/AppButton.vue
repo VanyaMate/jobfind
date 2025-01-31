@@ -34,6 +34,7 @@ button {
     padding       : 0 var(--offset-small);
     border-radius : var(--offset-small);
     cursor        : pointer;
+    transition    : var(--fast);
 
     &.small {
         min-height : var(--all-input-height-small);
@@ -79,11 +80,11 @@ button {
 
         &:hover,
         &:focus {
-            background : color-mix(in srgb, var(--bg-second), var(--mix-dark) 20%);
+            background : color-mix(in srgb, var(--bg-second), var(--bg-main) 20%);
         }
 
         &:active {
-            background : color-mix(in srgb, var(--bg-second), var(--mix-dark) 60%);
+            background : color-mix(in srgb, var(--bg-second), var(--bg-main) 40%);
         }
     }
 
@@ -94,11 +95,11 @@ button {
 
         &:hover,
         &:focus {
-            background : color-mix(in srgb, var(--bg-second), var(--mix-dark) 30%);
+            background : color-mix(in srgb, var(--bg-second), var(--bg-main) 20%);
         }
 
         &:active {
-            background : color-mix(in srgb, var(--bg-second), var(--mix-dark) 60%);
+            background : color-mix(in srgb, var(--bg-second), var(--bg-main) 40%);
         }
     }
 
@@ -109,11 +110,11 @@ button {
 
         &:hover,
         &:focus {
-            background : color-mix(in srgb, var(--primary-color), var(--mix-dark) 20%);
+            background : color-mix(in srgb, var(--primary-color), var(--bg-main) 10%);
         }
 
         &:active {
-            background : color-mix(in srgb, var(--primary-color), var(--mix-dark) 30%);
+            background : color-mix(in srgb, var(--primary-color), var(--bg-main) 20%);
         }
     }
 
@@ -124,11 +125,11 @@ button {
 
         &:hover,
         &:focus {
-            background : color-mix(in srgb, var(--danger-color), var(--mix-dark) 20%);
+            background : color-mix(in srgb, var(--danger-color), var(--bg-main) 10%);
         }
 
         &:active {
-            background : color-mix(in srgb, var(--danger-color), var(--mix-dark) 30%);
+            background : color-mix(in srgb, var(--danger-color), var(--bg-main) 20%);
         }
     }
 
@@ -139,11 +140,11 @@ button {
 
         &:hover,
         &:focus {
-            background : color-mix(in srgb, var(--warning-color), var(--mix-light) 20%);
+            background : color-mix(in srgb, var(--warning-color), var(--bg-main) 10%);
         }
 
         &:active {
-            background : color-mix(in srgb, var(--warning-color), var(--mix-light) 30%);
+            background : color-mix(in srgb, var(--warning-color), var(--bg-main) 20%);
         }
     }
 
