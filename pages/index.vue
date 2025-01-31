@@ -3,6 +3,15 @@
     <SwitchTheme/>
     <AppForm @submit="onSubmit">
         <h2>Inputs</h2>
+        <input v-model="email" v-bind="emailProps"/>
+        <input v-model="email" v-bind="emailProps"/>
+        <input v-model="email" v-bind="emailProps"/>
+        <AppInput
+            placeholder="Email"
+            v-model="email"
+            v-bind="emailProps"
+            :error="form.errors.value.email"
+        />
         <AppInput
             placeholder="Email"
             v-model="email"

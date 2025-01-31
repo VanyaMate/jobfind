@@ -4,6 +4,7 @@
             :class="[props.size, { error: hasError }]"
             @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
             v-bind="$attrs"
+            :value="props.modelValue"
         />
         <div class="errorMarker">?</div>
         <div class="errorMessage">{{ errorMessage }}</div>
@@ -18,17 +19,20 @@ import { AppInputSize } from '~/components/app/inputs/AppInput/types/AppInputSiz
 interface Props extends /* @vue-ignore */ InputHTMLAttributes {
     size?: AppInputSize;
     error?: string;
+    modelValue?: string;
 }
 
 const props = withDefaults(
     defineProps<Props>(),
     {
-        size : AppInputSize.MEDIUM,
-        error: undefined,
+        size      : AppInputSize.MEDIUM,
+        error     : undefined,
+        modelValue: '',
     },
 );
 
-console.log(props);
+console.log('attrs', useAttrs());
+console.log('props', props);
 
 const hasError     = computed(() => props.error && props.error.length);
 const errorMessage = ref(props.error);
@@ -37,6 +41,10 @@ watchEffect(() => {
     if (props.error) {
         errorMessage.value = props.error;
     }
+});
+
+defineOptions({
+    inheritAttrs: false,
 });
 
 </script>
