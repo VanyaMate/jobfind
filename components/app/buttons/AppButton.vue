@@ -1,6 +1,6 @@
 <template>
-    <button :class="[props.styleType, props.size, { quad: props.quad }]">
-        <slot/>
+    <button :class="[props.styleType, props.size, { loading: props.loading }, { quad: props.quad }]">
+        <slot v-if="!(quad && loading)"/>
     </button>
 </template>
 
@@ -14,6 +14,7 @@ interface Props extends /* @vue-ignore */ ButtonHTMLAttributes {
     styleType?: AppButtonStyleType;
     size?: AppButtonSize;
     quad?: boolean;
+    loading?: boolean;
 };
 
 const props = withDefaults(
@@ -22,19 +23,76 @@ const props = withDefaults(
         styleType: AppButtonStyleType.DEFAULT,
         size     : AppButtonSize.MEDIUM,
         quad     : false,
+        loading  : false,
     },
 );
 
 </script>
 
 <style scoped>
+@keyframes rotate360 {
+    0% {
+        transform : rotate(0deg);
+    }
+    100% {
+        transform : rotate(360deg);
+    }
+}
+
 button {
-    min-height    : var(--all-input-height-medium);
-    height        : var(--all-input-height-medium);
-    padding       : 0 var(--offset-small);
-    border-radius : var(--offset-small);
-    cursor        : pointer;
-    transition    : var(--fast);
+    min-height      : var(--all-input-height-medium);
+    height          : var(--all-input-height-medium);
+    padding         : 0 var(--offset-small);
+    border-radius   : var(--offset-small);
+    cursor          : pointer;
+    transition      : var(--fast);
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+
+    &:after {
+        content       : '';
+        border-radius : 50%;
+        width         : 0;
+        border        : 2px solid transparent;
+        transition    : width, margin-left var(--fast);
+        overflow      : hidden;
+    }
+
+    &.loading {
+        &.small {
+            &:after {
+                width  : calc(var(--all-input-height-small) * .5);
+                height : calc(var(--all-input-height-small) * .5);
+            }
+        }
+
+        &.medium {
+            &:after {
+                width  : calc(var(--all-input-height-medium) * .5);
+                height : calc(var(--all-input-height-medium) * .5);
+            }
+        }
+
+
+        &.large {
+            &:after {
+                width  : calc(var(--all-input-height-large) * .5);
+                height : calc(var(--all-input-height-large) * .5);
+            }
+        }
+
+        &:after {
+            border-left : 2px solid var(--border-color);
+            animation   : rotate360 var(--slow) infinite ease-in-out;
+        }
+    }
+
+    &.loading:not(.quad) {
+        &:after {
+            margin-left : var(--offset-medium);
+        }
+    }
 
     &.small {
         min-height : var(--all-input-height-small);

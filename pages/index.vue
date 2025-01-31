@@ -1,35 +1,26 @@
 <template>
     <h1>HomePage</h1>
     <SwitchTheme/>
-    <AppForm @submit.prevent="form.handleSubmit(onSubmit)">
+    <AppForm @submit="onSubmit">
         <h2>Inputs</h2>
-        <AppInput placeholder="Email" v-model="email" v-bind="emailProps" :size="AppInputSize.SMALL"/>
-        <AppInput placeholder="Email" v-model="email" v-bind="emailProps"/>
-        <AppInput placeholder="Email" v-model="email" v-bind="emailProps" :size="AppInputSize.LARGE"/>
-        {{ form.errors }}
-
-        <h2>Buttons</h2>
-        <AppButton type="submit" :style-type="AppButtonStyleType.DEFAULT">Default</AppButton>
-        <AppButton type="submit" :style-type="AppButtonStyleType.SECONDARY">Secondary</AppButton>
-        <AppButton type="submit" :style-type="AppButtonStyleType.PRIMARY" :size="AppButtonSize.SMALL">Primary
-        </AppButton>
-        <AppButton type="submit" :style-type="AppButtonStyleType.DANGER" :size="AppButtonSize.MEDIUM">Danger</AppButton>
-        <AppButton type="submit" :style-type="AppButtonStyleType.WARNING" :size="AppButtonSize.LARGE">Warning
-        </AppButton>
-        <AppButton type="submit" :style-type="AppButtonStyleType.INVISIBLE">Invisible</AppButton>
-
-        <h2>Buttons:quad</h2>
-        <AppButton type="submit" :style-type="AppButtonStyleType.DEFAULT" quad>D</AppButton>
-        <AppButton type="submit" :style-type="AppButtonStyleType.SECONDARY" quad>S</AppButton>
-        <AppButton type="submit" :style-type="AppButtonStyleType.PRIMARY" quad :size="AppButtonSize.SMALL">P</AppButton>
-        <AppButton type="submit" :style-type="AppButtonStyleType.DANGER" quad :size="AppButtonSize.MEDIUM">D</AppButton>
-        <AppButton type="submit" :style-type="AppButtonStyleType.WARNING" quad :size="AppButtonSize.LARGE">W</AppButton>
-        <AppButton type="submit" :style-type="AppButtonStyleType.INVISIBLE" quad>I
+        <AppInput
+            placeholder="Email"
+            v-model="email"
+            v-bind="emailProps"
+            :error="form.errors.value.email"
+        />
+        <AppButton
+            type="submit"
+            :style-type="AppButtonStyleType.DEFAULT"
+            :loading="form.isSubmitting.value"
+            :size="AppButtonSize.LARGE"
+        >
+            Submit
         </AppButton>
     </AppForm>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import SwitchTheme from '~/components/app/theme/SwitchTheme.vue';
 import AppInput from '~/components/app/inputs/AppInput/AppInput.vue';
 import AppForm from '~/components/app/forms/AppForm/AppForm.vue';
@@ -37,46 +28,29 @@ import AppButton from '~/components/app/buttons/AppButton.vue';
 import { AppButtonStyleType } from '~/components/app/buttons/types/AppButtonStyleType';
 import { useForm } from 'vee-validate';
 import { AppButtonSize } from '~/components/app/buttons/types/AppButtonSize';
-import { AppInputSize } from '~/components/app/inputs/AppInput/types/AppInputSize';
 
 
-export default {
-    computed  : {
-        AppInputSize () {
-            return AppInputSize;
-        },
-    },
-    components: { AppButton, AppForm, AppInput, SwitchTheme },
-    methods   : {
-        onSubmit (data: any) {
-            console.log('submit', data);
-        },
-    },
-    data () {
-        const simpleSchema = {
-            email (value: string) {
-                console.log(`Email validate: ${ value }`);
+const simpleSchema = {
+    email (value: string) {
+        if (value?.length > 5) {
+            return true;
+        }
 
-                if (value?.length > 5) {
-                    return true;
-                }
-
-                return 'Длина не такая';
-            },
-        };
-
-        const form = useForm<{ email: string }>({
-            validationSchema: simpleSchema,
-        });
-
-        const [ email, emailProps ] = form.defineField('email', {
-            validateOnChange: true,
-        });
-
-        return {
-            email, emailProps, form, AppButtonStyleType, AppButtonSize,
-        };
+        return 'Длина не такая';
     },
 };
+
+const form = useForm<{ email: string }>({
+    validationSchema: simpleSchema,
+});
+
+const onSubmit = form.handleSubmit(async (data: any) => {
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    alert(JSON.stringify(data));
+});
+
+const [ email, emailProps ] = form.defineField('email', {
+    validateOnChange: true,
+});
 
 </script>
