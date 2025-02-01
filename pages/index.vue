@@ -18,6 +18,10 @@
                 { value: '3', label: 'Three' },
             ]"
         />
+        <AppCheckbox
+            v-model="rules"
+            v-bind="rulesProps"
+        />
         <AppButton
             type="submit"
             :style-type="AppButtonStyleType.DEFAULT"
@@ -33,17 +37,18 @@ import SwitchTheme from '~/components/app/theme/SwitchTheme.vue';
 import AppInput from '~/components/app/inputs/AppInput/AppInput.vue';
 import AppForm from '~/components/app/forms/AppForm/AppForm.vue';
 import AppButton from '~/components/app/buttons/AppButton.vue';
+import AppSelect from '~/components/app/select/AppSelect/AppSelect.vue';
+import AppCheckbox from '~/components/app/inputs/AppCheckbox/AppCheckbox.vue';
 import { AppButtonStyleType } from '~/components/app/buttons/types/AppButtonStyleType';
 import { useForm } from 'vee-validate';
 import { emailValidator } from '~/lib/validator/email.validator';
-import AppSelect from '~/components/app/select/AppSelect/AppSelect.vue';
 
 
 const simpleSchema = {
     email: emailValidator,
 };
 
-const form = useForm<{ email: string, amount: string }>({
+const form = useForm<{ email: string, amount: string, rules: boolean }>({
     validationSchema: simpleSchema,
 });
 
@@ -61,5 +66,6 @@ const [ email, emailProps ] = form.defineField('email', {
 });
 
 const [ amount, amountProps ] = form.defineField('amount');
+const [ rules, rulesProps ]   = form.defineField('rules');
 
 </script>
