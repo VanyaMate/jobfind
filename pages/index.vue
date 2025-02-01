@@ -9,6 +9,15 @@
             v-bind="emailProps"
             :error="form.errors.value.email"
         />
+        <AppSelect
+            v-model="amount"
+            v-bind="amountProps"
+            :options="[
+                { value: '1', label: 'One' },
+                { value: '2', label: 'Two' },
+                { value: '3', label: 'Three' },
+            ]"
+        />
         <AppButton
             type="submit"
             :style-type="AppButtonStyleType.DEFAULT"
@@ -27,13 +36,14 @@ import AppButton from '~/components/app/buttons/AppButton.vue';
 import { AppButtonStyleType } from '~/components/app/buttons/types/AppButtonStyleType';
 import { useForm } from 'vee-validate';
 import { emailValidator } from '~/lib/validator/email.validator';
+import AppSelect from '~/components/app/select/AppSelect/AppSelect.vue';
 
 
 const simpleSchema = {
     email: emailValidator,
 };
 
-const form = useForm<{ email: string }>({
+const form = useForm<{ email: string, amount: string }>({
     validationSchema: simpleSchema,
 });
 
@@ -49,5 +59,7 @@ const [ email, emailProps ] = form.defineField('email', {
     validateOnInput      : false,
     validateOnModelUpdate: false,
 });
+
+const [ amount, amountProps ] = form.defineField('amount');
 
 </script>

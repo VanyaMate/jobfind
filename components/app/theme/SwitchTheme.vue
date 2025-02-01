@@ -1,14 +1,18 @@
 <template>
-    <select v-model="themeRef">
-        <option value="auto">Auto</option>
-        <option value="dark">Dark</option>
-        <option value="light">Light</option>
-    </select>
+    <AppSelect
+        v-model="themeRef"
+        :options="[
+            { value: 'auto', label: 'Auto' },
+            { value: 'dark', label: 'Dark' },
+            { value: 'light', label: 'Light' },
+        ]"
+    />
 </template>
 
 <script lang="ts" setup>
 import cookie from 'js-cookie';
 import { watch } from 'vue';
+import AppSelect from '~/components/app/select/AppSelect/AppSelect.vue';
 
 
 const theme = useCookie('theme', {

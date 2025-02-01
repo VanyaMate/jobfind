@@ -12,9 +12,18 @@
         - [X] Скорость
         - [X] Отступы
 - [ ] Общие компоненты
-    - [ ] Инпуты
-    - [ ] Модалка
-    - [ ] Кнопки
+    - [X] Form
+    - [X] Input
+    - [X] Button
+    - [X] Select
+    - [ ] Checkbox
+    - [ ] Radio
+    - [ ] Tab
+    - [ ] Dropdown
+    - [ ] Helper
+    - [ ] Modal
+    - [ ] Link
+    - [ ] Details
 - [ ] Фичи...
 
 Фичи:

@@ -49,6 +49,7 @@ button {
     display         : flex;
     align-items     : center;
     justify-content : center;
+    outline         : 1px solid transparent;
 
     &:after {
         content       : '';
@@ -141,6 +142,10 @@ button {
             background : color-mix(in srgb, var(--bg-second), var(--bg-main) 20%);
         }
 
+        &:focus {
+            outline : 1px solid var(--border-color);
+        }
+
         &:active {
             background : color-mix(in srgb, var(--bg-second), var(--bg-main) 40%);
         }
@@ -154,6 +159,10 @@ button {
         &:hover,
         &:focus {
             background : color-mix(in srgb, var(--bg-second), var(--bg-main) 20%);
+        }
+
+        &:focus {
+            outline : 1px solid var(--border-color);
         }
 
         &:active {
@@ -171,6 +180,10 @@ button {
             background : color-mix(in srgb, var(--primary-color), var(--bg-main) 10%);
         }
 
+        &:focus {
+            outline : 1px solid var(--primary-color);
+        }
+
         &:active {
             background : color-mix(in srgb, var(--primary-color), var(--bg-main) 20%);
         }
@@ -184,6 +197,10 @@ button {
         &:hover,
         &:focus {
             background : color-mix(in srgb, var(--danger-color), var(--bg-main) 10%);
+        }
+
+        &:focus {
+            outline : 1px solid var(--danger-color);
         }
 
         &:active {
@@ -201,6 +218,10 @@ button {
             background : color-mix(in srgb, var(--warning-color), var(--bg-main) 10%);
         }
 
+        &:focus {
+            outline : 1px solid var(--warning-color);
+        }
+
         &:active {
             background : color-mix(in srgb, var(--warning-color), var(--bg-main) 20%);
         }
@@ -214,6 +235,10 @@ button {
         &:hover,
         &:focus {
             background : color-mix(in srgb, transparent, var(--bg-second) 50%);
+        }
+
+        &:focus {
+            outline : 1px solid var(--border-color);
         }
 
         &:active {

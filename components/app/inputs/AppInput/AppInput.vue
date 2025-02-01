@@ -33,9 +33,6 @@ const props = withDefaults(
     },
 );
 
-console.log('attrs', useAttrs());
-console.log('props', props);
-
 const hasError     = computed(() => props.error && props.error.length);
 const errorMessage = ref(props.error);
 
@@ -158,7 +155,7 @@ defineOptions({
             box-shadow : 0 0 15px -5px var(--primary-color);
         }
 
-        &:valid:not(.error) {
+        &:valid:not(.error):not([value=""]) {
             border : 1px solid var(--primary-color);
         }
     }
