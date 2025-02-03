@@ -26,6 +26,16 @@
         <AppRadio v-model="lang" v-bind="langProps" value="En"/>
         <AppRadio v-model="lang" v-bind="langProps" value="Fr"/>
         <AppRadio v-model="lang" v-bind="langProps" value="De"/>
+        <AppTabs
+            :options="['Radio', 'Checkboxes', 'Tab 3 med']"
+            v-model="tabs"
+        />
+        <div v-if="tabs === 'Radio'">
+            Radio
+        </div>
+        <div v-else-if="tabs === 'Checkboxes'">
+            Checkboxes
+        </div>
         <AppButton
             type="submit"
             :style-type="AppButtonStyleType.DEFAULT"
@@ -47,13 +57,16 @@ import { AppButtonStyleType } from '~/components/app/buttons/types/AppButtonStyl
 import { useForm } from 'vee-validate';
 import { emailValidator } from '~/lib/validator/email.validator';
 import AppRadio from '~/components/app/inputs/AppRadio/AppRadio.vue';
+import AppTabs from '~/components/app/tabs/AppTabs/AppTabs.vue';
 
+
+const tabs = ref('Checkboxes');
 
 const simpleSchema = {
     email: emailValidator,
 };
 
-const form = useForm<{ email: string, amount: string, rules: boolean, languages: string }>({
+const form = useForm<{ email: string, amount: string, rules: boolean, languages: boolean }>({
     validationSchema: simpleSchema,
 });
 

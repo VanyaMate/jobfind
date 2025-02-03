@@ -17,7 +17,7 @@
     - [X] Button
     - [X] Select
     - [X] Checkbox
-    - [ ] Radio
+    - [X] Radio
     - [ ] Tab
     - [ ] Dropdown
     - [ ] Helper
