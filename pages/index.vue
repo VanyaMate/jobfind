@@ -22,6 +22,10 @@
             v-model="rules"
             v-bind="rulesProps"
         />
+        <AppRadio v-model="lang" v-bind="langProps" value="Ru"/>
+        <AppRadio v-model="lang" v-bind="langProps" value="En"/>
+        <AppRadio v-model="lang" v-bind="langProps" value="Fr"/>
+        <AppRadio v-model="lang" v-bind="langProps" value="De"/>
         <AppButton
             type="submit"
             :style-type="AppButtonStyleType.DEFAULT"
@@ -42,13 +46,14 @@ import AppCheckbox from '~/components/app/inputs/AppCheckbox/AppCheckbox.vue';
 import { AppButtonStyleType } from '~/components/app/buttons/types/AppButtonStyleType';
 import { useForm } from 'vee-validate';
 import { emailValidator } from '~/lib/validator/email.validator';
+import AppRadio from '~/components/app/inputs/AppRadio/AppRadio.vue';
 
 
 const simpleSchema = {
     email: emailValidator,
 };
 
-const form = useForm<{ email: string, amount: string, rules: boolean }>({
+const form = useForm<{ email: string, amount: string, rules: boolean, languages: string }>({
     validationSchema: simpleSchema,
 });
 
@@ -67,5 +72,12 @@ const [ email, emailProps ] = form.defineField('email', {
 
 const [ amount, amountProps ] = form.defineField('amount');
 const [ rules, rulesProps ]   = form.defineField('rules');
+const [ lang, langProps ]     = form.defineField('languages', {
+    props (state) {
+        return {
+            name: 'lang',
+        };
+    },
+});
 
 </script>

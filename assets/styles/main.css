@@ -6,6 +6,7 @@
 @import "variables/themes/common.css";
 @import "variables/themes/dark.css";
 @import "variables/themes/light.css";
+@import "common.css";
 
 * {
     margin      : 0;

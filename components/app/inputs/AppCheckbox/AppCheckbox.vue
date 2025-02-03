@@ -2,6 +2,7 @@
     <div class="container">
         <input
             v-bind="$attrs"
+            :class="['hidden', props.class]"
             type="checkbox"
             :id="id"
             :checked="props.modelValue"
@@ -20,7 +21,7 @@ interface Props extends /* @vue-ignore */ HTMLAttributes {
 }
 
 const props = defineProps<Props>();
-const id    = Math.random().toString(16);
+const id    = useId();
 
 defineOptions({
     inheritAttrs: false,
@@ -29,17 +30,8 @@ defineOptions({
 
 <style scoped>
 .container {
-    position : relative;
-    display  : inline-block;
-    height   : var(--all-input-height-medium);
-
-    input {
-        opacity : 0;
-        width   : 0;
-        height  : 0;
-        border  : none;
-        outline : none;
-    }
+    display : inline-block;
+    height  : var(--all-input-height-medium);
 
     label {
         width           : var(--all-input-height-medium);
@@ -85,7 +77,7 @@ defineOptions({
         }
 
         border     : 1px solid var(--primary-color);
-        background : var(--bg-second);
+        background : var(--bg-main);
         color      : var(--color-main);
     }
 }

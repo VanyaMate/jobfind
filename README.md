@@ -16,7 +16,7 @@
     - [X] Input
     - [X] Button
     - [X] Select
-    - [ ] Checkbox
+    - [X] Checkbox
     - [ ] Radio
     - [ ] Tab
     - [ ] Dropdown
