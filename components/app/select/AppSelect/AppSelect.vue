@@ -1,6 +1,6 @@
 <template>
     <div
-        ref="select"
+        ref="parent"
         :class="['container', { opened: isOpen }]"
         role="combobox"
         :aria-expanded="isOpen"
@@ -28,6 +28,15 @@
         <ul
             :class="['modal']"
             role="listbox"
+            ref="modal"
+            :style="{
+                top: (modalPosition.top) ? modalPosition.top + 'px' : 'auto',
+                left: (modalPosition.left) ? modalPosition.left + 'px' : 'auto',
+                right: (modalPosition.right) ?  modalPosition.right + 'px' : 'auto',
+                bottom: (modalPosition.bottom) ? modalPosition.bottom + 'px' : 'auto',
+                maxWidth: modalPosition.width + 'px',
+                maxHeight: modalPosition.height + 'px',
+            }"
         >
             <li
                 v-for="(option, index) in props.options" :key="index"
@@ -44,6 +53,7 @@
 
 <script lang="ts" setup>
 import type { SelectHTMLAttributes } from 'vue';
+import { getModalPosition, type ModalPosition } from '~/lib/modal/getModalPosition';
 
 
 type Option = { value: string, label: string };
@@ -53,24 +63,25 @@ interface Props extends /* @vue-ignore */ SelectHTMLAttributes {
     options: Array<Option>;
 };
 
-const emits        = defineEmits([ 'update:modelValue' ]);
-const props        = defineProps<Props>();
-const isOpen       = ref(false);
-const hoveredIndex = ref(props.options.findIndex((option) => option.value === props.modelValue));
+const emits         = defineEmits([ 'update:modelValue' ]);
+const props         = defineProps<Props>();
+const isOpen        = ref(false);
+const hoveredIndex  = ref(props.options.findIndex((option) => option.value === props.modelValue));
+const parent        = useTemplateRef<HTMLDivElement>('parent');
+const modal         = useTemplateRef<HTMLDivElement>('modal');
+const modalPosition = ref<ModalPosition>({ width: 0, height: 0, top: 0, left: 0, bottom: 0, right: 0 });
 
-const selectedLabel = computed(() => {
+const selectedLabel  = computed(() => {
     const selected = props.options.find((option) => option.value === props.modelValue);
     return selected ? selected.label : '';
 });
-
-const smartClose = function (event: Event) {
+const smartClose     = function (event: Event) {
     if (isOpen.value) {
         event.preventDefault();
     }
 
     isOpen.value = false;
 };
-
 const toggleDropdown = function () {
     if (isOpen.value) {
         close();
@@ -78,10 +89,10 @@ const toggleDropdown = function () {
         open();
     }
 };
-
-const open = function () {
+const open           = function () {
     if (!isOpen.value) {
-        isOpen.value = true;
+        modalPosition.value = getModalPosition(parent.value!, modal.value!, 'bottom-left');
+        isOpen.value        = true;
 
         let _index = -1;
         if (props.options.some((option, index) => (option.value === props.modelValue) && ((_index = index) || true))) {
@@ -89,26 +100,22 @@ const open = function () {
         }
     }
 };
-
-const close = function () {
+const close          = function () {
     isOpen.value = false;
 };
-
-const selectOption = function (option: Option) {
+const selectOption   = function (option: Option) {
     if (option) {
         emits('update:modelValue', option.value);
         isOpen.value = false;
     }
 };
-
-const navigate = function (direction: number) {
+const navigate       = function (direction: number) {
     hoveredIndex.value = (hoveredIndex.value + direction + props.options.length) % props.options.length;
 
     if (!isOpen.value) {
         selectOption(props.options[hoveredIndex.value]);
     }
 };
-
 
 defineOptions({
     inheritAttrs: false,
@@ -118,9 +125,8 @@ defineOptions({
 <style scoped>
 .container {
     position : relative;
-    display  : inline;
+    display  : inline-block;
     outline  : none;
-    width    : fit-content;
 
     &:focus {
         .label {
@@ -164,6 +170,7 @@ defineOptions({
         gap             : var(--offset-medium);
         user-select     : none;
         outline         : 1px solid transparent;
+        width           : 100%;
 
         .text {
             &.empty {

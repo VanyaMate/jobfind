@@ -43,6 +43,15 @@
         >
             Submit
         </AppButton>
+        <AppSelect
+            v-model="amount"
+            v-bind="amountProps"
+            :options="[
+                { value: '1', label: 'One' },
+                { value: '2', label: 'Two' },
+                { value: '3', label: 'Three' },
+            ]"
+        />
     </AppForm>
 </template>
 
@@ -86,7 +95,7 @@ const [ email, emailProps ] = form.defineField('email', {
 const [ amount, amountProps ] = form.defineField('amount');
 const [ rules, rulesProps ]   = form.defineField('rules');
 const [ lang, langProps ]     = form.defineField('languages', {
-    props (state) {
+    props () {
         return {
             name: 'lang',
         };

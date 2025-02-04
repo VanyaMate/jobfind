@@ -18,7 +18,7 @@
     - [X] Select
     - [X] Checkbox
     - [X] Radio
-    - [ ] Tab
+    - [X] Tab
     - [ ] Dropdown
     - [ ] Helper
     - [ ] Modal

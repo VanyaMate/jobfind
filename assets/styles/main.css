@@ -20,6 +20,8 @@ body {
     background : var(--bg-main);
     color      : var(--color-main);
     padding    : var(--offset-small); /* Temp */
+    min-width  : 100dvw;
+    min-height : 100dvh;
 }
 
 h1 {

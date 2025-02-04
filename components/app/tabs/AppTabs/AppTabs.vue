@@ -1,5 +1,8 @@
 <template>
-    <div class="container">
+    <div
+        class="container"
+        tabindex="0"
+    >
         <div
             :class="['marker', {show: !~selected}]"
             :style="{ width: itemWidth, transform: `translateX(${markerPosition})` }"
@@ -46,7 +49,6 @@ defineOptions({
 </script>
 
 <style scoped>
-
 .container {
     display         : flex;
     align-items     : center;

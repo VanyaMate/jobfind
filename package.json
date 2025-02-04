@@ -11,6 +11,7 @@
         "commit": "tsx utils/git/commiter"
     },
     "dependencies": {
+        "@vanyamate/types-kit": "^0.0.15",
         "js-cookie": "^3.0.5",
         "nuxt": "^3.15.3",
         "vee-validate": "^4.15.0",
