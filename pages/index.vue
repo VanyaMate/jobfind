@@ -50,7 +50,9 @@
             v-model="amount"
             v-bind="amountProps"
             :options="[
-                { value: '1', label: 'One' },
+                { value: '1', label: 'One long name of select' },
+                { value: '4', label: '4 long name of select' },
+                { value: '5', label: '5long name of select' },
                 { value: '2', label: 'Two' },
                 { value: '3', label: 'Three' },
             ]"

@@ -26,14 +26,14 @@
             </svg>
         </div>
         <ul
-            :class="['modal', { inverse: modalPosition.top < 0}]"
+            :class="['modal', { inverse: modalPosition.top < 0}, { fullscreen: !modalPosition.width || !modalPosition.height}]"
             role="listbox"
             ref="modal"
             :style="{
                 top: modalPosition.top + 'px',
                 left: modalPosition.left + 'px',
-                maxWidth: modalPosition.width ? modalPosition.width + 'px' : 'auto',
-                maxHeight: modalPosition.height ? modalPosition.height + 'px' : 'auto',
+                maxWidth: getElementSize(modalPosition.width),
+                maxHeight: getElementSize(modalPosition.height),
             }"
         >
             <li
@@ -64,13 +64,20 @@ interface Props extends /* @vue-ignore */ SelectHTMLAttributes {
     options: Array<Option>;
 };
 
-const emits         = defineEmits([ 'update:modelValue' ]);
-const props         = defineProps<Props>();
-const isOpen        = ref(false);
-const hoveredIndex  = ref(props.options.findIndex((option) => option.value === props.modelValue));
-const parent        = useTemplateRef<HTMLDivElement>('parent');
-const modal         = useTemplateRef<HTMLDivElement>('modal');
-const modalPosition = ref<ModalPosition>(getModalPosition(parent.value, modal.value, 'bottom-left'));
+const getElementSize = function (size: number | 'auto') {
+    if ((size === 'auto') || !size) {
+        return 'auto';
+    }
+
+    return size + 'px';
+};
+const emits          = defineEmits([ 'update:modelValue' ]);
+const props          = defineProps<Props>();
+const isOpen         = ref(false);
+const hoveredIndex   = ref(props.options.findIndex((option) => option.value === props.modelValue));
+const parent         = useTemplateRef<HTMLDivElement>('parent');
+const modal          = useTemplateRef<HTMLDivElement>('modal');
+const modalPosition  = ref<ModalPosition>(getModalPosition(parent.value, modal.value, 'bottom-left'));
 
 const selectedLabel       = computed(() => {
     const selected = props.options.find((option) => option.value === props.modelValue);
@@ -103,7 +110,6 @@ const open                = function () {
 };
 const close               = function () {
     isOpen.value = false;
-    updateModalPosition();
 };
 const selectOption        = function (option: Option) {
     if (option) {
@@ -150,7 +156,11 @@ defineOptions({
             opacity    : 1;
             transform  : translateY(var(--offset-small));
 
-            &.inverse {
+            &.fullscreen {
+                transform : translateY(0);
+            }
+
+            &.inverse:not(.fullscreen) {
                 transform : translateY(calc(-1 * var(--offset-small)));
             }
         }
@@ -178,6 +188,7 @@ defineOptions({
         justify-content : space-between;
         align-items     : center;
         height          : var(--all-input-height-medium);
+        min-height      : max-content;
         cursor          : default;
         gap             : var(--offset-medium);
         user-select     : none;
@@ -221,6 +232,23 @@ defineOptions({
         z-index         : 10;
         min-width       : fit-content;
 
+        &.fullscreen {
+            position   : fixed;
+            top        : auto !important;
+            bottom     : 0;
+            left       : 0;
+            width      : 100%;
+            height     : fit-content;
+            max-height : 300px;
+            transform  : translateY(100%);
+            min-width  : auto;
+            max-width  : max-content !important;
+
+            li {
+                white-space : wrap;
+            }
+        }
+
         li {
             transition    : var(--fast);
             cursor        : pointer;
@@ -229,6 +257,7 @@ defineOptions({
             display       : flex;
             align-items   : center;
             gap           : var(--offset-small);
+            white-space   : nowrap;
 
             &:before {
                 content     : '->';

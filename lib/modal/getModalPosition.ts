@@ -7,8 +7,8 @@ export type ModalPositionType =
     | 'bottom-center';
 
 export type ModalPosition = {
-    width: number;
-    height: number;
+    width: number | 'auto';
+    height: number | 'auto';
     top: number;
     left: number;
 };
@@ -46,6 +46,9 @@ export const getModalPosition = function (parent: HTMLElement | null, modal: HTM
                     const freeHeightTopSpace = parentRect.top;
                     if (freeHeightTopSpace < modalRect.height) {
                         // Full screen
+                        height = 0;
+                        width  = 0;
+                        break;
                     } else {
                         top    = -modalRect.height;
                         height = freeHeightTopSpace;
@@ -59,10 +62,18 @@ export const getModalPosition = function (parent: HTMLElement | null, modal: HTM
                     // Not here
                     const freeWithSpace = modalRect.width - freeWidthRightSpace;
                     if (freeWithSpace < bodyWidth) {
-                        left  = freeWidthRightSpace - modalRect.width;
-                        width = freeWidthRightSpace;
+                        if (modalRect.width >= bodyWidth) {
+                            // Full screen
+                            height = 0;
+                            width  = 0;
+                        } else {
+                            left  = freeWidthRightSpace - modalRect.width;
+                            width = freeWidthRightSpace;
+                        }
                     } else {
                         // Full screen
+                        height = 0;
+                        width  = 0;
                     }
                 } else {
                     left  = 0;
@@ -78,5 +89,5 @@ export const getModalPosition = function (parent: HTMLElement | null, modal: HTM
         return { width, height, top, left };
     }
 
-    return { width: 0, height: 0, top: 0, left: 0 };
+    return { width: 'auto', height: 'auto', top: 0, left: 0 };
 };
