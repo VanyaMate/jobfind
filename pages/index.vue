@@ -1,6 +1,9 @@
 <template>
     <h1>HomePage</h1>
-    <SwitchTheme/>
+
+    <div :style="{ display: 'flex', alignItems: 'end', justifyContent: 'end'}">
+        <SwitchTheme/>
+    </div>
     <AppForm @submit="onSubmit">
         <h2>Inputs</h2>
         <AppInput

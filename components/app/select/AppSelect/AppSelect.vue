@@ -26,22 +26,23 @@
             </svg>
         </div>
         <ul
-            :class="['modal']"
+            :class="['modal', { inverse: modalPosition.top < 0}]"
             role="listbox"
             ref="modal"
             :style="{
-                top: (modalPosition.top) ? modalPosition.top + 'px' : 'auto',
-                left: (modalPosition.left) ? modalPosition.left + 'px' : 'auto',
-                right: (modalPosition.right) ?  modalPosition.right + 'px' : 'auto',
-                bottom: (modalPosition.bottom) ? modalPosition.bottom + 'px' : 'auto',
-                maxWidth: modalPosition.width + 'px',
-                maxHeight: modalPosition.height + 'px',
+                top: modalPosition.top + 'px',
+                left: modalPosition.left + 'px',
+                maxWidth: modalPosition.width ? modalPosition.width + 'px' : 'auto',
+                maxHeight: modalPosition.height ? modalPosition.height + 'px' : 'auto',
             }"
         >
             <li
                 v-for="(option, index) in props.options" :key="index"
                 :aria-selected="props.modelValue === option.value"
-                :class="{active: hoveredIndex === index, selected: props.modelValue === option.value}"
+                :class="{
+                    active: hoveredIndex === index,
+                    selected: props.modelValue === option.value
+                }"
                 role="option"
                 @click="() => selectOption(option)"
             >
@@ -69,30 +70,30 @@ const isOpen        = ref(false);
 const hoveredIndex  = ref(props.options.findIndex((option) => option.value === props.modelValue));
 const parent        = useTemplateRef<HTMLDivElement>('parent');
 const modal         = useTemplateRef<HTMLDivElement>('modal');
-const modalPosition = ref<ModalPosition>({ width: 0, height: 0, top: 0, left: 0, bottom: 0, right: 0 });
+const modalPosition = ref<ModalPosition>(getModalPosition(parent.value, modal.value, 'bottom-left'));
 
-const selectedLabel  = computed(() => {
+const selectedLabel       = computed(() => {
     const selected = props.options.find((option) => option.value === props.modelValue);
     return selected ? selected.label : '';
 });
-const smartClose     = function (event: Event) {
+const smartClose          = function (event: Event) {
     if (isOpen.value) {
         event.preventDefault();
     }
 
-    isOpen.value = false;
+    close();
 };
-const toggleDropdown = function () {
+const toggleDropdown      = function () {
     if (isOpen.value) {
         close();
     } else {
         open();
     }
 };
-const open           = function () {
+const open                = function () {
     if (!isOpen.value) {
-        modalPosition.value = getModalPosition(parent.value!, modal.value!, 'bottom-left');
-        isOpen.value        = true;
+        updateModalPosition();
+        isOpen.value = true;
 
         let _index = -1;
         if (props.options.some((option, index) => (option.value === props.modelValue) && ((_index = index) || true))) {
@@ -100,22 +101,29 @@ const open           = function () {
         }
     }
 };
-const close          = function () {
+const close               = function () {
     isOpen.value = false;
+    updateModalPosition();
 };
-const selectOption   = function (option: Option) {
+const selectOption        = function (option: Option) {
     if (option) {
         emits('update:modelValue', option.value);
-        isOpen.value = false;
+        hoveredIndex.value = props.options.findIndex((_option) => _option.value === option.value);
+        close();
     }
 };
-const navigate       = function (direction: number) {
+const navigate            = function (direction: number) {
     hoveredIndex.value = (hoveredIndex.value + direction + props.options.length) % props.options.length;
 
     if (!isOpen.value) {
         selectOption(props.options[hoveredIndex.value]);
     }
 };
+const updateModalPosition = function () {
+    modalPosition.value = getModalPosition(parent.value, modal.value, 'bottom-left');
+};
+
+onMounted(updateModalPosition);
 
 defineOptions({
     inheritAttrs: false,
@@ -141,6 +149,10 @@ defineOptions({
             visibility : visible;
             opacity    : 1;
             transform  : translateY(var(--offset-small));
+
+            &.inverse {
+                transform : translateY(calc(-1 * var(--offset-small)));
+            }
         }
 
         .label {
@@ -196,7 +208,7 @@ defineOptions({
         position        : absolute;
         visibility      : hidden;
         opacity         : 0;
-        transition      : var(--fast);
+        transition      : opacity, visibility, transform var(--fast);
         transform       : translateY(0);
         background      : var(--bg-main);
         border          : 1px solid var(--border-color);
@@ -207,6 +219,7 @@ defineOptions({
         gap             : var(--offset-small);
         list-style-type : none;
         z-index         : 10;
+        min-width       : fit-content;
 
         li {
             transition    : var(--fast);

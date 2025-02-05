@@ -9,56 +9,74 @@ export type ModalPositionType =
 export type ModalPosition = {
     width: number;
     height: number;
-    top: number | null;
-    left: number | null;
-    right: number | null;
-    bottom: number | null;
+    top: number;
+    left: number;
 };
 
-const MIN_MODAL_FREE_SPACE = 200;
 
-export const getModalPosition = function (parent: HTMLElement, modal: HTMLElement, position: ModalPositionType): ModalPosition {
-    const parentRect = parent.getBoundingClientRect();
-    const modalRect  = modal.getBoundingClientRect();
-    const bodyWidth  = document.body.clientWidth;
-    const bodyHeight = document.body.clientHeight;
+export const getModalPosition = function (parent: HTMLElement | null, modal: HTMLElement | null, position: ModalPositionType): ModalPosition {
+    if (parent && modal) {
+        const parentRect = parent.getBoundingClientRect();
+        const modalRect  = modal.getBoundingClientRect();
+        const bodyWidth  = document.body.clientWidth;
+        const bodyHeight = document.body.clientHeight;
 
-    let width  = modalRect.width,
-        height = modalRect.height,
-        top    = 0,
-        left   = 0,
-        right  = 0,
-        bottom = 0;
+        console.log('ParentRect', parentRect);
+        console.log('ModalRect', modalRect);
+        console.log('BodyWidth', bodyWidth);
+        console.log('BodyHeight', bodyHeight);
 
-    switch (position) {
-        case 'top-left':
-            break;
-        case 'top-right':
-            break;
-        case 'top-center':
-            break;
-        case 'bottom-left':
-            const freeHeightSpace = bodyHeight - parentRect.bottom - modalRect.height;
-            const freeWidthSpace  = bodyWidth - parentRect.left - modalRect.width;
-            if (freeHeightSpace < MIN_MODAL_FREE_SPACE) {
-                // Not here
-            } else {
-                top    = parentRect.height;
-                height = freeHeightSpace;
-            }
+        let width  = modalRect.width,
+            height = modalRect.height,
+            top    = 0,
+            left   = 0;
 
-            if (freeWidthSpace < MIN_MODAL_FREE_SPACE) {
-                // Not here
-            } else {
-                left  = 0;
-                width = freeWidthSpace;
-            }
-            break;
-        case 'bottom-right':
-            break;
-        case 'bottom-center':
-            break;
+        switch (position) {
+            case 'top-left':
+                break;
+            case 'top-right':
+                break;
+            case 'top-center':
+                break;
+            case 'bottom-left':
+                const freeHeightBottomSpace = bodyHeight - parentRect.bottom;
+                const freeWidthRightSpace   = bodyWidth - parentRect.left;
+                if (freeHeightBottomSpace < modalRect.height) {
+                    // Not here
+                    const freeHeightTopSpace = parentRect.top;
+                    if (freeHeightTopSpace < modalRect.height) {
+                        // Full screen
+                    } else {
+                        top    = -modalRect.height;
+                        height = freeHeightTopSpace;
+                    }
+                } else {
+                    top    = parentRect.height;
+                    height = freeHeightBottomSpace;
+                }
+
+                if (freeWidthRightSpace < modalRect.width) {
+                    // Not here
+                    const freeWithSpace = modalRect.width - freeWidthRightSpace;
+                    if (freeWithSpace < bodyWidth) {
+                        left  = freeWidthRightSpace - modalRect.width;
+                        width = freeWidthRightSpace;
+                    } else {
+                        // Full screen
+                    }
+                } else {
+                    left  = 0;
+                    width = freeWidthRightSpace;
+                }
+                break;
+            case 'bottom-right':
+                break;
+            case 'bottom-center':
+                break;
+        }
+
+        return { width, height, top, left };
     }
 
-    return { width, height, top, left, right, bottom };
+    return { width: 0, height: 0, top: 0, left: 0 };
 };
