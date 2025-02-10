@@ -56,6 +56,44 @@
                 { value: '3', label: 'Three' },
             ]"
         />
+        <AppDropdown text="Меню">
+            <AppButton
+                type="submit"
+                :style-type="AppButtonStyleType.DEFAULT"
+                :loading="form.isSubmitting.value"
+            >
+                Submit
+            </AppButton>
+            <AppDropdown text="Меню">
+                <AppButton
+                    type="submit"
+                    :style-type="AppButtonStyleType.DEFAULT"
+                    :loading="form.isSubmitting.value"
+                >
+                    Submit
+                </AppButton>
+                <AppDropdown text="Меню">
+                    <AppButton
+                        type="submit"
+                        :style-type="AppButtonStyleType.DEFAULT"
+                        :loading="form.isSubmitting.value"
+                    >
+                        Submit
+                    </AppButton>
+                    <AppSelect
+                        v-model="amount"
+                        v-bind="amountProps"
+                        :options="[
+                    { value: '1', label: 'One long name of select' },
+                    { value: '4', label: '4 long name of select' },
+                    { value: '5', label: '5long name of select' },
+                    { value: '2', label: 'Two' },
+                    { value: '3', label: 'Three' },
+                ]"
+                    />
+                </AppDropdown>
+            </AppDropdown>
+        </AppDropdown>
     </AppForm>
 </template>
 
@@ -71,6 +109,7 @@ import { useForm } from 'vee-validate';
 import { emailValidator } from '~/lib/validator/email.validator';
 import AppRadio from '~/components/app/inputs/AppRadio/AppRadio.vue';
 import AppTabs from '~/components/app/tabs/AppTabs/AppTabs.vue';
+import AppDropdown from '~/components/app/dropdown/AppDropdown/AppDropdown.vue';
 
 
 const tabs = ref('Checkboxes');
