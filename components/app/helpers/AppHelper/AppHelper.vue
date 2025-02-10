@@ -6,7 +6,7 @@
         tabindex="0"
         @keydown.esc="close"
         @keydown.space.prevent="open"
-        @keydown.tab="smartClose"
+        @keydown.tab="close"
         @focus="open"
         @blur="blurClose"
     >
@@ -84,13 +84,6 @@ const handler             = function (event: Event) {
     if (!isChildOf(target, parent.value!)) {
         close();
     }
-};
-const smartClose          = function (event: Event) {
-    if (isOpen.value) {
-        event.preventDefault();
-    }
-
-    close();
 };
 const toggleDropdown      = function () {
     // 50ms - minimal toggle interval (fix for mobile)
