@@ -6,11 +6,17 @@ export type ModalPositionType =
     | 'bottom-right'
     | 'bottom-center';
 
+export type ModalPositionItem =
+    number
+    | string;
+
 export type ModalPosition = {
-    width: number | 'auto';
-    height: number | 'auto';
-    top: number;
-    left: number;
+    width: ModalPositionItem;
+    height: ModalPositionItem;
+    top: ModalPositionItem;
+    bottom: ModalPositionItem;
+    left: ModalPositionItem;
+    right: ModalPositionItem;
 };
 
 
@@ -20,16 +26,27 @@ export const getModalPosition = function (parent: HTMLElement | null, modal: HTM
         const modalRect  = modal.getBoundingClientRect();
         const bodyWidth  = document.body.clientWidth;
         const bodyHeight = document.body.clientHeight;
+        const bodyStyles = window.getComputedStyle(document.body);
 
+        const bodyLeftReserved   = parseInt(bodyStyles.getPropertyValue('padding-left'));
+        const bodyRightReserved  = parseInt(bodyStyles.getPropertyValue('padding-right'));
+        const bodyTopReserved    = parseInt(bodyStyles.getPropertyValue('padding-top'));
+        const bodyBottomReserved = parseInt(bodyStyles.getPropertyValue('padding-bottom'));
+        const bodyHeightReserved = bodyTopReserved + bodyBottomReserved;
+        const bodyWidthReserved  = bodyLeftReserved + bodyRightReserved;
+
+        console.log('body', bodyStyles);
         console.log('ParentRect', parentRect);
         console.log('ModalRect', modalRect);
         console.log('BodyWidth', bodyWidth);
         console.log('BodyHeight', bodyHeight);
 
-        let width  = modalRect.width,
-            height = modalRect.height,
-            top    = 0,
-            left   = 0;
+        let modalWidth: ModalPositionItem  = modalRect.width,
+            modalHeight: ModalPositionItem = modalRect.height,
+            top: ModalPositionItem         = 'auto',
+            bottom: ModalPositionItem      = 'auto',
+            left: ModalPositionItem        = 'auto',
+            right: ModalPositionItem       = 'auto';
 
         switch (position) {
             case 'top-left':
@@ -38,56 +55,74 @@ export const getModalPosition = function (parent: HTMLElement | null, modal: HTM
                 break;
             case 'top-center':
                 break;
-            case 'bottom-left':
-                const freeHeightBottomSpace = bodyHeight - parentRect.bottom;
-                const freeWidthRightSpace   = bodyWidth - parentRect.left;
-                if (freeHeightBottomSpace < modalRect.height) {
-                    // Not here
-                    const freeHeightTopSpace = parentRect.top;
-                    if (freeHeightTopSpace < modalRect.height) {
-                        // Full screen
-                        height = 0;
-                        width  = 0;
-                        break;
-                    } else {
-                        top    = -modalRect.height;
-                        height = freeHeightTopSpace;
-                    }
+            case 'bottom-left': {
+                const freeHeightBottomSpace = bodyHeight - parentRect.bottom - bodyBottomReserved;
+                if (freeHeightBottomSpace < modalHeight) {
+                    bottom      = '100%';
+                    modalHeight = parentRect.top;
                 } else {
-                    top    = parentRect.height;
-                    height = freeHeightBottomSpace;
+                    top         = '100%';
+                    modalHeight = freeHeightBottomSpace;
                 }
 
-                if (freeWidthRightSpace < modalRect.width) {
-                    // Not here
-                    const freeWithSpace = modalRect.width - freeWidthRightSpace;
-                    if (freeWithSpace < bodyWidth) {
-                        if (modalRect.width >= bodyWidth) {
-                            // Full screen
-                            height = 0;
-                            width  = 0;
-                        } else {
-                            left  = freeWidthRightSpace - modalRect.width;
-                            width = freeWidthRightSpace;
-                        }
+                const freeWidthRightSpace = bodyWidth - parentRect.left - bodyRightReserved;
+                if (freeWidthRightSpace < modalWidth) {
+                    right = 0;
+                } else {
+                    left = 0;
+                }
+            }
+                break;
+            case 'bottom-right': {
+                const freeHeightBottomSpace = bodyHeight - parentRect.bottom - bodyBottomReserved;
+                if (freeHeightBottomSpace < modalHeight) {
+                    const freeHeightTopSpace = parentRect.top;
+                    if (freeHeightTopSpace < modalHeight) {
+                        modalHeight = bodyHeight;
+                        break;
                     } else {
-                        // Full screen
-                        height = 0;
-                        width  = 0;
+                        top         = -modalHeight;
+                        modalHeight = freeHeightTopSpace;
                     }
                 } else {
-                    left  = 0;
-                    width = freeWidthRightSpace;
+                    top         = parentRect.height;
+                    modalHeight = freeHeightBottomSpace;
                 }
-                break;
-            case 'bottom-right':
+
+                const freeWidthLeftSpace = parentRect.right - bodyLeftReserved;
+                if (freeWidthLeftSpace < modalWidth) {
+                    if (modalWidth >= bodyWidth) {
+                        modalWidth = bodyWidth;
+                    } else {
+                        right      = freeWidthLeftSpace - modalWidth;
+                        modalWidth = Math.max(freeWidthLeftSpace, bodyWidth - bodyWidthReserved);
+                    }
+                } else {
+                    right      = 0;
+                    modalWidth = freeWidthLeftSpace;
+                }
+            }
                 break;
             case 'bottom-center':
                 break;
         }
 
-        return { width, height, top, left };
+        return {
+            width : `calc(100dvw - ${ bodyWidthReserved }px)`,
+            height: modalHeight,
+            top,
+            left,
+            bottom,
+            right,
+        };
     }
 
-    return { width: 'auto', height: 'auto', top: 0, left: 0 };
+    return {
+        width : 'auto',
+        height: 'auto',
+        top   : 'auto',
+        left  : 'auto',
+        bottom: 'auto',
+        right : 'auto',
+    };
 };

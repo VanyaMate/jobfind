@@ -1,19 +1,19 @@
 <template>
     <div
-        ref="parent"
         :class="['container', { opened: isOpen }]"
         role="combobox"
         :aria-expanded="isOpen"
         tabindex="0"
-        @keydown.down.prevent="navigate(1)"
-        @keydown.up.prevent="navigate(-1)"
-        @keydown.enter.prevent="selectOption(options[hoveredIndex])"
+        @keydown.down.prevent="() => navigate(1)"
+        @keydown.up.prevent="() => navigate(-1)"
+        @keydown.enter.prevent="() => selectOption(options[hoveredIndex])"
         @keydown.esc="close"
         @keydown.space.prevent="open"
         @keydown.tab="smartClose"
         @blur="close"
     >
         <div
+            ref="parent"
             class="label"
             @click="toggleDropdown"
         >
@@ -26,18 +26,26 @@
             </svg>
         </div>
         <ul
-            :class="['modal', { inverse: modalPosition.top < 0}, { fullscreen: !modalPosition.width || !modalPosition.height}]"
+            :class="[
+                'modal',
+                { inverse: modalPosition.top === 'auto' },
+                { fullscreen: !modalPosition.width || !modalPosition.height },
+                { preopened: preopen}
+            ]"
             role="listbox"
             ref="modal"
             :style="{
-                top: modalPosition.top + 'px',
-                left: modalPosition.left + 'px',
+                top: getElementOffset(modalPosition.top),
+                left: getElementOffset(modalPosition.left),
+                right: getElementOffset(modalPosition.right),
+                bottom: getElementOffset(modalPosition.bottom),
                 maxWidth: getElementSize(modalPosition.width),
                 maxHeight: getElementSize(modalPosition.height),
             }"
         >
             <li
-                v-for="(option, index) in props.options" :key="index"
+                v-for="(option, index) in props.options"
+                :key="index"
                 :aria-selected="props.modelValue === option.value"
                 :class="{
                     active: hoveredIndex === index,
@@ -54,7 +62,7 @@
 
 <script lang="ts" setup>
 import type { SelectHTMLAttributes } from 'vue';
-import { getModalPosition, type ModalPosition } from '~/lib/modal/getModalPosition';
+import { getModalPosition, type ModalPosition, type ModalPositionItem } from '~/lib/modal/getModalPosition';
 
 
 type Option = { value: string, label: string };
@@ -62,22 +70,32 @@ type Option = { value: string, label: string };
 interface Props extends /* @vue-ignore */ SelectHTMLAttributes {
     modelValue?: string;
     options: Array<Option>;
-};
+}
 
-const getElementSize = function (size: number | 'auto') {
-    if ((size === 'auto') || !size) {
-        return 'auto';
+const getElementOffset = function (offset: ModalPositionItem) {
+    if (typeof offset === 'string') {
+        return offset;
+    }
+
+    return offset + 'px';
+};
+const getElementSize   = function (size: number | string) {
+    if (typeof size === 'string' || !size) {
+        return size;
     }
 
     return size + 'px';
 };
-const emits          = defineEmits([ 'update:modelValue' ]);
-const props          = defineProps<Props>();
-const isOpen         = ref(false);
-const hoveredIndex   = ref(props.options.findIndex((option) => option.value === props.modelValue));
-const parent         = useTemplateRef<HTMLDivElement>('parent');
-const modal          = useTemplateRef<HTMLDivElement>('modal');
-const modalPosition  = ref<ModalPosition>(getModalPosition(parent.value, modal.value, 'bottom-left'));
+
+const emits         = defineEmits([ 'update:modelValue' ]);
+const props         = defineProps<Props>();
+const isOpen        = ref(false);
+const hoveredIndex  = ref(props.options.findIndex((option) => option.value === props.modelValue));
+const parent        = useTemplateRef<HTMLDivElement>('parent');
+const modal         = useTemplateRef<HTMLDivElement>('modal');
+const modalPosition = ref<ModalPosition>(getModalPosition(parent.value, modal.value, 'bottom-right'));
+const toggleTimer   = ref<number>(0);
+const preopen       = ref(false);
 
 const selectedLabel       = computed(() => {
     const selected = props.options.find((option) => option.value === props.modelValue);
@@ -91,25 +109,35 @@ const smartClose          = function (event: Event) {
     close();
 };
 const toggleDropdown      = function () {
-    if (isOpen.value) {
-        close();
-    } else {
-        open();
+    // 50ms - minimal toggle interval (fix for mobile)
+    if (toggleTimer.value < (Date.now() - 50)) {
+        toggleTimer.value = Date.now();
+        if (isOpen.value) {
+            close();
+        } else {
+            open();
+        }
     }
 };
 const open                = function () {
     if (!isOpen.value) {
-        updateModalPosition();
-        isOpen.value = true;
+        if (parent.value && modal.value) {
+            preopen.value = true;
+            requestAnimationFrame(() => {
+                updateModalPosition();
+                isOpen.value = true;
 
-        let _index = -1;
-        if (props.options.some((option, index) => (option.value === props.modelValue) && ((_index = index) || true))) {
-            hoveredIndex.value = _index;
+                let _index = -1;
+                if (props.options.some((option, index) => (option.value === props.modelValue) && ((_index = index) || true))) {
+                    hoveredIndex.value = _index;
+                }
+            });
         }
     }
 };
 const close               = function () {
-    isOpen.value = false;
+    isOpen.value  = false;
+    preopen.value = false;
 };
 const selectOption        = function (option: Option) {
     if (option) {
@@ -129,7 +157,6 @@ const updateModalPosition = function () {
     modalPosition.value = getModalPosition(parent.value, modal.value, 'bottom-left');
 };
 
-onMounted(updateModalPosition);
 
 defineOptions({
     inheritAttrs: false,
@@ -138,9 +165,10 @@ defineOptions({
 
 <style scoped>
 .container {
-    position : relative;
-    display  : inline-block;
-    outline  : none;
+    position   : relative;
+    display    : inline-block;
+    outline    : none;
+    min-height : fit-content;
 
     &:focus {
         .label {
@@ -155,12 +183,9 @@ defineOptions({
             visibility : visible;
             opacity    : 1;
             transform  : translateY(var(--offset-small));
+            min-width  : auto !important;
 
-            &.fullscreen {
-                transform : translateY(0);
-            }
-
-            &.inverse:not(.fullscreen) {
+            &.inverse {
                 transform : translateY(calc(-1 * var(--offset-small)));
             }
         }
@@ -187,15 +212,18 @@ defineOptions({
         display         : inline-flex;
         justify-content : space-between;
         align-items     : center;
-        height          : var(--all-input-height-medium);
-        min-height      : max-content;
         cursor          : default;
         gap             : var(--offset-medium);
         user-select     : none;
         outline         : 1px solid transparent;
         width           : 100%;
+        height          : var(--all-input-height-medium);
 
         .text {
+            white-space   : nowrap;
+            overflow      : hidden;
+            text-overflow : ellipsis;
+
             &.empty {
                 color : var(--color-invisible);
             }
@@ -203,6 +231,7 @@ defineOptions({
 
         svg {
             transition : var(--fast);
+            min-width  : fit-content;
 
             line {
                 stroke       : var(--border-color);
@@ -223,30 +252,25 @@ defineOptions({
         transform       : translateY(0);
         background      : var(--bg-main);
         border          : 1px solid var(--border-color);
-        padding         : var(--offset-small);
         border-radius   : var(--offset-small);
         display         : flex;
         flex-direction  : column;
         gap             : var(--offset-small);
         list-style-type : none;
         z-index         : 10;
-        min-width       : fit-content;
 
-        &.fullscreen {
-            position   : fixed;
-            top        : auto !important;
-            bottom     : 0;
-            left       : 0;
-            width      : 100%;
-            height     : fit-content;
-            max-height : 300px;
-            transform  : translateY(100%);
-            min-width  : auto;
-            max-width  : max-content !important;
+        /* */
+        width           : 0;
+        height          : 0;
+        padding         : 0;
+        overflow        : hidden;
+        overflow-y      : auto;
 
-            li {
-                white-space : wrap;
-            }
+        &.preopened {
+            width     : auto;
+            height    : auto;
+            min-width : fit-content;
+            padding   : var(--offset-small);
         }
 
         li {
@@ -257,7 +281,6 @@ defineOptions({
             display       : flex;
             align-items   : center;
             gap           : var(--offset-small);
-            white-space   : nowrap;
 
             &:before {
                 content     : '->';
