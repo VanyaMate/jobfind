@@ -1,7 +1,6 @@
 <template>
     <h1>HomePage</h1>
-
-    <div :style="{ display: 'flex', alignItems: 'end', justifyContent: 'end'}">
+    <div :style="{ display: 'flex', alignItems: 'end', justifyContent: 'end' }">
         <SwitchTheme/>
     </div>
     <AppForm @submit="onSubmit">
@@ -92,9 +91,9 @@ const onSubmit = form.handleSubmit(async (data: any, actions) => {
 
 const [ email, emailProps ] = form.defineField('email', {
     validateOnBlur       : true,
-    validateOnChange     : false,
-    validateOnInput      : false,
-    validateOnModelUpdate: false,
+    validateOnChange     : true,
+    validateOnInput      : true,
+    validateOnModelUpdate: true,
 });
 
 const [ amount, amountProps ] = form.defineField('amount');

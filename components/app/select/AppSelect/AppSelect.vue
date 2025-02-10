@@ -29,7 +29,7 @@
             :class="[
                 'modal',
                 { inverse: modalPosition.top === 'auto' },
-                { fullscreen: !modalPosition.width || !modalPosition.height },
+                { fullscreen: !modalPosition.maxWidth || !modalPosition.maxHeight },
                 { preopened: preopen}
             ]"
             role="listbox"
@@ -39,8 +39,8 @@
                 left: getElementOffset(modalPosition.left),
                 right: getElementOffset(modalPosition.right),
                 bottom: getElementOffset(modalPosition.bottom),
-                maxWidth: getElementSize(modalPosition.width),
-                maxHeight: getElementSize(modalPosition.height),
+                maxWidth: getElementSize(modalPosition.maxWidth),
+                maxHeight: getElementSize(modalPosition.maxHeight),
             }"
         >
             <li
@@ -62,7 +62,12 @@
 
 <script lang="ts" setup>
 import type { SelectHTMLAttributes } from 'vue';
-import { getModalPosition, type ModalPosition, type ModalPositionItem } from '~/lib/modal/getModalPosition';
+import {
+    getModalPosition,
+    type ModalPosition,
+    type ModalPositionItem,
+    type ModalPositionType,
+} from '~/lib/modal/getModalPosition';
 
 
 type Option = { value: string, label: string };
@@ -70,6 +75,7 @@ type Option = { value: string, label: string };
 interface Props extends /* @vue-ignore */ SelectHTMLAttributes {
     modelValue?: string;
     options: Array<Option>;
+    modalPosition?: ModalPositionType;
 }
 
 const getElementOffset = function (offset: ModalPositionItem) {
@@ -87,15 +93,16 @@ const getElementSize   = function (size: number | string) {
     return size + 'px';
 };
 
-const emits         = defineEmits([ 'update:modelValue' ]);
-const props         = defineProps<Props>();
-const isOpen        = ref(false);
-const hoveredIndex  = ref(props.options.findIndex((option) => option.value === props.modelValue));
-const parent        = useTemplateRef<HTMLDivElement>('parent');
-const modal         = useTemplateRef<HTMLDivElement>('modal');
-const modalPosition = ref<ModalPosition>(getModalPosition(parent.value, modal.value, 'bottom-right'));
-const toggleTimer   = ref<number>(0);
-const preopen       = ref(false);
+const emits             = defineEmits([ 'update:modelValue' ]);
+const props             = defineProps<Props>();
+const modalPositionType = props.modalPosition ?? 'bottom-left';
+const isOpen            = ref(false);
+const hoveredIndex      = ref(props.options.findIndex((option) => option.value === props.modelValue));
+const parent            = useTemplateRef<HTMLDivElement>('parent');
+const modal             = useTemplateRef<HTMLDivElement>('modal');
+const modalPosition     = ref<ModalPosition>(getModalPosition(parent.value, modal.value, modalPositionType));
+const toggleTimer       = ref<number>(0);
+const preopen           = ref(false);
 
 const selectedLabel       = computed(() => {
     const selected = props.options.find((option) => option.value === props.modelValue);
@@ -124,7 +131,7 @@ const open                = function () {
         if (parent.value && modal.value) {
             preopen.value = true;
             requestAnimationFrame(() => {
-                updateModalPosition();
+                updateModalPosition(parent.value, modal.value);
                 isOpen.value = true;
 
                 let _index = -1;
@@ -153,8 +160,8 @@ const navigate            = function (direction: number) {
         selectOption(props.options[hoveredIndex.value]);
     }
 };
-const updateModalPosition = function () {
-    modalPosition.value = getModalPosition(parent.value, modal.value, 'bottom-left');
+const updateModalPosition = function (parent: HTMLElement | null, modal: HTMLElement | null) {
+    modalPosition.value = getModalPosition(parent, modal, modalPositionType);
 };
 
 

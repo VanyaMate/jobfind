@@ -2,6 +2,8 @@
     <div
         class="container"
         tabindex="0"
+        @keydown.right="() => navigate(1)"
+        @keydown.left="() => navigate(-1)"
     >
         <div
             :class="['marker', {show: !~selected}]"
@@ -42,6 +44,9 @@ const selectOption = function (index: number) {
         emits('update:modelValue', props.options[index]);
     }
 };
+const navigate     = function (offset: number) {
+    selectOption((props.options.length + selected.value + offset) % props.options.length);
+};
 
 defineOptions({
     inheritAttrs: false,
@@ -55,6 +60,13 @@ defineOptions({
     position        : relative;
     justify-content : space-between;
     gap             : var(--offset-small);
+    outline         : 2px solid transparent;
+    border-radius   : var(--offset-small);
+    transition      : var(--fast);
+
+    &:focus {
+        outline : 2px solid var(--primary-color);
+    }
 
     .marker {
         position      : absolute;
@@ -87,7 +99,7 @@ defineOptions({
             color : var(--primary-color-inv);
         }
 
-        &:hover {
+        &:hover:not(.selected) {
             color : var(--color-main);
         }
     }

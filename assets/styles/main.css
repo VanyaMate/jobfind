@@ -49,3 +49,16 @@ h5 {
 h6 {
     font-size : var(--font-size-s);
 }
+
+a {
+    color           : var(--primary-color);
+    text-decoration : none;
+
+    &:hover {
+        text-decoration : underline;
+    }
+
+    &:active {
+        color : var(--primary-color-op);
+    }
+}

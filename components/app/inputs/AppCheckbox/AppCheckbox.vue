@@ -78,7 +78,7 @@ defineOptions({
 
         border     : 1px solid var(--primary-color);
         background : var(--bg-main);
-        color      : var(--color-main);
+        color      : var(--primary-color);
     }
 }
 </style>
