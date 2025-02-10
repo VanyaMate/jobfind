@@ -36,7 +36,16 @@
             Radio
         </div>
         <div v-else-if="tabs === 'Checkboxes'">
-            Checkboxes
+            Text some text
+            <AppHelper>
+                <template v-slot:label>
+                    Checkboxes
+                </template>
+                <template v-slot:modal>
+                    Description
+                </template>
+            </AppHelper>
+            Text some text
         </div>
         <AppButton
             type="submit"
@@ -64,7 +73,7 @@
             >
                 Submit
             </AppButton>
-            <AppDropdown text="Меню">
+            <AppDropdown text="Меню" on-hover>
                 <AppButton
                     type="submit"
                     :style-type="AppButtonStyleType.DEFAULT"
@@ -110,6 +119,7 @@ import { emailValidator } from '~/lib/validator/email.validator';
 import AppRadio from '~/components/app/inputs/AppRadio/AppRadio.vue';
 import AppTabs from '~/components/app/tabs/AppTabs/AppTabs.vue';
 import AppDropdown from '~/components/app/dropdown/AppDropdown/AppDropdown.vue';
+import AppHelper from '~/components/app/helpers/AppHelper/AppHelper.vue';
 
 
 const tabs = ref('Checkboxes');

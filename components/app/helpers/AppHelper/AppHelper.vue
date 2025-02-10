@@ -7,19 +7,16 @@
         @keydown.esc="close"
         @keydown.space.prevent="open"
         @keydown.tab="smartClose"
+        @focus="open"
         @blur="blurClose"
     >
         <div
             class="label"
             @click="toggleDropdown"
+            @mouseenter="open"
+            @mouseleave="close"
         >
-            <span class="text">
-                {{ props.text }}
-            </span>
-            <svg width="10px" height="7px">
-                <line x1="0" y1="0" x2="5" y2="6"/>
-                <line x1="5" y1="6" x2="10" y2="0"/>
-            </svg>
+            <slot name="label">label</slot>
         </div>
         <div
             :class="[
@@ -39,7 +36,7 @@
                 maxHeight: getElementSize(modalPosition.maxHeight),
             }"
         >
-            <slot/>
+            <slot name="modal">Default slot</slot>
         </div>
     </div>
 </template>
@@ -56,8 +53,6 @@ import { isChildOf } from '~/lib/dom/isChildOf';
 
 
 interface Props extends /* @vue-ignore */ SelectHTMLAttributes {
-    text: string;
-    closeOnFocus?: boolean;
     modalPosition?: ModalPositionType;
 }
 
@@ -121,9 +116,7 @@ const open                = function () {
     }
 };
 const blurClose           = function () {
-    if (props.closeOnFocus) {
-        close();
-    }
+    close();
 };
 const close               = function () {
     isOpen.value  = false;
@@ -149,7 +142,6 @@ defineOptions({
 
     &:focus {
         > .label {
-            border     : 1px solid var(--primary-color);
             outline    : 1px solid var(--primary-color);
             background : var(--bg-second);
         }
@@ -165,55 +157,11 @@ defineOptions({
                 transform : translateY(calc(-1 * var(--offset-small)));
             }
         }
-
-        > .label {
-            border : 1px solid var(--primary-color);
-
-            > svg {
-                transform : rotate(180deg);
-
-                > line {
-                    stroke : var(--primary-color);
-                }
-            }
-        }
     }
 
     > .label {
-        padding         : var(--offset-small);
-        background      : var(--bg-main);
-        border          : 1px solid var(--border-color);
-        transition      : var(--fast);
-        border-radius   : var(--offset-small);
-        display         : inline-flex;
-        justify-content : space-between;
-        align-items     : center;
-        cursor          : default;
-        gap             : var(--offset-medium);
-        user-select     : none;
-        outline         : 1px solid transparent;
-        width           : 100%;
-        height          : var(--all-input-height-medium);
-
-        > .text {
-            white-space   : nowrap;
-            overflow      : hidden;
-            text-overflow : ellipsis;
-        }
-
-        > svg {
-            transition : var(--fast);
-            min-width  : fit-content;
-
-            > line {
-                stroke       : var(--border-color);
-                stroke-width : 2px;
-            }
-        }
-
-        &:hover {
-            background : var(--bg-second);
-        }
+        border-radius : var(--offset-small);
+        outline       : 1px solid transparent;
     }
 
     > .modal {

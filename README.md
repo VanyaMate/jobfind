@@ -19,7 +19,7 @@
     - [X] Checkbox
     - [X] Radio
     - [X] Tab
-    - [ ] Dropdown
+    - [X] ~ Dropdown
     - [ ] Helper
     - [ ] Modal
     - [ ] Link
