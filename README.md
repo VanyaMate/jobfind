@@ -21,8 +21,8 @@
     - [X] Tab
     - [X] ~ Dropdown
     - [X] ~ Helper
-    - [ ] Modal
-    - [ ] Link
+    - [X] Modal
+    - [X] Link
     - [ ] Details
 - [ ] Фичи...
 

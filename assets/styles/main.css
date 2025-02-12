@@ -53,6 +53,7 @@ h6 {
 a {
     color           : var(--primary-color);
     text-decoration : none;
+    border-radius   : var(--offset-small);
 
     &:hover {
         text-decoration : underline;
@@ -60,5 +61,10 @@ a {
 
     &:active {
         color : var(--primary-color-op);
+    }
+
+    &:focus {
+        outline : 2px solid var(--primary-color);
+        color   : var(--color-main);
     }
 }
