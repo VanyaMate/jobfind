@@ -7,12 +7,19 @@
     </div>
     <AppForm @submit="onSubmit">
         <h2>Inputs</h2>
-        <AppInput
-            placeholder="Email"
-            v-model="email"
-            v-bind="emailProps"
-            :error="form.errors.value.email"
-        />
+        <AppTopLabel>
+            <template v-slot:label>
+                Почта
+            </template>
+            <template v-slot:input>
+                <AppInput
+                    placeholder="Email"
+                    v-model="email"
+                    v-bind="emailProps"
+                    :error="form.errors.value.email"
+                />
+            </template>
+        </AppTopLabel>
         <AppSelect
             v-model="amount"
             v-bind="amountProps"
@@ -25,11 +32,13 @@
         <AppCheckbox
             v-model="rules"
             v-bind="rulesProps"
-        />
-        <AppRadio v-model="lang" v-bind="langProps" value="Ru"/>
-        <AppRadio v-model="lang" v-bind="langProps" value="En"/>
-        <AppRadio v-model="lang" v-bind="langProps" value="Fr"/>
-        <AppRadio v-model="lang" v-bind="langProps" value="De"/>
+        >
+            Принимаю правила
+        </AppCheckbox>
+        <AppRadio v-model="lang" v-bind="langProps" value="Ru">Русский</AppRadio>
+        <AppRadio v-model="lang" v-bind="langProps" value="En">Английский</AppRadio>
+        <AppRadio v-model="lang" v-bind="langProps" value="Fr">Французский</AppRadio>
+        <AppRadio v-model="lang" v-bind="langProps" value="De">Немецкий</AppRadio>
         <AppDetails>
             <template v-slot:summary="{ open }">
                 <AppButton @click="open" type="button">
@@ -155,6 +164,7 @@ import AppModal from '~/components/app/modal/AppModal/AppModal.vue';
 import AppDetails from '~/components/app/details/AppDetails/AppDetails.vue';
 import AppText from '~/components/app/typography/AppText/AppText.vue';
 import { AppTextColor } from '~/components/app/typography/AppText/types/AppText.types';
+import AppTopLabel from '~/components/app/label/AppTopLabel/AppTopLabel.vue';
 
 
 const tabs = ref('Checkboxes');

@@ -7,7 +7,10 @@
             :class="['hidden', props.class]"
             @change="$emit('update:modelValue', ($event.target as HTMLInputElement).checked)"
         />
-        <label :for="id"></label>
+        <label class="icon" :for="id"></label>
+        <label class="text" :for="id" v-if="$slots['default']">
+            <slot/>
+        </label>
     </div>
 </template>
 
@@ -29,26 +32,40 @@ defineOptions({
 
 <style scoped>
 .container {
-    display : inline-block;
+    display     : inline-flex;
+    gap         : var(--offset-small);
+    align-items : center;
+
+    input {
+        position : absolute;
+    }
 
     input:checked {
-        ~ label {
+        ~ .icon {
             border : 1px solid var(--primary-color);
 
             &:after {
                 background : var(--primary-color);
             }
         }
+
+        ~ .text {
+            color : var(--color-main);
+        }
     }
 
     input:focus-within,
     input:focus {
-        ~ label {
+        ~ .icon {
             outline : 1px solid var(--primary-color);
+        }
+
+        ~ .text {
+            color : var(--color-second);
         }
     }
 
-    label {
+    .icon {
         width           : var(--all-input-height-medium);
         height          : var(--all-input-height-medium);
         border          : 1px solid var(--border-color);
@@ -73,6 +90,14 @@ defineOptions({
 
         &:hover {
             background : var(--bg-second);
+        }
+    }
+
+    .text {
+        color : var(--color-invisible);
+
+        &:hover {
+            color : var(--color-second);
         }
     }
 }

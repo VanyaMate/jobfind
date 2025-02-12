@@ -25,6 +25,7 @@
     - [X] Link
     - [X] Details
     - [X] Text
+    - [X] Label
 - [ ] Фичи...
 
 Фичи:

@@ -8,7 +8,10 @@
             :checked="props.modelValue"
             @change="$emit('update:modelValue', ($event.target as HTMLInputElement).checked)"
         />
-        <label :for="id"></label>
+        <label class="icon" :for="id"></label>
+        <label class="text" :for="id" v-if="$slots['default']">
+            <slot/>
+        </label>
     </div>
 </template>
 
@@ -30,10 +33,16 @@ defineOptions({
 
 <style scoped>
 .container {
-    display : inline-block;
-    height  : var(--all-input-height-medium);
+    display     : inline-flex;
+    align-items : center;
+    gap         : var(--offset-small);
+    height      : var(--all-input-height-medium);
 
-    label {
+    input {
+        position : absolute;
+    }
+
+    .icon {
         width           : var(--all-input-height-medium);
         height          : var(--all-input-height-medium);
         background      : var(--bg-main);
@@ -55,30 +64,51 @@ defineOptions({
     input:focus-within,
     input:focus {
         &:checked {
-            ~ label {
-                border     : 1px solid var(--primary-color);
-                background : var(--bg-second);
-                outline    : 1px solid var(--primary-color);
+            ~ .icon {
+                border  : 1px solid var(--primary-color);
+                outline : 1px solid var(--primary-color);
+            }
+
+            ~ .text {
+                color : var(--color-second);
             }
         }
 
         &:not(:checked) {
-            ~ label {
+            ~ .icon {
                 border     : 1px solid var(--border-color);
                 background : var(--bg-second);
                 outline    : 1px solid var(--border-color);
             }
+
+            ~ .text {
+                color : var(--color-second);
+            }
         }
     }
 
-    input:checked ~ label {
-        &:after {
-            content : '✓';
+    input:checked {
+        ~ .icon {
+            &:after {
+                content : '✓';
+            }
+
+            border     : 1px solid var(--primary-color);
+            background : var(--bg-main);
+            color      : var(--primary-color);
         }
 
-        border     : 1px solid var(--primary-color);
-        background : var(--bg-main);
-        color      : var(--primary-color);
+        ~ .text {
+            color : var(--color-main);
+        }
+    }
+
+    .text {
+        color : var(--color-invisible);
+
+        &:hover {
+            color : var(--color-second);
+        }
     }
 }
 </style>
