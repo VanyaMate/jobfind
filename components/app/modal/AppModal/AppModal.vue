@@ -1,0 +1,129 @@
+<template>
+    <slot name="trigger" :open="open" :close="close" :isOpened="isOpened">Триггер не указан</slot>
+    <teleport to="body">
+        <div :class="['container', { opened: isOpened }]">
+            <div class="background" @click.self="close"/>
+            <div class="modal" ref="modal-anchor">
+                <div class="header">
+                    <slot name="title"></slot>
+                    <AppButton
+                        @click="close"
+                        class="closeButton"
+                        :size="AppButtonSize.MEDIUM"
+                        :style-type="AppButtonStyleType.INVISIBLE"
+                    >
+                        <svg width="10px" height="10px">
+                            <line x1="0" y1="10" x2="10" y2="0"/>
+                            <line x1="0" y1="0" x2="10" y2="10"/>
+                        </svg>
+                    </AppButton>
+                </div>
+                <slot name="content" :close="close" :isOpened="isOpened">Контент не указан</slot>
+            </div>
+        </div>
+    </teleport>
+</template>
+
+<script setup lang="ts">
+import type { HTMLAttributes } from 'vue';
+import AppButton from '~/components/app/buttons/AppButton.vue';
+import { AppButtonSize } from '~/components/app/buttons/types/AppButtonSize';
+import { AppButtonStyleType } from '~/components/app/buttons/types/AppButtonStyleType';
+
+
+interface Props extends /* @vue-ignore */ HTMLAttributes {
+}
+
+const props          = defineProps<Props>();
+const isOpened       = ref(false);
+const modalAnchorRef = useTemplateRef<HTMLDivElement>('modal-anchor');
+const previousFocus  = ref<HTMLElement | null>(null);
+
+const open  = function () {
+    isOpened.value      = true;
+    previousFocus.value = document.activeElement as HTMLElement;
+    document.body.querySelector('#__nuxt')?.setAttribute('inert', 'true');
+    modalAnchorRef.value?.focus();
+};
+const close = function () {
+    isOpened.value = false;
+    document.body.querySelector('#__nuxt')?.removeAttribute('inert');
+    previousFocus.value?.focus();
+};
+defineOptions({
+    inheritAttrs: false,
+});
+</script>
+
+<style scoped>
+.container {
+    position        : fixed;
+    top             : 0;
+    left            : 0;
+    width           : 100%;
+    height          : 100%;
+    align-items     : safe center;
+    justify-content : center;
+    display         : flex;
+    z-index         : 100;
+    visibility      : hidden;
+    opacity         : 0;
+    transition      : var(--fast);
+
+    &.opened {
+        visibility : visible;
+        opacity    : 1;
+
+        > .modal {
+            transform : scale(1);
+        }
+    }
+
+    .background {
+        position   : absolute;
+        top        : 0;
+        left       : 0;
+        width      : 100%;
+        height     : 100%;
+        z-index    : 0;
+        background : color-mix(in srgb, var(--bg-main), transparent 50%);
+    }
+
+    .modal {
+        position      : relative;
+        z-index       : 1;
+        padding       : var(--offset-small);
+        border-radius : var(--offset-small);
+        background    : var(--bg-main);
+        border        : 1px solid var(--border-color);
+        transform     : scale(.8);
+        transition    : var(--fast);
+        max-width     : calc(100dvw - var(--offset-small) * 2);
+        max-height    : calc(100dvh - var(--offset-small) * 2);
+
+        .header {
+            display         : flex;
+            align-items     : start;
+            justify-content : space-between;
+            gap             : var(--offset-small);
+
+            .closeButton {
+                padding    : var(--offset-small);
+                width      : var(--all-input-height-medium);
+                text-align : center;
+
+                svg {
+                    transition : var(--fast);
+                    min-width  : fit-content;
+                    display    : inline-block;
+
+                    > line {
+                        stroke       : var(--border-color);
+                        stroke-width : 2px;
+                    }
+                }
+            }
+        }
+    }
+}
+</style>

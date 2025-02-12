@@ -28,6 +28,22 @@
         <AppRadio v-model="lang" v-bind="langProps" value="En"/>
         <AppRadio v-model="lang" v-bind="langProps" value="Fr"/>
         <AppRadio v-model="lang" v-bind="langProps" value="De"/>
+        <AppModal>
+            <template v-slot:title>
+                <h3>any title any title any title any title any title any title any title any title any title any title</h3>
+            </template>
+            <template v-slot:trigger="{ open }">
+                <AppButton @click="open">
+                    Open modal
+                </AppButton>
+            </template>
+            <template v-slot:content="{ close }">
+                Modal content
+                <AppButton @click="close">
+                    Close modal
+                </AppButton>
+            </template>
+        </AppModal>
         <AppTabs
             :options="['Radio', 'Checkboxes', 'Tab 3 med']"
             v-model="tabs"
@@ -120,6 +136,7 @@ import AppRadio from '~/components/app/inputs/AppRadio/AppRadio.vue';
 import AppTabs from '~/components/app/tabs/AppTabs/AppTabs.vue';
 import AppDropdown from '~/components/app/dropdown/AppDropdown/AppDropdown.vue';
 import AppHelper from '~/components/app/helpers/AppHelper/AppHelper.vue';
+import AppModal from '~/components/app/modal/AppModal/AppModal.vue';
 
 
 const tabs = ref('Checkboxes');

@@ -16,7 +16,7 @@
             @mouseenter="open"
             @mouseleave="close"
         >
-            <slot name="label">label</slot>
+            <slot name="label">Текст не указан</slot>
         </div>
         <div
             :class="[
@@ -36,7 +36,7 @@
                 maxHeight: getElementSize(modalPosition.maxHeight),
             }"
         >
-            <slot name="modal">Default slot</slot>
+            <slot name="modal">Текст не указан</slot>
         </div>
     </div>
 </template>

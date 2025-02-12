@@ -22,7 +22,7 @@ body {
     padding    : var(--offset-small); /* Temp */
     min-height : 100dvh;
     max-height : 100%;
-    max-width  : 100dvh;
+    max-width  : 100dvw;
     overflow-x : hidden;
 }
 

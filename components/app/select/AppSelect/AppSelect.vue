@@ -30,7 +30,8 @@
                 'modal',
                 { inverse: modalPosition.top === 'auto' },
                 { fullscreen: !modalPosition.maxWidth || !modalPosition.maxHeight },
-                { preopened: preopen}
+                { preopened: preopen },
+                { wrap: isOpen && modalPosition.left === 0 && modalPosition.right === 0 }
             ]"
             role="listbox"
             ref="modal"
@@ -280,6 +281,12 @@ defineOptions({
             padding   : var(--offset-small);
         }
 
+        &.wrap {
+            > li {
+                white-space : wrap;
+            }
+        }
+
         > li {
             transition    : var(--fast);
             cursor        : pointer;
@@ -288,6 +295,7 @@ defineOptions({
             display       : flex;
             align-items   : center;
             gap           : var(--offset-small);
+            white-space   : nowrap;
 
             &:before {
                 content     : '->';

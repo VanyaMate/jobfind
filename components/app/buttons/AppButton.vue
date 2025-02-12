@@ -15,7 +15,7 @@ interface Props extends /* @vue-ignore */ ButtonHTMLAttributes {
     size?: AppButtonSize;
     quad?: boolean;
     loading?: boolean;
-};
+}
 
 const props = withDefaults(
     defineProps<Props>(),
@@ -55,7 +55,7 @@ button {
         content       : '';
         border-radius : 50%;
         width         : 0;
-        border        : 2px solid transparent;
+        border        : 0 solid transparent;
         transition    : width, margin-left var(--fast);
         overflow      : hidden;
     }
@@ -84,6 +84,7 @@ button {
         }
 
         &:after {
+            border      : 2px solid transparent;
             border-left : 2px solid var(--border-color);
             animation   : rotate360 var(--slow) infinite ease-in-out;
         }
