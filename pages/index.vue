@@ -28,9 +28,22 @@
         <AppRadio v-model="lang" v-bind="langProps" value="En"/>
         <AppRadio v-model="lang" v-bind="langProps" value="Fr"/>
         <AppRadio v-model="lang" v-bind="langProps" value="De"/>
+        <AppDetails>
+            <template v-slot:summary="{ open }">
+                <AppButton @click="open" type="button">
+                    Summary
+                </AppButton>
+            </template>
+            <template v-slot:content="{ close }">
+                <AppButton @click="close" type="button">
+                    Text
+                </AppButton>
+            </template>
+        </AppDetails>
         <AppModal>
             <template v-slot:title>
-                <h3>any title any title any title any title any title any title any title any title any title any title</h3>
+                <h3>any title any title any title any title any title any title any title any title any title any
+                    title</h3>
             </template>
             <template v-slot:trigger="{ open }">
                 <AppButton @click="open">
@@ -137,6 +150,7 @@ import AppTabs from '~/components/app/tabs/AppTabs/AppTabs.vue';
 import AppDropdown from '~/components/app/dropdown/AppDropdown/AppDropdown.vue';
 import AppHelper from '~/components/app/helpers/AppHelper/AppHelper.vue';
 import AppModal from '~/components/app/modal/AppModal/AppModal.vue';
+import AppDetails from '~/components/app/details/AppDetails/AppDetails.vue';
 
 
 const tabs = ref('Checkboxes');
