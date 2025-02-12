@@ -109,7 +109,8 @@ defineOptions({
 
             .closeButton {
                 padding    : var(--offset-small);
-                width      : var(--all-input-height-medium);
+                min-width  : var(--all-input-height-medium);
+                max-width  : var(--all-input-height-medium);
                 text-align : center;
 
                 svg {
