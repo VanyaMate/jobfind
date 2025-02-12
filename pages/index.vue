@@ -1,5 +1,7 @@
 <template>
-    <h1>HomePage</h1>
+    <h1>
+        <AppText :color="AppTextColor.RAINBOW">HomePage</AppText>
+    </h1>
     <div :style="{ display: 'flex', alignItems: 'end', justifyContent: 'end' }">
         <SwitchTheme/>
     </div>
@@ -151,6 +153,8 @@ import AppDropdown from '~/components/app/dropdown/AppDropdown/AppDropdown.vue';
 import AppHelper from '~/components/app/helpers/AppHelper/AppHelper.vue';
 import AppModal from '~/components/app/modal/AppModal/AppModal.vue';
 import AppDetails from '~/components/app/details/AppDetails/AppDetails.vue';
+import AppText from '~/components/app/typography/AppText/AppText.vue';
+import { AppTextColor } from '~/components/app/typography/AppText/types/AppText.types';
 
 
 const tabs = ref('Checkboxes');

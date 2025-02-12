@@ -23,7 +23,8 @@
     - [X] ~ Helper
     - [X] Modal
     - [X] Link
-    - [ ] Details
+    - [X] Details
+    - [X] Text
 - [ ] Фичи...
 
 Фичи:
