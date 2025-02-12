@@ -19,6 +19,6 @@ const props = defineProps<Props>();
 form {
     display        : flex;
     flex-direction : column;
-    gap            : var(--offset-small);
+    gap            : var(--offset-medium);
 }
 </style>

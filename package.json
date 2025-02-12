@@ -12,11 +12,13 @@
     },
     "dependencies": {
         "@vanyamate/types-kit": "^0.0.15",
+        "dotenv": "^16.4.7",
         "js-cookie": "^3.0.5",
         "nuxt": "^3.15.3",
+        "nuxt-authorization": "^0.3.3",
         "vee-validate": "^4.15.0",
-        "vue": "latest",
-        "vue-router": "latest"
+        "vue": "^3.5.13",
+        "vue-router": "^4.5.0"
     },
     "devDependencies": {
         "@types/js-cookie": "^3.0.6",
