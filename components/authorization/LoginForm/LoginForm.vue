@@ -47,8 +47,24 @@ interface Props extends /* @vue-ignore */ HTMLAttributes {
 }
 
 const props                       = defineProps<Props>();
-const form                        = useForm<LoginData>();
-const submit                      = form.handleSubmit(() => {
+const form                        = useForm<LoginData>({
+    initialValues: {
+        login   : '',
+        password: '',
+        remember: false,
+    },
+});
+const submit                      = form.handleSubmit(async (data) => {
+    await fetch('/api/auth/login', {
+        method     : 'POST',
+        body       : JSON.stringify(data),
+        credentials: 'same-origin',
+    })
+        .then((response) => {
+            if (response.ok) {
+                navigateTo('/');
+            }
+        });
 });
 const [ login, loginProps ]       = form.defineField('login', {
     validateOnInput      : true,
@@ -58,7 +74,7 @@ const [ password, passwordProps ] = form.defineField('password', {
     validateOnInput      : true,
     validateOnModelUpdate: true,
 });
-const [ remember, rememberProps ] = form.defineField('remember');
+const [ remember, rememberProps ] = form.defineField('remember', {});
 
 defineOptions({
     inheritAttrs: false,

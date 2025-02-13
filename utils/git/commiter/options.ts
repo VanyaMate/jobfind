@@ -11,6 +11,8 @@ export default {
     entities               : [
         'Приложение',
         'UI Kit',
+        'Client - Authorization',
+        'Server - Authorization',
     ],
     postfixes              : {
         'Unit tests': 'unit',
