@@ -11,6 +11,7 @@
         "commit": "tsx utils/git/commiter"
     },
     "dependencies": {
+        "@prisma/client": "^6.3.1",
         "@vanyamate/types-kit": "^0.0.15",
         "dotenv": "^16.4.7",
         "js-cookie": "^3.0.5",
