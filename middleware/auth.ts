@@ -7,6 +7,10 @@ export default defineNuxtRouteMiddleware((to) => {
         return navigateTo('/login');
     }
 
+    // validate / update authToken
+    // get user by authToken
+    // continue
+
     if (authToken.value && to.path === '/login') {
         return navigateTo('/');
     }

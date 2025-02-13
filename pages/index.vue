@@ -1,6 +1,6 @@
 <template>
     <h1>
-        <AppText :color="AppTextColor.RAINBOW">Ты самая лучшая ♥</AppText>
+        <AppText :color="AppTextColor.RAINBOW">Application page %login%</AppText>
     </h1>
     <ul>
         <li v-for="item in users" :key="item.id">
