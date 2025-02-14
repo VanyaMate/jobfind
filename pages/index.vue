@@ -1,9 +1,9 @@
 <template>
-    <h1 @click="() => updateLoginEffect(user?.login ?? cookie?.login)">
-        <AppText :color="AppTextColor.RAINBOW">Application page {{ user?.login ?? cookie?.login }}</AppText>
+    <h1 @click="() => updateLoginEffect(user?.login)">
+        <AppText :color="AppTextColor.RAINBOW">Application page {{ user?.login }}</AppText>
     </h1>
     <ul>
-        <li v-for="item in users" :key="item.id">
+        <li v-for="item in items" :key="item.id">
             <AppText :color="AppTextColor.INVISIBLE">
                 {{ item.createData }}
             </AppText>
@@ -12,7 +12,6 @@
             </AppText>
         </li>
     </ul>
-
     <AppTopLabel>
         <template v-slot:label>
             Текст
@@ -23,6 +22,7 @@
     </AppTopLabel>
     <AppButton :style-type="AppButtonStyleType.PRIMARY" @click="addListItem" :loading="pending">Добавить</AppButton>
 
+    {{ data?.login }}
     <AppButton :style-type="AppButtonStyleType.DANGER" @click="logout">Выйти</AppButton>
 </template>
 <script setup lang="ts">
@@ -30,15 +30,19 @@ import AppText from '~/components/app/typography/AppText/AppText.vue';
 import { AppTextColor } from '~/components/app/typography/AppText/types/AppText.types';
 import AppButton from '~/components/app/buttons/AppButton.vue';
 import { AppButtonStyleType } from '~/components/app/buttons/types/AppButtonStyleType';
-import type { Item } from '@prisma/client';
 import AppInput from '~/components/app/inputs/AppInput/AppInput.vue';
 import AppTopLabel from '~/components/app/label/AppTopLabel/AppTopLabel.vue';
 import { updateLoginEffect, userModel } from '~/model/user/user.model';
+import { useCookieAsStore } from '~/hooks/useCookieAsStore';
+import { useStore } from '@vanyamate/sec-vue';
+import { createItemEffect, getAllItemsEffect, itemsStore } from '~/model/items/items.model';
 
 
-const cookie          = useCookie('user-data');
-const user            = userModel.get();
-const { data: users } = await useFetch<Array<Item>>('/api/v1/list');
+const user  = useCookieAsStore(userModel, 'user-data');
+const items = useStore(itemsStore);
+await getAllItemsEffect(1);
+
+const data = useCookie('user-data');
 
 const text    = ref('');
 const pending = ref<boolean>(false);
@@ -48,15 +52,9 @@ const addListItem = function () {
 
     if (value) {
         pending.value = true;
-        fetch('/api/v1/list', {
-            method: 'POST',
-            body  : value,
-        })
-            .then((response) => response.json())
-            .then((data) => users.value?.push(data))
+        createItemEffect(value)
             .then(() => text.value = '')
             .finally(() => pending.value = false);
-
     }
 };
 

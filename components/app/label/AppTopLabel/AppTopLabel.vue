@@ -24,6 +24,8 @@ defineOptions({
 
 <style scoped>
 label {
+    display : block;
+
     > span {
         display   : inline-block;
         font-size : var(--font-size-m);
