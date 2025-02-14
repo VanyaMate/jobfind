@@ -55,7 +55,7 @@ const form                        = useForm<LoginData>({
     },
 });
 const submit                      = form.handleSubmit(async (data) => {
-    await fetch('/api/auth/login', {
+    await fetch('/api/v1/auth/login', {
         method     : 'POST',
         body       : JSON.stringify(data),
         credentials: 'same-origin',

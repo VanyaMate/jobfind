@@ -2,13 +2,25 @@
     <AppForm @submit="submit">
         <AppTopLabel>
             <template v-slot:label>
-                Логин / Почта
+                Почта
+            </template>
+            <template v-slot:input>
+                <AppInput
+                    v-model="email"
+                    v-bind="emailProps"
+                    placeholder="Введите почту"
+                />
+            </template>
+        </AppTopLabel>
+        <AppTopLabel>
+            <template v-slot:label>
+                Логин
             </template>
             <template v-slot:input>
                 <AppInput
                     v-model="login"
                     v-bind="loginProps"
-                    placeholder="Введите логин или почту"
+                    placeholder="Введите логин"
                 />
             </template>
         </AppTopLabel>
@@ -61,8 +73,29 @@ interface Props extends /* @vue-ignore */ HTMLAttributes {
 }
 
 const props                         = defineProps<Props>();
-const form                          = useForm<RegistrationData & { password2: string }>();
-const submit                        = form.handleSubmit(() => {
+const form                          = useForm<RegistrationData & { password2: string }>({
+    initialValues: {
+        email    : '',
+        login    : '',
+        password : '',
+        password2: '',
+        remember : false,
+    },
+});
+const submit                        = form.handleSubmit((data) => {
+    fetch('/api/v1/auth/registration', {
+        method: 'POST',
+        body  : JSON.stringify(data),
+    })
+        .then((response) => {
+            if (response.ok) {
+                navigateTo('/');
+            }
+        });
+});
+const [ email, emailProps ]         = form.defineField('email', {
+    validateOnInput      : true,
+    validateOnModelUpdate: true,
 });
 const [ login, loginProps ]         = form.defineField('login', {
     validateOnInput      : true,

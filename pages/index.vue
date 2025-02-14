@@ -1,6 +1,6 @@
 <template>
-    <h1>
-        <AppText :color="AppTextColor.RAINBOW">Application page %login%</AppText>
+    <h1 @click="() => updateLoginEffect(user?.login ?? cookie?.login)">
+        <AppText :color="AppTextColor.RAINBOW">Application page {{ user?.login ?? cookie?.login }}</AppText>
     </h1>
     <ul>
         <li v-for="item in users" :key="item.id">
@@ -33,9 +33,12 @@ import { AppButtonStyleType } from '~/components/app/buttons/types/AppButtonStyl
 import type { Item } from '@prisma/client';
 import AppInput from '~/components/app/inputs/AppInput/AppInput.vue';
 import AppTopLabel from '~/components/app/label/AppTopLabel/AppTopLabel.vue';
+import { updateLoginEffect, userModel } from '~/model/user/user.model';
 
 
-const { data: users } = await useFetch<Array<Item>>('/api/list');
+const cookie          = useCookie('user-data');
+const user            = userModel.get();
+const { data: users } = await useFetch<Array<Item>>('/api/v1/list');
 
 const text    = ref('');
 const pending = ref<boolean>(false);
@@ -45,7 +48,7 @@ const addListItem = function () {
 
     if (value) {
         pending.value = true;
-        fetch('/api/list', {
+        fetch('/api/v1/list', {
             method: 'POST',
             body  : value,
         })
@@ -58,7 +61,7 @@ const addListItem = function () {
 };
 
 const logout = function () {
-    fetch('/api/auth/logout', {
+    fetch('/api/v1/auth/logout', {
         method: 'POST',
     })
         .then((response) => {
