@@ -88,6 +88,26 @@ button {
             border-left : 2px solid var(--border-color);
             animation   : rotate360 var(--slow) infinite ease-in-out;
         }
+
+        &.primary:after {
+            border-left-color : var(--primary-color-inv);
+        }
+
+        &.secondary:after {
+            border-left-color : var(--color-second);
+        }
+
+        &.danger:after {
+            border-left-color : var(--danger-color-inv);
+        }
+
+        &.warning:after {
+            border-left-color : var(--warning-color-inv);
+        }
+
+        &.invisible:after {
+            border-left-color : var(--color-main);
+        }
     }
 
     &.loading:not(.quad) {
