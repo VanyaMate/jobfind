@@ -53,6 +53,7 @@
         <AppCheckbox v-model="remember" v-bind="rememberProps">Запомнить меня</AppCheckbox>
         <AppButton :style-type="AppButtonStyleType.PRIMARY">Зарегистрироваться</AppButton>
     </AppForm>
+    <AppButton @click="googleAuth">Google</AppButton>
 </template>
 
 <script setup lang="ts">
@@ -72,7 +73,12 @@ interface Props extends /* @vue-ignore */ HTMLAttributes {
 
 }
 
-const props                         = defineProps<Props>();
+const props = defineProps<Props>();
+
+const googleAuth = function () {
+    window.location.href = '/api/v1/auth/google';
+};
+
 const form                          = useForm<RegistrationData & { password2: string }>({
     initialValues: {
         email    : '',
