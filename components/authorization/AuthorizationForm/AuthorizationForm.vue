@@ -1,7 +1,9 @@
 <template>
-    <AppTabs :options="['Войти', 'Регистрация']" v-model="tab"/>
-    <LoginForm v-if="tab === 'Войти'"/>
-    <RegistrationForm v-else-if="tab === 'Регистрация'"/>
+    <div class="container-form">
+        <AppTabs :options="['Войти', 'Регистрация']" v-model="tab"/>
+        <LoginForm v-if="tab === 'Войти'"/>
+        <RegistrationForm v-else-if="tab === 'Регистрация'"/>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -24,5 +26,11 @@ defineOptions({
 </script>
 
 <style scoped>
-
+.container-form {
+    width          : 300px;
+    max-width      : 100%;
+    display        : flex;
+    flex-direction : column;
+    gap            : var(--offset-medium);
+}
 </style>

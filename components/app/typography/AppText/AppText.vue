@@ -16,7 +16,7 @@ interface Props extends /* @vue-ignore */ HTMLAttributes {
 const props = defineProps<Props>();
 
 defineOptions({
-    inheritAttrs: false,
+    inheritAttrs: true,
 });
 </script>
 

@@ -1,41 +1,28 @@
 <template>
-    <h1 @click="() => updateLoginEffect(user?.login)">
-        <AppText :color="AppTextColor.RAINBOW">Application page {{ user?.login }}</AppText>
-    </h1>
-    <ul>
-        <li v-for="item in items" :key="item.id">
-            <AppText :color="AppTextColor.INVISIBLE">
-                {{ item.createData }}
-            </AppText>
-            <AppText :color="AppTextColor.MAIN">
-                {{ item.text }}
-            </AppText>
-        </li>
-    </ul>
-    <AppTopLabel>
-        <template v-slot:label>
-            Текст
-        </template>
-        <template v-slot:input>
-            <AppInput placeholder="Введите текст" v-model="text"/>
-        </template>
-    </AppTopLabel>
-    <AppButton :style-type="AppButtonStyleType.PRIMARY" @click="addListItem" :loading="pending">Добавить</AppButton>
-
-    {{ data?.login }}
-    <AppButton :style-type="AppButtonStyleType.DANGER" @click="logout">Выйти</AppButton>
+    <div class="header">
+        <h1>
+            <AppText :color="AppTextColor.RAINBOW" class="title">JobFind</AppText>
+            <br/>
+            <AppText :color="AppTextColor.MAIN" class="description">сервис по поиску работы</AppText>
+        </h1>
+        <div class="buttons">
+            <AppButton :size="AppButtonSize.LARGE" :style-type="AppButtonStyleType.PRIMARY">Я ищу работу</AppButton>
+            <AppText :color="AppTextColor.INVISIBLE">или</AppText>
+            <AppButton :size="AppButtonSize.LARGE" :style-type="AppButtonStyleType.PRIMARY">Я даю работу</AppButton>
+        </div>
+    </div>
+    <div class="jobs-list"></div>
 </template>
 <script setup lang="ts">
 import AppText from '~/components/app/typography/AppText/AppText.vue';
 import { AppTextColor } from '~/components/app/typography/AppText/types/AppText.types';
-import AppButton from '~/components/app/buttons/AppButton.vue';
-import { AppButtonStyleType } from '~/components/app/buttons/types/AppButtonStyleType';
-import AppInput from '~/components/app/inputs/AppInput/AppInput.vue';
-import AppTopLabel from '~/components/app/label/AppTopLabel/AppTopLabel.vue';
-import { updateLoginEffect, userModel } from '~/model/user/user.model';
+import { userModel } from '~/model/user/user.model';
 import { useCookieAsStore } from '~/hooks/useCookieAsStore';
 import { useStore } from '@vanyamate/sec-vue';
 import { createItemEffect, getAllItemsEffect, itemsStore } from '~/model/items/items.model';
+import AppButton from '~/components/app/buttons/AppButton.vue';
+import { AppButtonSize } from '~/components/app/buttons/types/AppButtonSize';
+import { AppButtonStyleType } from '~/components/app/buttons/types/AppButtonStyleType';
 
 
 const user  = useCookieAsStore(userModel, 'user-data');
@@ -68,8 +55,41 @@ const logout = function () {
             }
         });
 };
-
-definePageMeta({
-    middleware: [ 'auth' ],
-});
 </script>
+
+<style scoped>
+.header {
+    padding        : 200px 0;
+    display        : flex;
+    flex-direction : column;
+    gap            : 60px;
+
+    h1 {
+        text-align  : center;
+        line-height : var(--font-size-l);
+
+        .title {
+            font-size : var(--font-size-xxxl);
+        }
+
+        .description {
+            font-size   : var(--font-size-xl);
+            font-weight : normal;
+            color       : var(--color-second);
+        }
+    }
+
+    .buttons {
+        display         : flex;
+        align-items     : center;
+        justify-content : center;
+        gap             : var(--offset-medium);
+    }
+}
+
+.jobs-list {
+    height        : 1000px;
+    border-radius : var(--offset-medium);
+    background    : var(--bg-second);
+}
+</style>

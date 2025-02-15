@@ -133,6 +133,7 @@ button {
         height        : var(--all-input-height-large);
         font-size     : var(--font-size-l);
         border-radius : var(--offset-small);
+        padding       : var(--offset-small) var(--offset-medium);
     }
 
     &.quad {

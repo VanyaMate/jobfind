@@ -100,12 +100,15 @@ defineOptions({
         transition    : var(--fast);
         max-width     : calc(100dvw - var(--offset-small) * 2);
         max-height    : calc(100dvh - var(--offset-small) * 2);
+        overflow      : hidden;
+        overflow-y    : auto;
 
         .header {
             display         : flex;
             align-items     : start;
             justify-content : space-between;
             gap             : var(--offset-small);
+            margin-bottom   : var(--offset-medium);
 
             .closeButton {
                 padding    : var(--offset-small);
