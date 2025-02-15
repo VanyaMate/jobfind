@@ -1,4 +1,4 @@
-import { User } from '~/types/user/user.types';
+import { User } from '~/types/user/user';
 import { EventHandlerRequest, H3Event } from 'h3';
 import ms from 'ms';
 

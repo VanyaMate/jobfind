@@ -14,7 +14,7 @@
     "dependencies": {
         "@prisma/client": "^6.3.1",
         "@vanyamate/sec-vue": "^0.0.3",
-        "@vanyamate/types-kit": "^0.0.15",
+        "@vanyamate/types-kit": "^0.0.17",
         "bcrypt": "^5.1.1",
         "dotenv": "^16.4.7",
         "js-cookie": "^3.0.5",

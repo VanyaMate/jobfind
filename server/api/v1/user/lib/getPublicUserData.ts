@@ -1,5 +1,5 @@
 import { User as PrismaUser } from '@prisma/client';
-import { User } from '~/types/user/user.types';
+import { User } from '~/types/user/user';
 
 
 export const getPublicUserData = function (prismaUser: PrismaUser): User {

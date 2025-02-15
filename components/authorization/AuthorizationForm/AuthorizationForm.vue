@@ -27,7 +27,7 @@ defineOptions({
 
 <style scoped>
 .container-form {
-    width          : 300px;
+    width          : 400px;
     max-width      : 100%;
     display        : flex;
     flex-direction : column;

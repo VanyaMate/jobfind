@@ -10,7 +10,9 @@
                     <AppButton v-if="user?.login">
                         {{ user.login }}
                     </AppButton>
-                    <AppButton :style-type="AppButtonStyleType.DANGER" @click="logout">Выйти</AppButton>
+                    <AppButton :style-type="AppButtonStyleType.DANGER" @click="logoutEffect" :loading="authPending">
+                        Выйти
+                    </AppButton>
                 </template>
                 <AppModal v-else>
                     <template v-slot:trigger="{ open }">
@@ -36,26 +38,17 @@ import AuthorizationForm from '~/components/authorization/AuthorizationForm/Auth
 import SwitchTheme from '~/components/app/theme/SwitchTheme.vue';
 import AppModal from '~/components/app/modal/AppModal/AppModal.vue';
 import { useCookieAsStore } from '~/hooks/useCookieAsStore';
-import { userModel } from '~/model/user/user.model';
+import { userModel, logoutEffect, authPendingModel } from '~/model/user/user.model';
+import { useStore } from '@vanyamate/sec-vue';
 
 
-const user  = useCookieAsStore(userModel, 'user-data');
-const theme = useCookie('theme', {
+const authPending = useStore(authPendingModel);
+const user        = useCookieAsStore(userModel, 'user-data');
+const theme       = useCookie('theme', {
     default () {
         return 'auto';
     },
 });
-
-const logout = function () {
-    fetch('/api/v1/auth/logout', {
-        method: 'POST',
-    })
-        .then((response) => {
-            if (response.ok) {
-                navigateTo('/login');
-            }
-        });
-};
 
 useHead({
     bodyAttrs: {

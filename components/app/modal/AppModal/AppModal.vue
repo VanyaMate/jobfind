@@ -50,6 +50,9 @@ const close = function () {
     document.body.querySelector('#__nuxt')?.removeAttribute('inert');
     previousFocus.value?.focus();
 };
+
+onUnmounted(close);
+
 defineOptions({
     inheritAttrs: false,
 });
@@ -92,14 +95,14 @@ defineOptions({
     .modal {
         position      : relative;
         z-index       : 1;
-        padding       : var(--offset-small);
-        border-radius : var(--offset-small);
+        padding       : var(--offset-medium);
+        border-radius : var(--offset-medium);
         background    : var(--bg-main);
         border        : 1px solid var(--border-color);
         transform     : scale(.8);
         transition    : var(--fast);
-        max-width     : calc(100dvw - var(--offset-small) * 2);
-        max-height    : calc(100dvh - var(--offset-small) * 2);
+        max-width     : calc(100dvw - var(--offset-medium) * 2);
+        max-height    : calc(100dvh - var(--offset-medium) * 2);
         overflow      : hidden;
         overflow-y    : auto;
 

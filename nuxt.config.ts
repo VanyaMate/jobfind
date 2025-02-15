@@ -4,4 +4,7 @@ export default defineNuxtConfig({
     devtools         : { enabled: true },
     css              : [ '~/assets/styles/main.css' ],
     modules          : [],
+    build            : {
+        transpile: [ '@vanyamate/types-kit' ],
+    },
 });

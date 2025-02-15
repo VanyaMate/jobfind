@@ -51,7 +51,8 @@
             </template>
         </AppTopLabel>
         <AppCheckbox v-model="remember" v-bind="rememberProps">Запомнить меня</AppCheckbox>
-        <AppButton :style-type="AppButtonStyleType.PRIMARY">Зарегистрироваться</AppButton>
+        <AppButton :style-type="AppButtonStyleType.PRIMARY" :loading="form.isSubmitting.value">Зарегистрироваться
+        </AppButton>
     </AppForm>
     <AppButton @click="googleAuth">Google</AppButton>
 </template>
@@ -67,6 +68,7 @@ import { AppButtonStyleType } from '~/components/app/buttons/types/AppButtonStyl
 import { useForm } from 'vee-validate';
 import type { LoginData } from '~/types/authorization/login-data';
 import type { RegistrationData } from '~/types/authorization/registration-data';
+import { registrationEffect } from '~/model/user/user.model';
 
 
 interface Props extends /* @vue-ignore */ HTMLAttributes {
@@ -88,17 +90,7 @@ const form                          = useForm<RegistrationData & { password2: st
         remember : false,
     },
 });
-const submit                        = form.handleSubmit((data) => {
-    fetch('/api/v1/auth/registration', {
-        method: 'POST',
-        body  : JSON.stringify(data),
-    })
-        .then((response) => {
-            if (response.ok) {
-                navigateTo('/');
-            }
-        });
-});
+const submit                        = form.handleSubmit(registrationEffect);
 const [ email, emailProps ]         = form.defineField('email', {
     validateOnInput      : true,
     validateOnModelUpdate: true,

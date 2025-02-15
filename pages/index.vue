@@ -77,6 +77,7 @@ const draw = () => {
 };
 
 const updateCanvasSize = () => {
+    // Возможно для мобилок для этой функции нужен будет дебаунс или тротл
     if (!canvasRef.value || !headerRef.value) return;
 
     headerRect             = headerRef.value.getBoundingClientRect();
