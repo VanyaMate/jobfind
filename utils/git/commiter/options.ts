@@ -13,6 +13,12 @@ export default {
         'UI Kit',
         'Client - Authorization',
         'Server - Authorization',
+        'Client - Company',
+        'Server - Company',
+        'Client - CompanyBranch',
+        'Server - CompanyBranch',
+        'Client - Job',
+        'Server - Job',
     ],
     postfixes              : {
         'Unit tests': 'unit',

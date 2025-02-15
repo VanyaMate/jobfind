@@ -2,9 +2,9 @@
     <AppSelect
         v-model="themeRef"
         :options="[
-            { value: 'auto', label: 'Auto' },
-            { value: 'dark', label: 'Dark' },
-            { value: 'light', label: 'Light' },
+            { value: 'auto', label: 'Авто' },
+            { value: 'dark', label: 'Тьма' },
+            { value: 'light', label: 'Свет' },
         ]"
     />
 </template>

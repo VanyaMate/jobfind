@@ -27,9 +27,10 @@ label {
     display : block;
 
     > span {
-        display   : inline-block;
-        font-size : var(--font-size-m);
-        color     : var(--color-invisible);
+        display        : inline-block;
+        padding-bottom : var(--offset-small);
+        font-size      : var(--font-size-m);
+        color          : var(--color-invisible);
     }
 }
 </style>

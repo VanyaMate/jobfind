@@ -1,6 +1,7 @@
 <template>
     <div class="container">
         <input
+            ref="inputRef"
             :class="[props.size, { error: hasError }]"
             @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
             @change="$emit('change', $event)"
@@ -35,6 +36,7 @@ const props = withDefaults(
 
 const hasError     = computed(() => props.error && props.error.length);
 const errorMessage = ref(props.error);
+const inputRef     = ref<HTMLInputElement | null>(null);
 
 watchEffect(() => {
     if (props.error) {
@@ -45,6 +47,8 @@ watchEffect(() => {
 defineOptions({
     inheritAttrs: false,
 });
+
+defineExpose({ inputRef });
 
 </script>
 

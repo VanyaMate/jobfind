@@ -8,15 +8,31 @@
                 <AppText :color="AppTextColor.MAIN" class="description">сервис по поиску работы</AppText>
             </h1>
             <div class="buttons">
-                <AppButton :size="AppButtonSize.LARGE" :style-type="AppButtonStyleType.PRIMARY">Я ищу работу
+                <AppButton
+                    :size="AppButtonSize.LARGE"
+                    :style-type="AppButtonStyleType.PRIMARY"
+                    @click="selectMainInput"
+                >
+                    Я ищу работу
                 </AppButton>
                 <AppText :color="AppTextColor.INVISIBLE">или</AppText>
-                <AppButton :size="AppButtonSize.LARGE" :style-type="AppButtonStyleType.PRIMARY">Я даю работу
+                <AppButton :size="AppButtonSize.LARGE" :style-type="AppButtonStyleType.DEFAULT">Я даю работу
                 </AppButton>
             </div>
         </div>
     </div>
-    <div class="jobs-list"></div>
+    <div class="jobs-list">
+        <div class="jobs-content">
+            <AppTopLabel>
+                <template v-slot:label>
+                    Что вы ищите?
+                </template>
+                <template v-slot:input>
+                    <AppInput placeholder="Frontend-разработчик" :size="AppInputSize.LARGE" ref="inputRef"/>
+                </template>
+            </AppTopLabel>
+        </div>
+    </div>
 </template>
 <script setup lang="ts">
 import AppText from '~/components/app/typography/AppText/AppText.vue';
@@ -24,8 +40,12 @@ import { AppTextColor } from '~/components/app/typography/AppText/types/AppText.
 import AppButton from '~/components/app/buttons/AppButton.vue';
 import { AppButtonSize } from '~/components/app/buttons/types/AppButtonSize';
 import { AppButtonStyleType } from '~/components/app/buttons/types/AppButtonStyleType';
+import AppInput from '~/components/app/inputs/AppInput/AppInput.vue';
+import { AppInputSize } from '~/components/app/inputs/AppInput/types/AppInputSize';
+import AppTopLabel from '~/components/app/label/AppTopLabel/AppTopLabel.vue';
 
 
+const inputRef                           = ref<{ inputRef: HTMLInputElement } | null>(null);
 const headerRef                          = ref<HTMLElement | null>(null);
 const canvasRef                          = ref<HTMLCanvasElement | null>(null);
 let ctx: CanvasRenderingContext2D | null = null;
@@ -33,9 +53,91 @@ let animationFrameId: number | null      = null;
 let canvasWidth                          = 0;
 let canvasHeight                         = 0;
 let headerRect                           = { left: 0, top: 0, width: 0, height: 0 };
+const stars: Star[]                      = [];
+const numStars                           = ref<number>(20);
+
+const selectMainInput = function () {
+    if (inputRef.value) {
+        const input = inputRef.value.inputRef;
+        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        input.focus();
+    }
+};
 
 const mouse = { x: 0, y: 0, targetX: 0, targetY: 0, active: false };
-const lerp  = (start: number, end: number, factor: number) => start + (end - start) * factor;
+const lerp  = (start: number, end: number, factor: number): number => start + (end - start) * factor;
+
+class Star {
+    x: number;
+    y: number;
+    radius: number;
+    opacity: number;
+    fadeSpeed: number;
+    fadingIn: boolean;
+
+    constructor () {
+        this.x         = Math.random() * canvasWidth;
+        this.y         = Math.random() * canvasHeight;
+        this.radius    = Math.random() * 2 + 1;
+        this.opacity   = Math.random();
+        this.fadeSpeed = Math.random() * 0.001 + 0.006;
+        this.fadingIn  = Math.random() > 0.5;
+    }
+
+    update (): void {
+        if (this.fadingIn) {
+            this.opacity += this.fadeSpeed;
+            if (this.opacity >= 1) this.fadingIn = false;
+        } else {
+            this.opacity -= this.fadeSpeed;
+            if (this.opacity <= 0) {
+                this.fadingIn = true;
+                this.x        = Math.random() * canvasWidth;
+                this.y        = Math.random() * canvasHeight;
+                this.radius   = Math.random() * 2 + 1;
+            }
+        }
+    }
+
+    draw (): void {
+        if (!ctx) return;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${ this.opacity })`;
+        ctx.fill();
+    }
+}
+
+function initStars (): void {
+    stars.length = 0;
+    for (let i = 0; i < numStars.value; i++) {
+        stars.push(new Star());
+    }
+}
+
+function draw (): void {
+    if (!canvasRef.value || !ctx) return;
+
+    mouse.x = lerp(mouse.x, mouse.targetX, 0.1);
+    mouse.y = lerp(mouse.y, mouse.targetY, 0.1);
+
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+    // Отрисовка градиента от движения мыши
+    const gradient = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 800);
+    gradient.addColorStop(0, 'rgba(77,55,255,.18)');
+    gradient.addColorStop(1, 'rgba(77,55,255,0)');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+    // Отрисовка звёзд
+    stars.forEach(star => {
+        star.update();
+        star.draw();
+    });
+
+    animationFrameId = requestAnimationFrame(draw);
+}
 
 const handleMouseMove = (event: MouseEvent) => {
     mouse.targetX = event.clientX - headerRect.left;
@@ -55,40 +157,23 @@ const handleMouseLeave = () => {
     }
 };
 
-const draw = () => {
-    if (!canvasRef.value || !ctx) return;
-
-    mouse.x = lerp(mouse.x, mouse.targetX, 0.1);
-    mouse.y = lerp(mouse.y, mouse.targetY, 0.1);
-
-    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-    const gradient = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 800);
-    gradient.addColorStop(0, 'rgba(77,55,255,.18)');
-    gradient.addColorStop(1, 'rgba(77,55,255,0)');
-
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-
-    if (Math.abs(mouse.x - mouse.targetX) > 1 || Math.abs(mouse.y - mouse.targetY) > 1) {
-        animationFrameId = requestAnimationFrame(draw);
-    } else {
-        animationFrameId = null;
-    }
-};
-
 const updateCanvasSize = () => {
     // Возможно для мобилок для этой функции нужен будет дебаунс или тротл
-    if (!canvasRef.value || !headerRef.value) return;
+    if (!canvasRef.value || !canvasRef.value) return;
 
-    headerRect             = headerRef.value.getBoundingClientRect();
+    headerRect             = canvasRef.value.getBoundingClientRect();
     canvasWidth            = headerRect.width;
     canvasHeight           = headerRect.height;
     canvasRef.value.width  = canvasWidth;
     canvasRef.value.height = canvasHeight;
+    numStars.value         = canvasWidth * canvasHeight / 80000;
 
     mouse.x = mouse.targetX = canvasWidth / 2;
     mouse.y = mouse.targetY = canvasHeight / 2;
+
+    initStars();
 };
+
 
 onMounted(() => {
     if (canvasRef.value) {
@@ -96,6 +181,10 @@ onMounted(() => {
         updateCanvasSize();
     }
     window.addEventListener('resize', updateCanvasSize);
+});
+
+onMounted(() => {
+    if (!canvasRef.value) return;
 
     if (headerRef.value) {
         headerRect   = headerRef.value.getBoundingClientRect();
@@ -104,12 +193,20 @@ onMounted(() => {
         mouse.active = true;
         requestAnimationFrame(draw);
     }
+
+    ctx = canvasRef.value.getContext('2d');
+    updateCanvasSize();
+    initStars();
+    draw();
+
+    window.addEventListener('resize', updateCanvasSize);
 });
 
 onUnmounted(() => {
     if (animationFrameId) cancelAnimationFrame(animationFrameId);
     window.removeEventListener('resize', updateCanvasSize);
 });
+
 </script>
 
 <style scoped>
@@ -167,5 +264,11 @@ onUnmounted(() => {
     margin-top    : var(--offset-medium);
     border-radius : var(--offset-medium);
     background    : var(--bg-second);
+    padding       : var(--offset-large) var(--offset-medium);
+
+    .jobs-content {
+        max-width : 1000px;
+        margin    : auto;
+    }
 }
 </style>
