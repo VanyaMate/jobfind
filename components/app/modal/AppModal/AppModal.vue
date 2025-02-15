@@ -65,7 +65,7 @@ defineOptions({
     align-items     : safe center;
     justify-content : center;
     display         : flex;
-    z-index         : 100;
+    z-index         : 150;
     visibility      : hidden;
     opacity         : 0;
     transition      : var(--fast);

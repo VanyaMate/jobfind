@@ -35,7 +35,7 @@ let canvasHeight                         = 0;
 let headerRect                           = { left: 0, top: 0, width: 0, height: 0 };
 
 const mouse = { x: 0, y: 0, targetX: 0, targetY: 0, active: false };
-const lerp = (start: number, end: number, factor: number) => start + (end - start) * factor;
+const lerp  = (start: number, end: number, factor: number) => start + (end - start) * factor;
 
 const handleMouseMove = (event: MouseEvent) => {
     mouse.targetX = event.clientX - headerRect.left;
@@ -63,7 +63,7 @@ const draw = () => {
 
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     const gradient = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 800);
-    gradient.addColorStop(0, 'rgba(77,55,255,0.2)');
+    gradient.addColorStop(0, 'rgba(77,55,255,.18)');
     gradient.addColorStop(1, 'rgba(77,55,255,0)');
 
     ctx.fillStyle = gradient;
@@ -99,7 +99,7 @@ onMounted(() => {
     if (headerRef.value) {
         headerRect   = headerRef.value.getBoundingClientRect();
         mouse.x      = mouse.targetX = headerRect.width / 2;
-        mouse.y      = mouse.targetY = headerRect.height / 2;
+        mouse.y      = mouse.targetY = headerRect.height;
         mouse.active = true;
         requestAnimationFrame(draw);
     }
