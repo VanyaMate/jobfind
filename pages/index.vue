@@ -21,7 +21,7 @@
             </div>
         </div>
     </div>
-    <div class="jobs-list">
+    <div class="jobs-container">
         <div class="jobs-content">
             <AppTopLabel>
                 <template v-slot:label>
@@ -31,6 +31,22 @@
                     <AppInput placeholder="Frontend-разработчик" :size="AppInputSize.LARGE" ref="inputRef"/>
                 </template>
             </AppTopLabel>
+            <div class="jobs-sort"></div>
+            <div class="jobs-box">
+                <div class="jobs-filter"></div>
+                <section class="jobs-list">
+                    <JobPreview/>
+                    <JobPreview/>
+                    <JobPreview/>
+                    <JobPreview/>
+                    <JobPreview/>
+                    <JobPreview/>
+                    <JobPreview/>
+                    <JobPreview/>
+                    <JobPreview/>
+                    <JobPreview/>
+                </section>
+            </div>
         </div>
     </div>
 </template>
@@ -43,6 +59,7 @@ import { AppButtonStyleType } from '~/components/app/buttons/types/AppButtonStyl
 import AppInput from '~/components/app/inputs/AppInput/AppInput.vue';
 import { AppInputSize } from '~/components/app/inputs/AppInput/types/AppInputSize';
 import AppTopLabel from '~/components/app/label/AppTopLabel/AppTopLabel.vue';
+import JobPreview from '~/components/job/JobPreview/JobPreview.vue';
 
 
 const inputRef                           = ref<{ inputRef: HTMLInputElement } | null>(null);
@@ -55,6 +72,8 @@ let canvasHeight                         = 0;
 let headerRect                           = { left: 0, top: 0, width: 0, height: 0 };
 const stars: Star[]                      = [];
 const numStars                           = ref<number>(20);
+const canvasIsHidden                     = ref(false);
+const interObserver                      = ref<IntersectionObserver>(null);
 
 const selectMainInput = function () {
     if (inputRef.value) {
@@ -136,7 +155,9 @@ function draw (): void {
         star.draw();
     });
 
-    animationFrameId = requestAnimationFrame(draw);
+    if (!canvasIsHidden.value) {
+        animationFrameId = requestAnimationFrame(draw);
+    }
 }
 
 const handleMouseMove = (event: MouseEvent) => {
@@ -175,10 +196,35 @@ const updateCanvasSize = () => {
 };
 
 
+// Ставим на паузу когда вне видимости для оптимизации
+watch([ canvasIsHidden ], () => {
+    if (!canvasIsHidden.value) {
+        draw();
+    } else {
+        if (animationFrameId !== null) {
+            cancelAnimationFrame(animationFrameId);
+        }
+    }
+});
+
 onMounted(() => {
     if (canvasRef.value) {
         ctx = canvasRef.value.getContext('2d');
         updateCanvasSize();
+
+        interObserver.value = new IntersectionObserver((items) => {
+            items.forEach((intersection) => {
+                if (intersection.isIntersecting) {
+                    // show
+                    canvasIsHidden.value = false;
+                } else {
+                    // hide
+                    canvasIsHidden.value = true;
+                }
+            });
+        });
+
+        interObserver.value.observe(canvasRef.value);
     }
     window.addEventListener('resize', updateCanvasSize);
 });
@@ -205,6 +251,7 @@ onMounted(() => {
 onUnmounted(() => {
     if (animationFrameId) cancelAnimationFrame(animationFrameId);
     window.removeEventListener('resize', updateCanvasSize);
+    interObserver.value?.disconnect();
 });
 
 </script>
@@ -259,16 +306,44 @@ onUnmounted(() => {
     }
 }
 
-.jobs-list {
-    height        : 1000px;
+.jobs-container {
+    min-height    : 1000px;
     margin-top    : var(--offset-medium);
     border-radius : var(--offset-medium);
     background    : var(--bg-second);
     padding       : var(--offset-large) var(--offset-medium);
 
     .jobs-content {
-        max-width : 1000px;
-        margin    : auto;
+        max-width      : 1000px;
+        margin         : auto;
+        display        : flex;
+        flex-direction : column;
+        gap            : var(--offset-medium);
+
+        .jobs-sort {
+            height     : 40px;
+            background : var(--bg-main);
+        }
+
+        .jobs-box {
+            display : flex;
+            gap     : var(--offset-medium);
+
+            .jobs-filter {
+                display        : flex;
+                flex-direction : column;
+                gap            : var(--offset-medium);
+                min-width      : 300px;
+                background     : var(--bg-main);
+            }
+
+            .jobs-list {
+                display        : flex;
+                flex-direction : column;
+                gap            : var(--offset-medium);
+                width          : 100%;
+            }
+        }
     }
 }
 </style>

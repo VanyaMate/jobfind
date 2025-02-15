@@ -54,6 +54,7 @@ a {
     color           : var(--primary-color);
     text-decoration : none;
     border-radius   : var(--offset-small);
+    display         : inline-block;
 
     &:hover {
         text-decoration : underline;
