@@ -1,76 +1,26 @@
 import { EventHandlerRequest, H3Event } from 'h3';
-import { prisma } from '~/server/utils/prisma';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import ms from 'ms';
 import { RegistrationData } from '~/types/authorization/registration-data';
-import { randomUUID } from 'node:crypto';
+import { authorizeLikeUser } from '~/server/api/v1/auth/authorizeLikeUser';
+import {
+    getUserByEmailOrLogin,
+} from '~/server/api/v1/user/lib/getUserByEmailOrLogin';
+import {
+    userAlreadyExistResponse,
+} from '~/server/api/v1/auth/responses/user-already-exist.response';
+import { hashPassword } from '~/server/api/v1/auth/lib/hashPassword';
+import { createUser } from '~/server/api/v1/user/lib/createUser';
 
 
-export const registration = async function (event: H3Event<EventHandlerRequest>, registrationData: RegistrationData, isOauth: boolean = false) {
-    const existedUser = await prisma.user.findFirst({
-        where: {
-            OR: [
-                {
-                    email: registrationData.email,
-                },
-                {
-                    login: registrationData.login,
-                },
-            ],
-        },
-    });
+export const registration = async function (event: H3Event<EventHandlerRequest>, registrationData: RegistrationData) {
+    const { email, login, password } = registrationData;
+    const existedUser                = await getUserByEmailOrLogin(email, login);
 
     if (existedUser) {
-        setResponseStatus(event, 400);
-        return {
-            success: 'false',
-            message: 'User already exist',
-        };
+        return userAlreadyExistResponse(event);
     }
 
+    const hash = password ? await hashPassword(password) : '';
+    const user = await createUser({ ...registrationData, password: hash });
 
-    const hashPassword = isOauth ? ''
-                                 : await bcrypt.hash(registrationData.password, 4);
-    const user         = await prisma.user.create({
-        data: {
-            email   : registrationData.email,
-            login   : registrationData.login ? registrationData.login
-                                             : registrationData.email.split('@')[0] + '-' + randomUUID().slice(0, 6),
-            password: hashPassword,
-        },
-    });
-
-    const accessToken  = jwt.sign({ id: user.id }, 'secret', { expiresIn: '1h' });
-    const refreshToken = jwt.sign({ token: accessToken }, 'secret', { expiresIn: '30d' });
-
-    setCookie(event, 'access-token', accessToken, {
-        httpOnly: true,
-        sameSite: 'lax',
-        secure  : true,
-        maxAge  : ms('1h'),
-    });
-    setCookie(event, 'refresh-token', accessToken, {
-        httpOnly: true,
-        sameSite: 'lax',
-        secure  : true,
-        maxAge  : ms('30d'),
-    });
-    const response = {
-        id    : user.id,
-        login : user.login,
-        email : user.email,
-        avatar: user.avatar,
-    };
-    setCookie(event, 'user-data', JSON.stringify(response), {
-        httpOnly: false,
-        sameSite: 'lax',
-        secure  : true,
-        maxAge  : ms('30d'),
-    });
-    setResponseStatus(event, 200);
-    return {
-        success: true,
-        data   : response,
-    };
+    return authorizeLikeUser(event, user);
 };

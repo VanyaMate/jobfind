@@ -1,18 +1,17 @@
-import { isLoginData } from '~/types/authorization/login-data';
+import { isLoginData, LoginData } from '~/types/authorization/login-data';
 import { login } from '~/server/api/v1/auth/lib/login';
+import {
+    nonValidDataResponse,
+} from '~/server/responses/non-valid-data.response';
+import { getJsonFromEvent } from '~/server/lib/getJsonFromEvent';
 
 
 export default defineEventHandler(async (event) => {
-    const body = await readBody<unknown>(event);
-    const data = JSON.parse(body);
+    const loginData = await getJsonFromEvent<LoginData>(event);
 
-    if (isLoginData(data)) {
-        return login(event, data);
+    if (isLoginData(loginData)) {
+        return login(event, loginData);
     }
 
-    setResponseStatus(event, 400);
-    return {
-        success: 'false',
-        message: 'Not valid data',
-    };
+    return nonValidDataResponse(event);
 });

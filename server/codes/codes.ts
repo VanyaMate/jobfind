@@ -1,0 +1,1 @@
+export const NON_VALID_DATA_CODE = 'NON_VALID_DATA_CODE';

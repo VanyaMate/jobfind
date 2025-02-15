@@ -1,18 +1,17 @@
 import { isRegistrationData } from '~/types/authorization/registration-data';
 import { registration } from '~/server/api/v1/auth/lib/registration';
+import {
+    nonValidDataResponse,
+} from '~/server/responses/non-valid-data.response';
+import { getJsonFromEvent } from '~/server/lib/getJsonFromEvent';
 
 
 export default defineEventHandler(async (event) => {
-    const body = await readBody<unknown>(event);
-    const data = JSON.parse(body);
+    const data = await getJsonFromEvent(event);
 
     if (isRegistrationData(data)) {
         return registration(event, data);
     }
 
-    setResponseStatus(event, 400);
-    return {
-        success: 'false',
-        message: 'Not valid data',
-    };
+    return nonValidDataResponse(event);
 });
