@@ -67,11 +67,17 @@ useHead({
 <style scoped>
 .container {
     > nav {
-        position        : sticky;
+        position        : fixed;
+        z-index         : 100;
+        top             : var(--offset-small);
+        left            : var(--offset-small);
+        width           : calc(100% - var(--offset-small) * 2);
         display         : flex;
         gap             : var(--offset-medium);
         justify-content : space-between;
         align-items     : center;
+        padding         : var(--offset-small);
+        background      : color-mix(in srgb, var(--bg-main), transparent 80%);
 
         .logo {
             padding    : var(--offset-small) var(--offset-medium);
