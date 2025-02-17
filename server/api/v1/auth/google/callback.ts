@@ -14,7 +14,6 @@ import { getLoginByEmail } from '~/server/api/v1/auth/lib/getLoginByEmail';
 export default defineEventHandler(async (event: H3Event) => {
     const query = getQuery(event);
     const code  = query.code as string;
-    console.log('code', code);
 
     if (!code) {
         await sendRedirect(event, '/login');
@@ -22,7 +21,6 @@ export default defineEventHandler(async (event: H3Event) => {
     }
 
     const tokenResponse = await getOauthGoogleTokens(code);
-    console.dir(tokenResponse);
 
     if (!tokenResponse.access_token) {
         await sendRedirect(event, '/login');
@@ -30,10 +28,8 @@ export default defineEventHandler(async (event: H3Event) => {
     }
 
     const userResponse = await getOauthGoogleUser(tokenResponse.access_token);
-    console.dir(userResponse);
-    const user = await getUserByEmail(userResponse.email);
+    const user         = await getUserByEmail(userResponse.email);
 
-    console.log('user is', user);
     const response = user ?
                      await login(event, {
                          login   : user.email,
