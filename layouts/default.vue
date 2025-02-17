@@ -18,7 +18,7 @@
                     <AppButton :style-type="AppButtonStyleType.SECONDARY">Я работодатель</AppButton>
                     <AppModal>
                         <template v-slot:trigger="{ open }">
-                            <AppButton :style-type="AppButtonStyleType.PRIMARY" @click="open">Создать резюме
+                            <AppButton :style-type="AppButtonStyleType.PRIMARY" @click="open">Войти
                             </AppButton>
                         </template>
                         <template v-slot:title>

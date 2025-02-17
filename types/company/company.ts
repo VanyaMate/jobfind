@@ -1,23 +1,29 @@
 import {
     type TypeGuard,
     isObject,
-    isString,
+    isString, isOptional, isArray, isNumber,
 } from '@vanyamate/types-kit';
 
 
 export type Company = {
     id: string;
-    name: string;
+    title: string;
     description: string;
-    avatar: string;
+    logo: string;
+    parent?: Company;
+    branches: Array<Company>;
+    createdAt: number;
 }
 
 export const isCompany: TypeGuard<Company> = function (data): data is Company {
     return (
         isObject(data) &&
         isString(data['id']) &&
-        isString(data['name']) &&
+        isString(data['title']) &&
         isString(data['description']) &&
-        isString(data['avatar'])
+        isString(data['logo']) &&
+        isNumber(data['createdAt']) &&
+        isOptional(data['parent'], isCompany) &&
+        isArray(data['branches'], isCompany)
     );
 };

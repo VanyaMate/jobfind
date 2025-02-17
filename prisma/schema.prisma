@@ -14,7 +14,81 @@ model User {
   password  String
   avatar    String   @default("")
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Employe {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String
+  login     String
+  password  String
+  avatar    String   @default("")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Company {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String @default("")
+  logo        String @default("")
+
+  companyId String? @unique @db.ObjectId
+
+  parent   Company?  @relation(name: "CompanyHierarchy", fields: [companyId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  branches Company[] @relation(name: "CompanyHierarchy")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum SalaryType {
+  EQUAL
+  FROM
+  UP_TO
+}
+
+enum VacancyTypeOfEmployment {
+  FULL_TIME
+  PART_TIME
+  PROJECT
+  VOLUNTEER
+  AGREEMENT
+  INDIVIDUAL
+}
+
+enum VacancyFormat {
+  OFFICE
+  REMOTE
+}
+
+model Vacancy {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  title      String
+  desciption String
+
+  // Salary
+  salaryMin        Int
+  salaryMax        Int
+  salaryAfterTaxes Boolean
+  salaryType       SalaryType
+  paymentsPerMonth Int
+
+  // Vacancy settings
+  experienceFrom   Float
+  experienceTo     Float
+  typeOfEmployment VacancyTypeOfEmployment
+  format           VacancyFormat
+  scheduleTypes    String[]
+  workFrom         Float
+  workTo           Float
+
+  // Labels
+  tags String[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Item {

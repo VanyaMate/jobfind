@@ -17,9 +17,12 @@
                     >
                         Я ищу работу
                     </AppButton>
-                    <AppText :color="AppTextColor.INVISIBLE">или</AppText>
-                    <AppButton :size="AppButtonSize.LARGE" :style-type="AppButtonStyleType.DEFAULT">Я даю работу
-                    </AppButton>
+                    <template v-if="!user">
+                        <AppText :color="AppTextColor.INVISIBLE">или</AppText>
+                        <AppButton :size="AppButtonSize.LARGE" :style-type="AppButtonStyleType.DEFAULT">
+                            Я даю работу
+                        </AppButton>
+                    </template>
                 </div>
             </div>
         </div>
@@ -62,8 +65,12 @@ import { AppButtonStyleType } from '~/components/app/buttons/types/AppButtonStyl
 import AppInput from '~/components/app/inputs/AppInput/AppInput.vue';
 import { AppInputSize } from '~/components/app/inputs/AppInput/types/AppInputSize';
 import AppTopLabel from '~/components/app/label/AppTopLabel/AppTopLabel.vue';
-import JobPreview from '~/components/job/JobPreview/JobPreview.vue';
+import JobPreview from '~/components/vacancy/VacancyPreview/VacancyPreview.vue';
+import { useStore } from '@vanyamate/sec-vue';
+import { userModel } from '~/model/user/user.model';
 
+
+const user = useStore(userModel);
 
 const inputRef                           = ref<{ inputRef: HTMLInputElement } | null>(null);
 const headerRef                          = ref<HTMLElement | null>(null);

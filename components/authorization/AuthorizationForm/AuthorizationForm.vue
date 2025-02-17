@@ -31,6 +31,6 @@ defineOptions({
     max-width      : 100%;
     display        : flex;
     flex-direction : column;
-    gap            : var(--offset-medium);
+    gap            : var(--offset-large);
 }
 </style>
