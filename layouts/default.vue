@@ -62,15 +62,17 @@ useHead({
     > nav {
         position        : fixed;
         z-index         : 100;
-        top             : var(--offset-small);
-        left            : var(--offset-small);
-        width           : calc(100% - var(--offset-small) * 2);
+        top             : var(--offset-large);
+        left            : var(--offset-large);
+        width           : calc(100dvw - var(--offset-large) * 2);
+        max-width       : calc(100dvw - var(--offset-large) * 2);
         display         : flex;
         gap             : var(--offset-medium);
         justify-content : space-between;
         align-items     : center;
-        padding         : var(--offset-small);
-        background      : color-mix(in srgb, var(--bg-main), transparent 80%);
+        padding         : var(--offset-medium);
+        background      : color-mix(in srgb, var(--bg-main), transparent 60%);
+        border-radius   : var(--offset-medium);
 
         .logo {
             padding    : var(--offset-small) var(--offset-medium);

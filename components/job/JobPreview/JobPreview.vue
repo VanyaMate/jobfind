@@ -53,7 +53,7 @@ defineOptions({
 <style scoped>
 article {
     padding        : var(--offset-large);
-    background     : var(--bg-main);
+    background     : var(--bg-second);
     border         : 1px solid var(--border-color);
     border-radius  : var(--offset-large);
     display        : flex;

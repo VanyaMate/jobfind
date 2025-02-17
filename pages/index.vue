@@ -1,51 +1,54 @@
 <template>
-    <div class="header" ref="headerRef" @mousemove="handleMouseMove" @mouseleave="handleMouseLeave">
-        <canvas ref="canvasRef" class="background"></canvas>
-        <div class="content">
-            <h1>
-                <AppText :color="AppTextColor.RAINBOW" class="title">JobFind</AppText>
-                <br/>
-                <AppText :color="AppTextColor.MAIN" class="description">сервис по поиску работы</AppText>
-            </h1>
-            <div class="buttons">
-                <AppButton
-                    :size="AppButtonSize.LARGE"
-                    :style-type="AppButtonStyleType.PRIMARY"
-                    @click="selectMainInput"
-                >
-                    Я ищу работу
-                </AppButton>
-                <AppText :color="AppTextColor.INVISIBLE">или</AppText>
-                <AppButton :size="AppButtonSize.LARGE" :style-type="AppButtonStyleType.DEFAULT">Я даю работу
-                </AppButton>
+    <div class="page">
+
+        <div class="header" ref="headerRef" @mousemove="handleMouseMove" @mouseleave="handleMouseLeave">
+            <canvas ref="canvasRef" class="background"></canvas>
+            <div class="content">
+                <h1>
+                    <AppText :color="AppTextColor.RAINBOW" class="title">JobFind</AppText>
+                    <br/>
+                    <AppText :color="AppTextColor.MAIN" class="description">сервис для поиска работы</AppText>
+                </h1>
+                <div class="buttons">
+                    <AppButton
+                        :size="AppButtonSize.LARGE"
+                        :style-type="AppButtonStyleType.PRIMARY"
+                        @click="selectMainInput"
+                    >
+                        Я ищу работу
+                    </AppButton>
+                    <AppText :color="AppTextColor.INVISIBLE">или</AppText>
+                    <AppButton :size="AppButtonSize.LARGE" :style-type="AppButtonStyleType.DEFAULT">Я даю работу
+                    </AppButton>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="jobs-container">
-        <div class="jobs-content">
-            <AppTopLabel>
-                <template v-slot:label>
-                    Что вы ищите?
-                </template>
-                <template v-slot:input>
-                    <AppInput placeholder="Frontend-разработчик" :size="AppInputSize.LARGE" ref="inputRef"/>
-                </template>
-            </AppTopLabel>
-            <div class="jobs-sort"></div>
-            <div class="jobs-box">
-                <div class="jobs-filter"></div>
-                <section class="jobs-list">
-                    <JobPreview/>
-                    <JobPreview/>
-                    <JobPreview/>
-                    <JobPreview/>
-                    <JobPreview/>
-                    <JobPreview/>
-                    <JobPreview/>
-                    <JobPreview/>
-                    <JobPreview/>
-                    <JobPreview/>
-                </section>
+        <div class="jobs-container">
+            <div class="jobs-content">
+                <AppTopLabel>
+                    <template v-slot:label>
+                        Что вы ищите?
+                    </template>
+                    <template v-slot:input>
+                        <AppInput placeholder="Frontend-разработчик" :size="AppInputSize.LARGE" ref="inputRef"/>
+                    </template>
+                </AppTopLabel>
+                <div class="jobs-sort"></div>
+                <div class="jobs-box">
+                    <div class="jobs-filter"></div>
+                    <section class="jobs-list">
+                        <JobPreview/>
+                        <JobPreview/>
+                        <JobPreview/>
+                        <JobPreview/>
+                        <JobPreview/>
+                        <JobPreview/>
+                        <JobPreview/>
+                        <JobPreview/>
+                        <JobPreview/>
+                        <JobPreview/>
+                    </section>
+                </div>
             </div>
         </div>
     </div>
@@ -257,9 +260,26 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+@container page (max-width: 600px) {
+    .buttons {
+        flex-direction : column;
+    }
+
+    .header {
+        padding : 140px var(--offset-small) 80px !important;
+    }
+}
+
+.page {
+    container-name : page;
+    container-type : inline-size;
+    position       : relative;
+}
+
+
 .header {
     position  : relative;
-    padding   : 200px 0;
+    padding   : 200px var(--offset-small) 150px;
     --mouse-x : 50%;
     --mouse-y : 50%;
     z-index   : 0;
@@ -310,8 +330,7 @@ onUnmounted(() => {
     min-height    : 1000px;
     margin-top    : var(--offset-medium);
     border-radius : var(--offset-medium);
-    background    : var(--bg-second);
-    padding       : var(--offset-large) var(--offset-medium);
+    padding       : var(--offset-large) 0;
 
     .jobs-content {
         max-width      : 1000px;
@@ -322,7 +341,7 @@ onUnmounted(() => {
 
         .jobs-sort {
             height     : 40px;
-            background : var(--bg-main);
+            background : var(--bg-second);
         }
 
         .jobs-box {
@@ -334,7 +353,7 @@ onUnmounted(() => {
                 flex-direction : column;
                 gap            : var(--offset-medium);
                 min-width      : 300px;
-                background     : var(--bg-main);
+                background     : var(--bg-second);
             }
 
             .jobs-list {
