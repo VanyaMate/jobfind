@@ -9,6 +9,7 @@ import {
 } from '~/server/api/v1/auth/google/lib/getOauthGoogleUser';
 import { getUserByEmail } from '~/server/api/v1/user/lib/getUserByEmail';
 import { getLoginByEmail } from '~/server/api/v1/auth/lib/getLoginByEmail';
+import { authorizeLikeUser } from '~/server/api/v1/auth/authorizeLikeUser';
 
 
 export default defineEventHandler(async (event: H3Event) => {
@@ -31,11 +32,7 @@ export default defineEventHandler(async (event: H3Event) => {
     const user         = await getUserByEmail(userResponse.email);
 
     const response = user ?
-                     await login(event, {
-                         login   : user.email,
-                         password: '',
-                         remember: true,
-                     }, true) :
+                     authorizeLikeUser(event, user, true) :
                      await registration(event, {
                          login   : getLoginByEmail(userResponse.email),
                          email   : userResponse.email,
