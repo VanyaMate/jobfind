@@ -59,12 +59,19 @@ defineOptions({
 </script>
 
 <style scoped>
+@media screen and (max-width : 600px) {
+    .container > .modal {
+        padding       : var(--offset-medium) !important;
+        border-radius : var(--offset-medium) !important;
+    }
+}
+
 .container {
     position        : fixed;
     top             : 0;
     left            : 0;
-    width           : 100dvw;
-    height          : 100dvh;
+    width           : 100%;
+    height          : 100%;
     align-items     : safe center;
     justify-content : center;
     display         : flex;
@@ -101,8 +108,8 @@ defineOptions({
         border        : 1px solid var(--border-color);
         transform     : scale(.8);
         transition    : var(--fast);
-        max-width     : calc(100dvw - var(--offset-large) * 2);
-        max-height    : calc(100dvh - var(--offset-large) * 2);
+        max-width     : calc(100% - var(--offset-large) * 2);
+        max-height    : calc(100% - var(--offset-large) * 2);
         overflow      : hidden;
         overflow-y    : auto;
 

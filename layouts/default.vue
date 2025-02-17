@@ -15,10 +15,9 @@
                     </AppButton>
                 </template>
                 <template v-else>
-                    <AppButton :style-type="AppButtonStyleType.SECONDARY">Я работодатель</AppButton>
                     <AppModal>
                         <template v-slot:trigger="{ open }">
-                            <AppButton :style-type="AppButtonStyleType.PRIMARY" @click="open">Войти
+                            <AppButton :style-type="AppButtonStyleType.SECONDARY" @click="open">Войти
                             </AppButton>
                         </template>
                         <template v-slot:title>

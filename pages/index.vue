@@ -338,6 +338,7 @@ onUnmounted(() => {
     margin-top    : var(--offset-large);
     border-radius : var(--offset-medium);
     padding       : var(--offset-large) 0;
+    max-width     : 100%;
 
     .jobs-content {
         max-width      : 1200px;
