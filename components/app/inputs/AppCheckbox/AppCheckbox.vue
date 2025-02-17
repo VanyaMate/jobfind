@@ -36,15 +36,15 @@ defineOptions({
     display     : inline-flex;
     align-items : center;
     gap         : var(--offset-small);
-    height      : var(--all-input-height-medium);
+    height      : var(--all-input-height-small);
 
     input {
         position : absolute;
     }
 
     .icon {
-        width           : var(--all-input-height-medium);
-        height          : var(--all-input-height-medium);
+        width           : var(--all-input-height-small);
+        height          : var(--all-input-height-small);
         background      : var(--bg-main);
         border          : 1px solid var(--border-color);
         border-radius   : var(--offset-small);

@@ -18,16 +18,15 @@
 
 body {
     background : var(--bg-main);
-    color      : var(--color-main);
-    padding    : var(--offset-medium); /* Temp */
+    color      : var(--color-main); /* Temp */
     min-height : 100dvh;
     max-height : 100%;
     max-width  : 100dvw;
-    overflow-x : hidden;
 }
 
 #__nuxt {
     width      : 100%;
+    padding    : var(--offset-medium);
     overflow-x : hidden;
 }
 

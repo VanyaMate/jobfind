@@ -42,10 +42,10 @@ model Company {
   updatedAt DateTime @updatedAt
 }
 
-enum SalaryType {
-  EQUAL
-  FROM
-  UP_TO
+enum SalaryCurrency {
+  RUB
+  USD
+  EUR
 }
 
 enum VacancyTypeOfEmployment {
@@ -72,7 +72,7 @@ model Vacancy {
   salaryMin        Int
   salaryMax        Int
   salaryAfterTaxes Boolean
-  salaryType       SalaryType
+  salaryCurrency   SalaryCurrency
   paymentsPerMonth Int
 
   // Vacancy settings

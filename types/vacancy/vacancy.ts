@@ -8,10 +8,10 @@ import { isCompany } from '~/types/company/company';
 import { isEnumValueOf } from '~/types/common/isEnumValueOf';
 
 
-export enum SalaryType {
-    EQUAL = 'EQUAL',
-    FROM  = 'FROM',
-    UP_TO = 'UP_TO',
+export enum SalaryCurrency {
+    RUB = 'RUB',
+    USD = 'USD',
+    EUR = 'EUR',
 }
 
 export enum VacancyTypeOfEmployment {
@@ -28,6 +28,12 @@ export enum VacancyFormat {
     REMOTE = 'REMOTE',
 }
 
+export enum VacancyEducationType {
+    NONE      = 'NONE',
+    HIGHER    = 'HIGHER',
+    SECONDARY = 'SECONDARY',
+}
+
 export type Vacancy = {
     id: string;
     title: string;
@@ -36,16 +42,17 @@ export type Vacancy = {
     salaryMin: number;
     salaryMax: number;
     salaryAfterTaxes: boolean;
-    salaryType: SalaryType;
+    salaryCurrency: SalaryCurrency;
     paymentPerMonth: number;
 
     experienceFrom: number;
-    experienceTo: number;
     typeOfEmployment: VacancyTypeOfEmployment;
     format: VacancyFormat;
     scheduleTypes: Array<String>;
     workFrom: number;
     workTo: number;
+
+    education: VacancyEducationType;
 
     tags: Array<string>;
 
@@ -63,15 +70,15 @@ export const isVacancy: TypeGuard<Vacancy> = function (data): data is Vacancy {
         isNumber(data['salaryMin']) &&
         isNumber(data['salaryMax']) &&
         isBoolean(data['salaryAfterTaxes']) &&
-        isEnumValueOf(SalaryType, data['salaryType']) &&
+        isEnumValueOf(SalaryCurrency, data['salaryType']) &&
         isNumber(data['paymentPerMonth']) &&
         isNumber(data['experienceFrom']) &&
-        isNumber(data['experienceTo']) &&
         isEnumValueOf(VacancyTypeOfEmployment, data['experienceTo']) &&
         isEnumValueOf(VacancyFormat, data['format']) &&
         isArray(data['scheduleTypes'], isString) &&
         isNumber(data['workFrom']) &&
         isNumber(data['workTo']) &&
+        isEnumValueOf(VacancyEducationType, data['education']) &&
         isArray(data['tags'], isString) &&
         isCompany(data['company']) &&
         isNumber(data['createdAt']) &&

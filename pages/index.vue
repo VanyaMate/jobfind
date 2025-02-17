@@ -30,15 +30,15 @@
             <div class="jobs-content">
                 <AppTopLabel>
                     <template v-slot:label>
-                        Что вы ищите?
+                        Что вы ищете?
                     </template>
                     <template v-slot:input>
                         <AppInput placeholder="Frontend-разработчик" :size="AppInputSize.LARGE" ref="inputRef"/>
                     </template>
                 </AppTopLabel>
-                <div class="jobs-sort"></div>
+                <VacancyListSettings class="jobs-sort"/>
                 <div class="jobs-box">
-                    <div class="jobs-filter"></div>
+                    <VacancyListFilter class="jobs-filter"/>
                     <section class="jobs-list">
                         <JobPreview/>
                         <JobPreview/>
@@ -68,6 +68,8 @@ import AppTopLabel from '~/components/app/label/AppTopLabel/AppTopLabel.vue';
 import JobPreview from '~/components/vacancy/VacancyPreview/VacancyPreview.vue';
 import { useStore } from '@vanyamate/sec-vue';
 import { userModel } from '~/model/user/user.model';
+import VacancyListFilter from '~/components/vacancy/VacancyListFilter/VacancyListFilter.vue';
+import VacancyListSettings from '~/components/vacancy/VacancyListSettings/VacancyListSettings.vue';
 
 
 const user = useStore(userModel);
@@ -264,6 +266,15 @@ onUnmounted(() => {
     interObserver.value?.disconnect();
 });
 
+useHead({
+    title: 'JobFind',
+});
+
+useSeoMeta({
+    title      : 'JobFind',
+    description: 'Сервис для поиска работы',
+});
+
 </script>
 
 <style scoped>
@@ -276,6 +287,7 @@ onUnmounted(() => {
         padding : 140px var(--offset-small) 80px !important;
     }
 }
+
 
 .page {
     container-name : page;
@@ -348,20 +360,21 @@ onUnmounted(() => {
         gap            : var(--offset-medium);
 
         .jobs-sort {
-            height     : 40px;
-            background : var(--bg-second);
         }
 
         .jobs-box {
             display : flex;
-            gap     : var(--offset-medium);
+            gap     : var(--offset-large);
 
             .jobs-filter {
                 display        : flex;
                 flex-direction : column;
                 gap            : var(--offset-medium);
                 min-width      : 300px;
-                background     : var(--bg-second);
+
+                @media screen and (max-width : 800px) {
+                    display : none;
+                }
             }
 
             .jobs-list {

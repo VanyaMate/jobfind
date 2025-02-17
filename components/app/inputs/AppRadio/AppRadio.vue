@@ -66,8 +66,8 @@ defineOptions({
     }
 
     .icon {
-        width           : var(--all-input-height-medium);
-        height          : var(--all-input-height-medium);
+        width           : var(--all-input-height-small);
+        height          : var(--all-input-height-small);
         border          : 1px solid var(--border-color);
         background      : var(--bg-main);
         display         : inline-flex;
@@ -81,8 +81,8 @@ defineOptions({
         &:after {
             content       : '';
             display       : inline-block;
-            width         : calc(var(--all-input-height-medium) * .6);
-            height        : calc(var(--all-input-height-medium) * .6);
+            width         : calc(var(--all-input-height-small) * .6);
+            height        : calc(var(--all-input-height-small) * .6);
             background    : var(--border-color);
             border-radius : 50%;
             transition    : var(--fast);
