@@ -14,17 +14,21 @@
                         Выйти
                     </AppButton>
                 </template>
-                <AppModal v-else>
-                    <template v-slot:trigger="{ open }">
-                        <AppButton :style-type="AppButtonStyleType.DEFAULT" @click="open">Войти</AppButton>
-                    </template>
-                    <template v-slot:title>
-                        <h3>Авторизация</h3>
-                    </template>
-                    <template v-slot:content>
-                        <AuthorizationForm/>
-                    </template>
-                </AppModal>
+                <template v-else>
+                    <AppButton :style-type="AppButtonStyleType.SECONDARY">Я работодатель</AppButton>
+                    <AppModal>
+                        <template v-slot:trigger="{ open }">
+                            <AppButton :style-type="AppButtonStyleType.PRIMARY" @click="open">Создать резюме
+                            </AppButton>
+                        </template>
+                        <template v-slot:title>
+                            <h3>Авторизация</h3>
+                        </template>
+                        <template v-slot:content>
+                            <AuthorizationForm/>
+                        </template>
+                    </AppModal>
+                </template>
             </div>
         </nav>
         <slot/>
@@ -62,10 +66,7 @@ useHead({
     > nav {
         position        : fixed;
         z-index         : 100;
-        top             : var(--offset-large);
-        left            : var(--offset-large);
-        width           : calc(100dvw - var(--offset-large) * 2);
-        max-width       : calc(100dvw - var(--offset-large) * 2);
+        width           : calc(100% - var(--offset-medium) * 2);
         display         : flex;
         gap             : var(--offset-medium);
         justify-content : space-between;

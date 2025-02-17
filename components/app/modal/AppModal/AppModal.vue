@@ -71,7 +71,7 @@ defineOptions({
     z-index         : 150;
     visibility      : hidden;
     opacity         : 0;
-    transition      : var(--fast);
+    transition      : visibility, opacity var(--fast);
 
     &.opened {
         visibility : visible;
@@ -89,20 +89,20 @@ defineOptions({
         width      : 100%;
         height     : 100%;
         z-index    : 0;
-        background : color-mix(in srgb, var(--bg-main), transparent 50%);
+        background : color-mix(in srgb, var(--bg-main), transparent 40%);
     }
 
     .modal {
         position      : relative;
         z-index       : 1;
-        padding       : var(--offset-medium);
-        border-radius : var(--offset-medium);
+        padding       : var(--offset-large);
+        border-radius : var(--offset-large);
         background    : var(--bg-main);
         border        : 1px solid var(--border-color);
         transform     : scale(.8);
-        transition    : var(--fast);
-        max-width     : calc(100dvw - var(--offset-medium) * 2);
-        max-height    : calc(100dvh - var(--offset-medium) * 2);
+        transition    : transform var(--fast);
+        max-width     : calc(100dvw - var(--offset-large) * 2);
+        max-height    : calc(100dvh - var(--offset-large) * 2);
         overflow      : hidden;
         overflow-y    : auto;
 
