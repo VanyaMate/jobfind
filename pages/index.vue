@@ -279,7 +279,7 @@ onUnmounted(() => {
 
 .header {
     position  : relative;
-    padding   : 200px var(--offset-small) 150px;
+    padding   : 260px var(--offset-small) 190px;
     --mouse-x : 50%;
     --mouse-y : 50%;
     z-index   : 0;
