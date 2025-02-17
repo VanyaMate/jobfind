@@ -68,10 +68,10 @@ defineOptions({
     align-items     : safe center;
     justify-content : center;
     display         : flex;
-    z-index         : 150;
+    z-index         : 200;
     visibility      : hidden;
     opacity         : 0;
-    transition      : visibility, opacity var(--fast);
+    transition      : var(--fast);
 
     &.opened {
         visibility : visible;
@@ -100,7 +100,7 @@ defineOptions({
         background    : var(--bg-main);
         border        : 1px solid var(--border-color);
         transform     : scale(.8);
-        transition    : transform var(--fast);
+        transition    : var(--fast);
         max-width     : calc(100dvw - var(--offset-large) * 2);
         max-height    : calc(100dvh - var(--offset-large) * 2);
         overflow      : hidden;

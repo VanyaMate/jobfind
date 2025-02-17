@@ -143,9 +143,10 @@ defineExpose({ inputRef });
         }
 
         &.large {
-            font-size : var(--font-size-l);
-            padding   : 0 var(--offset-medium);
-            height    : var(--all-input-height-large);
+            font-size     : var(--font-size-l);
+            padding       : 0 var(--offset-medium);
+            height        : var(--all-input-height-large);
+            border-radius : var(--offset-medium);
 
             ~ .errorMarker {
                 width  : calc(var(--all-input-height-large) - 4px);

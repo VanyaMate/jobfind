@@ -126,6 +126,7 @@ button {
         min-height : var(--all-input-height-medium);
         height     : var(--all-input-height-medium);
         font-size  : var(--font-size-m);
+        padding    : var(--offset-small) var(--offset-medium);
     }
 
     &.large {

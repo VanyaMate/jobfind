@@ -328,12 +328,12 @@ onUnmounted(() => {
 
 .jobs-container {
     min-height    : 1000px;
-    margin-top    : var(--offset-medium);
+    margin-top    : var(--offset-large);
     border-radius : var(--offset-medium);
     padding       : var(--offset-large) 0;
 
     .jobs-content {
-        max-width      : 1000px;
+        max-width      : 1200px;
         margin         : auto;
         display        : flex;
         flex-direction : column;
