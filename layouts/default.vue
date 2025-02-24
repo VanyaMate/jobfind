@@ -63,7 +63,7 @@ useHead({
 <style scoped>
 .container {
     > nav {
-        position        : fixed;
+        position        : absolute;
         z-index         : 100;
         width           : calc(100% - var(--offset-medium) * 2);
         display         : flex;

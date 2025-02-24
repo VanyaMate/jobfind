@@ -1,6 +1,5 @@
 <template>
     <div class="page">
-
         <div class="header" ref="headerRef" @mousemove="handleMouseMove" @mouseleave="handleMouseLeave">
             <canvas ref="canvasRef" class="background"></canvas>
             <div class="content">
@@ -26,7 +25,7 @@
                 </div>
             </div>
         </div>
-        <div class="jobs-container">
+        <div class="jobs-container" ref=formRef>
             <div class="jobs-content">
                 <AppTopLabel>
                     <template v-slot:label>
@@ -76,6 +75,7 @@ const user = useStore(userModel);
 
 const inputRef                           = ref<{ inputRef: HTMLInputElement } | null>(null);
 const headerRef                          = ref<HTMLElement | null>(null);
+const formRef                            = ref<HTMLElement | null>(null);
 const canvasRef                          = ref<HTMLCanvasElement | null>(null);
 let ctx: CanvasRenderingContext2D | null = null;
 let animationFrameId: number | null      = null;
@@ -85,13 +85,13 @@ let headerRect                           = { left: 0, top: 0, width: 0, height: 
 const stars: Star[]                      = [];
 const numStars                           = ref<number>(20);
 const canvasIsHidden                     = ref(false);
-const interObserver                      = ref<IntersectionObserver>(null);
+const interObserver                      = ref<IntersectionObserver | null>(null);
 
 const selectMainInput = function () {
-    if (inputRef.value) {
+    if (inputRef.value && formRef.value) {
         const input = inputRef.value.inputRef;
-        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        input.focus();
+        formRef.value.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        input.focus({ preventScroll: true });
     }
 };
 
@@ -226,13 +226,7 @@ onMounted(() => {
 
         interObserver.value = new IntersectionObserver((items) => {
             items.forEach((intersection) => {
-                if (intersection.isIntersecting) {
-                    // show
-                    canvasIsHidden.value = false;
-                } else {
-                    // hide
-                    canvasIsHidden.value = true;
-                }
+                canvasIsHidden.value = !intersection.isIntersecting;
             });
         });
 
@@ -297,11 +291,13 @@ useSeoMeta({
 
 
 .header {
-    position  : relative;
-    padding   : 260px var(--offset-small) 190px;
-    --mouse-x : 50%;
-    --mouse-y : 50%;
-    z-index   : 0;
+    position        : relative;
+    display         : flex;
+    flex-direction  : column;
+    min-height      : calc(100dvh - var(--offset-medium) * 2);
+    align-items     : center;
+    justify-content : center;
+    z-index         : 0;
 
     .background {
         position       : absolute;
@@ -349,7 +345,7 @@ useSeoMeta({
     min-height    : 1000px;
     margin-top    : var(--offset-large);
     border-radius : var(--offset-medium);
-    padding       : var(--offset-large) 0;
+    padding       : calc(var(--offset-large) * 2) 0 var(--offset-large);
     max-width     : 100%;
 
     .jobs-content {
@@ -358,9 +354,6 @@ useSeoMeta({
         display        : flex;
         flex-direction : column;
         gap            : var(--offset-medium);
-
-        .jobs-sort {
-        }
 
         .jobs-box {
             display : flex;
