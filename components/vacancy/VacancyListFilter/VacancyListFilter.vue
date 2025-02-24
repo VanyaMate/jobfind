@@ -15,21 +15,21 @@
                 { label: 'Доллары', value: SalaryCurrency.USD },
                 { label: 'Евро', value: SalaryCurrency.EUR },
             ]"
-            :value="SalaryCurrency.RUB"
+            v-model="salaryType"
         />
-        <AppCheckbox>После вычета налогов</AppCheckbox>
-        <AppCheckbox>Зарплата указана</AppCheckbox>
+        <AppCheckbox v-model="salaryAfterTax">После вычета налогов</AppCheckbox>
+        <AppCheckbox v-model="salaryExist">Зарплата указана</AppCheckbox>
         <h4>Теги</h4>
-        <AppInput placeholder="react,typescript"/>
+        <AppInput placeholder="react,typescript" v-model="tags" name="tags"/>
         <h4>Исключить слова</h4>
-        <AppInput placeholder="vue,angular"/>
+        <AppInput placeholder="vue,angular" v-model="excludeWords" name="excludeWords"/>
         <h4>Опыт работы</h4>
-        <AppRadio :value="0">Без опыта</AppRadio>
-        <AppRadio :value="1">1+ год</AppRadio>
-        <AppRadio :value="2">2+ года</AppRadio>
-        <AppRadio :value="3">3+ года</AppRadio>
-        <AppRadio :value="4">4+ года</AppRadio>
-        <AppRadio :value="5">5+ лет</AppRadio>
+        <AppRadio :value="0" v-model="experience" name="experience">Без опыта</AppRadio>
+        <AppRadio :value="1" v-model="experience" name="experience">1+ год</AppRadio>
+        <AppRadio :value="2" v-model="experience" name="experience">2+ года</AppRadio>
+        <AppRadio :value="3" v-model="experience" name="experience">3+ года</AppRadio>
+        <AppRadio :value="4" v-model="experience" name="experience">4+ года</AppRadio>
+        <AppRadio :value="5" v-model="experience" name="experience">5+ лет</AppRadio>
         <h4>Тип занятости</h4>
         <AppCheckbox>Удаленно</AppCheckbox>
         <AppCheckbox>В офисе</AppCheckbox>
@@ -55,21 +55,63 @@ import AppSelect from '~/components/app/select/AppSelect/AppSelect.vue';
 import { SalaryCurrency } from '~/types/vacancy/vacancy';
 import AppRadio from '~/components/app/inputs/AppRadio/AppRadio.vue';
 import { useDebounce } from '~/hooks/useDebounce';
+import { isArray } from '@vanyamate/types-kit';
 
 
 interface Props extends /* @vue-ignore */ HTMLAttributes {
 
 }
 
-const props    = defineProps<Props>();
-const debounce = useDebounce(500);
-const route    = useRoute();
-const router   = useRouter();
-const salary   = ref(route.query.salary as string ?? '');
+const props          = defineProps<Props>();
+const debounce       = useDebounce(500);
+const route          = useRoute();
+const router         = useRouter();
+const salary         = ref(route.query.salary as string ?? '');
+const salaryType     = ref(route.query.salaryType as SalaryCurrency ?? SalaryCurrency.RUB);
+const salaryAfterTax = ref(!!route.query.salaryAfterTax);
+const salaryExist    = ref(!!route.query.salaryExist);
+const tags           = ref(
+    isArray(route.query.tags)
+    ? route.query.tags.join(',')
+    : (route.query.tags ?? ''),
+);
+const excludeWords   = ref(
+    isArray(route.query.excludeWords)
+    ? route.query.excludeWords.join(',')
+    : (route.query.excludeWords ?? ''),
+);
+const experience     = ref(route.query.experience ? parseInt(route.query.experience as string) : 0);
 
-watch([ salary ], ([ _salary ]) => {
+watch([
+    salary,
+    salaryType,
+    salaryAfterTax,
+    salaryExist,
+    tags,
+    excludeWords,
+    experience,
+], ([
+        _salary,
+        _salaryType,
+        _salaryAfterTax,
+        _salaryExist,
+        _tags,
+        _excludeWords,
+        _experience,
+    ]) => {
     debounce(() => {
-        router.push({ query: { ...route.query, salary: _salary || undefined } });
+        router.push({
+            query: {
+                ...route.query,
+                salary        : _salary || undefined,
+                salaryType    : _salaryType || undefined,
+                salaryAfterTax: _salaryAfterTax ? 'true' : undefined,
+                salaryExist   : _salaryExist ? 'true' : undefined,
+                tags          : _tags.length ? _tags.split(',') : undefined,
+                excludeWords  : _excludeWords.length ? _excludeWords.split(',') : undefined,
+                experience    : _experience || undefined,
+            },
+        });
     });
 });
 

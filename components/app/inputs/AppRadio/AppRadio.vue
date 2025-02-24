@@ -5,7 +5,7 @@
             type="radio"
             :id="id"
             :class="['hidden', props.class]"
-            @change="$emit('update:modelValue', ($event.target as HTMLInputElement).checked)"
+            @change="$emit('update:modelValue', $attrs.value)"
         />
         <label class="icon" :for="id"></label>
         <label class="text" :for="id" v-if="$slots['default']">
@@ -19,7 +19,7 @@ import type { InputHTMLAttributes } from 'vue';
 
 
 interface Props extends /* @vue-ignore */ InputHTMLAttributes {
-    modelValue?: boolean;
+    modelValue?: boolean | number | string;
 }
 
 const id    = useId();
