@@ -6,7 +6,7 @@
                 От
             </template>
             <template v-slot:input>
-                <AppInput placeholder="10000"/>
+                <AppInput placeholder="10000" v-model="salary"/>
             </template>
         </AppTopLabel>
         <AppSelect
@@ -54,13 +54,24 @@ import AppCheckbox from '~/components/app/inputs/AppCheckbox/AppCheckbox.vue';
 import AppSelect from '~/components/app/select/AppSelect/AppSelect.vue';
 import { SalaryCurrency } from '~/types/vacancy/vacancy';
 import AppRadio from '~/components/app/inputs/AppRadio/AppRadio.vue';
+import { useDebounce } from '~/hooks/useDebounce';
 
 
 interface Props extends /* @vue-ignore */ HTMLAttributes {
 
 }
 
-const props = defineProps<Props>();
+const props    = defineProps<Props>();
+const debounce = useDebounce(500);
+const route    = useRoute();
+const router   = useRouter();
+const salary   = ref(route.query.salary as string ?? '');
+
+watch([ salary ], ([ _salary ]) => {
+    debounce(() => {
+        router.push({ query: { ...route.query, salary: _salary || undefined } });
+    });
+});
 
 defineOptions({
     inheritAttrs: true,
