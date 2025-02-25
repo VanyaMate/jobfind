@@ -32,12 +32,20 @@
                         Что вы ищете?
                     </template>
                     <template v-slot:input>
-                        <AppInput placeholder="Frontend-разработчик" :size="AppInputSize.LARGE" ref="inputRef"/>
+                        <AppForm @submit.prevent @input="onFormChange">
+                            <AppInput
+                                placeholder="Frontend-разработчик"
+                                :size="AppInputSize.LARGE"
+                                ref="inputRef"
+                                v-model="title"
+                                v-bind="titleAttrs"
+                            />
+                        </AppForm>
                     </template>
                 </AppTopLabel>
-                <VacancyListSettings class="jobs-sort"/>
+                <VacancyListSettings class="jobs-sort" :form-context="form"/>
                 <div class="jobs-box">
-                    <VacancyListFilter class="jobs-filter"/>
+                    <VacancyListFilter class="jobs-filter" :form-context="form"/>
                     <section class="jobs-list">
                         <JobPreview/>
                         <JobPreview/>
@@ -69,6 +77,11 @@ import { useStore } from '@vanyamate/sec-vue';
 import { userModel } from '~/model/user/user.model';
 import VacancyListFilter from '~/components/vacancy/VacancyListFilter/VacancyListFilter.vue';
 import VacancyListSettings from '~/components/vacancy/VacancyListSettings/VacancyListSettings.vue';
+import { useForm } from 'vee-validate';
+import type { VacancyFilter } from '~/types/vacancy/vacancy.filter';
+import { SalaryCurrency, VacancyEducationType, VacancyFormat, VacancyTypeOfEmployment } from '~/types/vacancy/vacancy';
+import AppForm from '~/components/app/forms/AppForm/AppForm.vue';
+import { useDebounce } from '~/hooks/useDebounce';
 
 
 const user = useStore(userModel);
@@ -86,6 +99,56 @@ const stars: Star[]                      = [];
 const numStars                           = ref<number>(20);
 const canvasIsHidden                     = ref(false);
 const interObserver                      = ref<IntersectionObserver | null>(null);
+
+const form                  = useForm<VacancyFilter>({
+    initialValues: {
+        title           : '',
+        salaryAfterTax  : false,
+        salaryExist     : false,
+        salaryType      : SalaryCurrency.RUB,
+        paymentPerMonth : 0,
+        experienceFrom  : 0,
+        typeOfEmployment: [
+            VacancyTypeOfEmployment.AGREEMENT,
+            VacancyTypeOfEmployment.PROJECT,
+            VacancyTypeOfEmployment.INDIVIDUAL,
+            VacancyTypeOfEmployment.FULL_TIME,
+            VacancyTypeOfEmployment.VOLUNTEER,
+            VacancyTypeOfEmployment.PART_TIME,
+        ],
+        format          : [
+            VacancyFormat.OFFICE,
+            VacancyFormat.REMOTE,
+        ],
+        tags            : '',
+        education       : [
+            VacancyEducationType.NONE,
+            VacancyEducationType.SECONDARY,
+            VacancyEducationType.HIGHER,
+        ],
+        excludeWords    : '',
+        scheduleTypes   : [
+            '0', '5/2', '2/2', '30',
+        ],
+        createdFrom     : 0,
+    },
+});
+const [ title, titleAttrs ] = form.defineField('title');
+const debounce              = useDebounce(500);
+const route                 = useRoute();
+const router                = useRouter();
+const setRoute              = function (filter: VacancyFilter) {
+    debounce(() => {
+        router.push({
+            query: {
+                ...route.query,
+                title: filter.title || undefined,
+            },
+        });
+    });
+};
+const onFormChange          = form.handleSubmit(setRoute);
+
 
 const selectMainInput = function () {
     if (inputRef.value && formRef.value) {

@@ -5,8 +5,8 @@
             :class="['hidden', props.class]"
             type="checkbox"
             :id="id"
-            :checked="props.modelValue"
-            @change="$emit('update:modelValue', ($event.target as HTMLInputElement).checked)"
+            :checked="isArray(props.modelValue) ? props.modelValue.includes($attrs.value) : props.modelValue"
+            @change="onChange"
         />
         <label class="icon" :for="id"></label>
         <label class="text" :for="id" v-if="$slots['default']">
@@ -16,15 +16,35 @@
 </template>
 
 <script setup lang="ts">
-import type { HTMLAttributes } from 'vue';
+import type { InputHTMLAttributes } from 'vue';
+import { isArray } from '@vanyamate/types-kit';
 
 
-interface Props extends /* @vue-ignore */ HTMLAttributes {
-    modelValue?: boolean;
+interface Props extends /* @vue-ignore */ InputHTMLAttributes {
+    modelValue?: boolean | Array<any>;
 }
 
-const props = defineProps<Props>();
-const id    = useId();
+const props    = defineProps<Props>();
+const id       = useId();
+const emitter  = defineEmits([ 'update:modelValue' ]);
+const onChange = function (event: Event) {
+    const target = event.target as HTMLInputElement;
+    if (target) {
+        if (target.checked) {
+            if (isArray(props.modelValue)) {
+                emitter('update:modelValue', [ ...props.modelValue, target.value ]);
+            } else {
+                emitter('update:modelValue', true);
+            }
+        } else {
+            if (isArray(props.modelValue)) {
+                emitter('update:modelValue', props.modelValue.filter((value) => value !== target.value));
+            } else {
+                emitter('update:modelValue', false);
+            }
+        }
+    }
+};
 
 defineOptions({
     inheritAttrs: false,

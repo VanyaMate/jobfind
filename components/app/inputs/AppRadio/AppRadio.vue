@@ -2,6 +2,7 @@
     <div class="container">
         <input
             v-bind="$attrs"
+            :checked="$attrs.value === props.modelValue"
             type="radio"
             :id="id"
             :class="['hidden', props.class]"

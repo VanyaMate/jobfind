@@ -73,7 +73,7 @@ export const isVacancy: TypeGuard<Vacancy> = function (data): data is Vacancy {
         isEnumValueOf(SalaryCurrency, data['salaryType']) &&
         isNumber(data['paymentPerMonth']) &&
         isNumber(data['experienceFrom']) &&
-        isEnumValueOf(VacancyTypeOfEmployment, data['experienceTo']) &&
+        isEnumValueOf(VacancyTypeOfEmployment, data['typeOfEmployment']) &&
         isEnumValueOf(VacancyFormat, data['format']) &&
         isArray(data['scheduleTypes'], isString) &&
         isNumber(data['workFrom']) &&

@@ -26,13 +26,16 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue';
 import AppSelect from '~/components/app/select/AppSelect/AppSelect.vue';
+import type { FormContext } from 'vee-validate';
+import type { VacancyFilter } from '~/types/vacancy/vacancy.filter';
 
 
 interface Props extends /* @vue-ignore */ HTMLAttributes {
-
+    formContext: FormContext<VacancyFilter, VacancyFilter>;
 }
 
-const props = defineProps<Props>();
+const props                 = defineProps<Props>();
+const [ title, titleAttrs ] = props.formContext.defineField('title');
 
 defineOptions({
     inheritAttrs: false,

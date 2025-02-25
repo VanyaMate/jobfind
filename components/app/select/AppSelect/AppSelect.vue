@@ -94,7 +94,7 @@ const getElementSize   = function (size: number | string) {
     return size + 'px';
 };
 
-const emits             = defineEmits([ 'update:modelValue' ]);
+const emits             = defineEmits([ 'update:modelValue', 'change' ]);
 const props             = defineProps<Props>();
 const modalPositionType = props.modalPosition ?? 'bottom-left';
 const isOpen            = ref(false);
@@ -150,6 +150,8 @@ const close               = function () {
 const selectOption        = function (option: Option) {
     if (option) {
         emits('update:modelValue', option.value);
+        const changeEvent = new Event('change', { bubbles: true });
+        parent.value?.dispatchEvent(changeEvent);
         hoveredIndex.value = props.options.findIndex((_option) => _option.value === option.value);
         close();
     }

@@ -57,7 +57,7 @@
                     title</h3>
             </template>
             <template v-slot:trigger="{ open }">
-                <AppButton @click="open">
+                <AppButton @click="open" type="button">
                     Open modal
                 </AppButton>
             </template>

@@ -3,9 +3,9 @@
         <input
             ref="inputRef"
             :class="[props.size, { error: hasError }]"
-            @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-            @change="$emit('change', $event)"
-            @blur="$emit('blur', $event)"
+            @input="onInput"
+            @change="onChange"
+            @blur="onBlur"
             v-bind="$attrs"
             :value="props.modelValue"
         />
@@ -22,7 +22,7 @@ import { AppInputSize } from '~/components/app/inputs/AppInput/types/AppInputSiz
 interface Props extends /* @vue-ignore */ InputHTMLAttributes {
     size?: AppInputSize;
     error?: string;
-    modelValue?: string;
+    modelValue?: string | number;
 }
 
 const props = withDefaults(
@@ -33,6 +33,22 @@ const props = withDefaults(
         modelValue: '',
     },
 );
+const emits = defineEmits([ 'update:modelValue', 'change', 'blur' ]);
+
+const onInput = function (event: Event) {
+    const target = event.target as HTMLInputElement;
+    if (target) {
+        emits('update:modelValue', props.type === 'number' ? parseFloat(target.value) : target.value);
+    }
+};
+
+const onBlur = function (event: Event) {
+    emits('blur', event);
+};
+
+const onChange = function (event: Event) {
+    emits('change', event);
+};
 
 const hasError     = computed(() => props.error && props.error.length);
 const errorMessage = ref(props.error);
