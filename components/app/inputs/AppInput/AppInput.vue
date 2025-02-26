@@ -149,7 +149,7 @@ defineExpose({ inputRef });
 
         &.medium {
             font-size : var(--font-size-m);
-            padding   : 0 var(--offset-small);
+            padding   : 0 var(--offset-medium);
             height    : var(--all-input-height-medium);
 
             ~ .errorMarker {

@@ -214,7 +214,7 @@ defineOptions({
     }
 
     > .label {
-        padding         : var(--offset-small);
+        padding         : var(--offset-small) var(--offset-medium);
         background      : var(--bg-main);
         border          : 1px solid var(--border-color);
         transition      : var(--fast);

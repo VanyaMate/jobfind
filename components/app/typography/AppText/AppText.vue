@@ -49,7 +49,7 @@ span {
     }
 
     &.rainbow {
-        background      : linear-gradient(to right, var(--danger-color) 0%, var(--primary-color) 50%);
+        background      : var(--rainbow);
         background-size : 200%;
         background-clip : text;
         color           : transparent;

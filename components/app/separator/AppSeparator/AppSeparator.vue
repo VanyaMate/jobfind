@@ -18,7 +18,7 @@ interface Props extends /* @vue-ignore */ HTMLAttributes {
 const props = defineProps<Props>();
 
 defineOptions({
-    inheritAttrs: false,
+    inheritAttrs: true,
 });
 </script>
 
@@ -27,5 +27,10 @@ defineOptions({
     display     : flex;
     gap         : var(--offset-small);
     align-items : center;
+
+    .separator {
+        font-size : var(--font-size-m);
+        color     : var(--color-invisible);
+    }
 }
 </style>

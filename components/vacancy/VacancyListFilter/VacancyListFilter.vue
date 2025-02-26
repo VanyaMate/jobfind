@@ -20,17 +20,17 @@
         />
         <AppCheckbox v-model="salaryAfterTax" v-bind="salaryAfterTaxAttrs">После вычета налогов</AppCheckbox>
         <AppCheckbox v-model="salaryExist" v-bind="salaryExistAttrs">Зарплата указана</AppCheckbox>
-        <h4>Теги</h4>
+        <h4>Ключевые слова</h4>
         <AppInput placeholder="react,typescript" name="tags" v-model="tags" v-bind="tagsAttrs"/>
         <h4>Исключить слова</h4>
         <AppInput placeholder="vue,angular" name="excludeWords" v-model="excludeWords" v-bind="excludeWordsAttrs"/>
         <h4>Опыт работы</h4>
         <AppRadio :value="0" name="experience" v-model="experience" v-bind="experienceAttrs">Без опыта</AppRadio>
-        <AppRadio :value="1" name="experience" v-model="experience" v-bind="experienceAttrs">1+ год</AppRadio>
-        <AppRadio :value="2" name="experience" v-model="experience" v-bind="experienceAttrs">2+ года</AppRadio>
-        <AppRadio :value="3" name="experience" v-model="experience" v-bind="experienceAttrs">3+ года</AppRadio>
-        <AppRadio :value="4" name="experience" v-model="experience" v-bind="experienceAttrs">4+ года</AppRadio>
-        <AppRadio :value="5" name="experience" v-model="experience" v-bind="experienceAttrs">5+ лет</AppRadio>
+        <AppRadio :value="1" name="experience" v-model="experience" v-bind="experienceAttrs">От 1 год</AppRadio>
+        <AppRadio :value="2" name="experience" v-model="experience" v-bind="experienceAttrs">От 2 лет</AppRadio>
+        <AppRadio :value="3" name="experience" v-model="experience" v-bind="experienceAttrs">От 3 лет</AppRadio>
+        <AppRadio :value="4" name="experience" v-model="experience" v-bind="experienceAttrs">От 4 лет</AppRadio>
+        <AppRadio :value="5" name="experience" v-model="experience" v-bind="experienceAttrs">От 5 лет</AppRadio>
         <h4>Место работы</h4>
         <AppCheckbox :value="VacancyFormat.REMOTE" v-model="format" v-bind="formatAttrs">Удаленно
         </AppCheckbox>

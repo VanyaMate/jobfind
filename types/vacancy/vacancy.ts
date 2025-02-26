@@ -34,6 +34,19 @@ export enum VacancyEducationType {
     SECONDARY = 'SECONDARY',
 }
 
+export enum VacancySortType {
+    CREATED_AT   = 'CREATED_AT',
+    SALARY_GROSS = 'SALARY_GROSS',
+    SALARY_LESS  = 'SALARY_LESS',
+}
+
+export enum VacancyCreatedAtType {
+    DAY     = 'DAY',
+    TWO_DAY = 'TWO_DAY',
+    WEAK    = 'WEAK',
+    MONTH   = 'MONTH',
+}
+
 export type Vacancy = {
     id: string;
     title: string;
@@ -47,7 +60,7 @@ export type Vacancy = {
 
     experienceFrom: number;
     typeOfEmployment: VacancyTypeOfEmployment;
-    format: VacancyFormat;
+    formats: Array<VacancyFormat>;
     scheduleTypes: Array<String>;
     workFrom: number;
     workTo: number;
@@ -74,7 +87,7 @@ export const isVacancy: TypeGuard<Vacancy> = function (data): data is Vacancy {
         isNumber(data['paymentPerMonth']) &&
         isNumber(data['experienceFrom']) &&
         isEnumValueOf(VacancyTypeOfEmployment, data['typeOfEmployment']) &&
-        isEnumValueOf(VacancyFormat, data['format']) &&
+        isArray(data['formats'], (value): value is VacancyFormat => isEnumValueOf(VacancyFormat, value)) &&
         isArray(data['scheduleTypes'], isString) &&
         isNumber(data['workFrom']) &&
         isNumber(data['workTo']) &&

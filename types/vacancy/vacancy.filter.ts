@@ -3,7 +3,11 @@ import {
     isObject,
     isString, isOptional, isNumber, isBoolean, isArray,
 } from '@vanyamate/types-kit';
-import { SalaryCurrency } from '~/types/vacancy/vacancy';
+import {
+    SalaryCurrency,
+    VacancyCreatedAtType,
+    VacancySortType,
+} from '~/types/vacancy/vacancy';
 import {
     VacancyEducationType,
     VacancyFormat,
@@ -26,7 +30,10 @@ export type VacancyFilter = {
     tags: string;
     excludeWords?: string;
     education?: Array<VacancyEducationType>;
-    createdFrom?: number;
+    sortBy?: VacancySortType;
+    createdAt?: VacancyCreatedAtType;
+    page?: number;
+    limit?: number;
 }
 
 export const isVacancyFilter: TypeGuard<VacancyFilter> = function (data): data is VacancyFilter {
@@ -45,6 +52,9 @@ export const isVacancyFilter: TypeGuard<VacancyFilter> = function (data): data i
         isOptional(data['tags'], isString) &&
         isOptional(data['excludeWords'], isString) &&
         isOptional(data['education'], (value): value is Array<VacancyEducationType> => isArray(value, (value): value is VacancyEducationType => isEnumValueOf(VacancyEducationType, value))) &&
-        isOptional(data['createdAt'], isNumber)
+        isOptional(data['sortBy'], (value): value is VacancySortType => isEnumValueOf(VacancySortType, value)) &&
+        isOptional(data['createdAt'], (value): value is VacancyCreatedAtType => isEnumValueOf(VacancyCreatedAtType, value)) &&
+        isOptional(data['page'], isNumber) &&
+        isOptional(data['limit'], isNumber)
     );
 };

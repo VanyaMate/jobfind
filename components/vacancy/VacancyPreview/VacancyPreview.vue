@@ -16,6 +16,17 @@
             </AppSeparator>
         </header>
         <h3>Frontend разработчик</h3>
+        <div class="tags">
+            <VacancyExperienceTag :experience="0"/>
+            <VacancyFormatTags :formats="[VacancyFormat.OFFICE, VacancyFormat.REMOTE]"/>
+        </div>
+        <div class="salary">
+            <AppText :color="AppTextColor.INVISIBLE" class="text">от&nbsp</AppText>
+            <AppText :color="AppTextColor.MAIN">150.000 ₽</AppText>
+            <AppText :color="AppTextColor.INVISIBLE" class="text">&nbspдо&nbsp</AppText>
+            <AppText :color="AppTextColor.MAIN">250.000 ₽</AppText>
+            <AppText :color="AppTextColor.INVISIBLE" class="text">&nbspна руки</AppText>
+        </div>
         <p>
             <AppText :color="AppTextColor.INVISIBLE">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum, odit?
@@ -37,6 +48,9 @@ import AppSeparator from '~/components/app/separator/AppSeparator/AppSeparator.v
 import AppButton from '~/components/app/buttons/AppButton.vue';
 import { AppButtonStyleType } from '~/components/app/buttons/types/AppButtonStyleType';
 import { AppButtonSize } from '~/components/app/buttons/types/AppButtonSize';
+import VacancyExperienceTag from '~/components/vacancy/VacancyExperienceTag/VacancyExperienceTag.vue';
+import VacancyFormatTags from '~/components/vacancy/VacancyExperienceTag/VacancyFormatTags.vue';
+import { VacancyFormat } from '~/types/vacancy/vacancy';
 
 
 interface Props extends /* @vue-ignore */ HTMLAttributes {
@@ -59,6 +73,7 @@ article {
     display        : flex;
     flex-direction : column;
     gap            : var(--offset-medium);
+    transition     : var(--fast);
 
     header {
         a {
@@ -70,6 +85,19 @@ article {
         display    : flex;
         margin-top : 10px;
         gap        : var(--offset-small);
+    }
+
+    .tags {
+        display : flex;
+        gap     : var(--offset-small);
+    }
+
+    .salary {
+        font-size : var(--font-size-l);
+
+        .text {
+            font-size : var(--font-size-m);
+        }
     }
 }
 </style>

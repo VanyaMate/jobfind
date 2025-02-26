@@ -47,16 +47,16 @@
                 <div class="jobs-box">
                     <VacancyListFilter class="jobs-filter" :form-context="form"/>
                     <section class="jobs-list">
-                        <JobPreview/>
-                        <JobPreview/>
-                        <JobPreview/>
-                        <JobPreview/>
-                        <JobPreview/>
-                        <JobPreview/>
-                        <JobPreview/>
-                        <JobPreview/>
-                        <JobPreview/>
-                        <JobPreview/>
+                        <VacancyPreview/>
+                        <VacancyPreview/>
+                        <VacancyPreview/>
+                        <VacancyPreview/>
+                        <VacancyPreview/>
+                        <VacancyPreview/>
+                        <VacancyPreview/>
+                        <VacancyPreview/>
+                        <VacancyPreview/>
+                        <VacancyPreview/>
                     </section>
                 </div>
             </div>
@@ -72,14 +72,21 @@ import { AppButtonStyleType } from '~/components/app/buttons/types/AppButtonStyl
 import AppInput from '~/components/app/inputs/AppInput/AppInput.vue';
 import { AppInputSize } from '~/components/app/inputs/AppInput/types/AppInputSize';
 import AppTopLabel from '~/components/app/label/AppTopLabel/AppTopLabel.vue';
-import JobPreview from '~/components/vacancy/VacancyPreview/VacancyPreview.vue';
+import VacancyPreview from '~/components/vacancy/VacancyPreview/VacancyPreview.vue';
 import { useStore } from '@vanyamate/sec-vue';
 import { userModel } from '~/model/user/user.model';
 import VacancyListFilter from '~/components/vacancy/VacancyListFilter/VacancyListFilter.vue';
 import VacancyListSettings from '~/components/vacancy/VacancyListSettings/VacancyListSettings.vue';
 import { useForm } from 'vee-validate';
 import type { VacancyFilter } from '~/types/vacancy/vacancy.filter';
-import { SalaryCurrency, VacancyEducationType, VacancyFormat, VacancyTypeOfEmployment } from '~/types/vacancy/vacancy';
+import {
+    SalaryCurrency,
+    VacancyCreatedAtType,
+    VacancyEducationType,
+    VacancyFormat,
+    VacancySortType,
+    VacancyTypeOfEmployment,
+} from '~/types/vacancy/vacancy';
 import AppForm from '~/components/app/forms/AppForm/AppForm.vue';
 import { useDebounce } from '~/hooks/useDebounce';
 
@@ -130,7 +137,10 @@ const form                  = useForm<VacancyFilter>({
         scheduleTypes   : [
             '0', '5/2', '2/2', '30',
         ],
-        createdFrom     : 0,
+        createdAt       : VacancyCreatedAtType.DAY,
+        page            : 0,
+        limit           : 20,
+        sortBy          : VacancySortType.CREATED_AT,
     },
 });
 const [ title, titleAttrs ] = form.defineField('title');

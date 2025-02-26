@@ -3,6 +3,7 @@
 @import "variables/palette.css";
 @import "variables/speed.css";
 @import "variables/size.css";
+@import "variables/gradients.css";
 @import "variables/themes/common.css";
 @import "variables/themes/dark.css";
 @import "variables/themes/light.css";
