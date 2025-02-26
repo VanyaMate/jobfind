@@ -7,12 +7,7 @@
             <div>
                 <SwitchTheme/>
                 <template v-if="user?.login">
-                    <AppButton v-if="user?.login">
-                        {{ user.login }}
-                    </AppButton>
-                    <AppButton :style-type="AppButtonStyleType.DANGER" @click="logoutEffect" :loading="authPending">
-                        Выйти
-                    </AppButton>
+                    <OpenUserMenuButton :user="user"/>
                 </template>
                 <template v-else>
                     <AppModal>
@@ -43,6 +38,7 @@ import AppModal from '~/components/app/modal/AppModal/AppModal.vue';
 import { useCookieAsStore } from '~/hooks/useCookieAsStore';
 import { userModel, logoutEffect, authPendingModel } from '~/model/user/user.model';
 import { useStore } from '@vanyamate/sec-vue';
+import OpenUserMenuButton from '~/components/user/widget/OpenUserMenuButton/OpenUserMenuButton.vue';
 
 
 const authPending = useStore(authPendingModel);

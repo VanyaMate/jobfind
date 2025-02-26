@@ -134,7 +134,6 @@ const updateModalPosition = function (parent: HTMLElement | null, modal: HTMLEle
     modalPosition.value = getModalPosition(parent, modal, modalPositionType);
 };
 
-
 defineOptions({
     inheritAttrs: false,
 });

@@ -20,13 +20,7 @@
             <VacancyExperienceTag :experience="0"/>
             <VacancyFormatTags :formats="[VacancyFormat.OFFICE, VacancyFormat.REMOTE]"/>
         </div>
-        <div class="salary">
-            <AppText :color="AppTextColor.INVISIBLE" class="text">от&nbsp</AppText>
-            <AppText :color="AppTextColor.MAIN">150.000 ₽</AppText>
-            <AppText :color="AppTextColor.INVISIBLE" class="text">&nbspдо&nbsp</AppText>
-            <AppText :color="AppTextColor.MAIN">250.000 ₽</AppText>
-            <AppText :color="AppTextColor.INVISIBLE" class="text">&nbspна руки</AppText>
-        </div>
+        <VacancySalary :min="10000" :currency="SalaryCurrency.RUB" :max="20000" :after-tax="true"/>
         <p>
             <AppText :color="AppTextColor.INVISIBLE">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum, odit?
@@ -50,7 +44,8 @@ import { AppButtonStyleType } from '~/components/app/buttons/types/AppButtonStyl
 import { AppButtonSize } from '~/components/app/buttons/types/AppButtonSize';
 import VacancyExperienceTag from '~/components/vacancy/VacancyExperienceTag/VacancyExperienceTag.vue';
 import VacancyFormatTags from '~/components/vacancy/VacancyExperienceTag/VacancyFormatTags.vue';
-import { VacancyFormat } from '~/types/vacancy/vacancy';
+import { SalaryCurrency, VacancyFormat } from '~/types/vacancy/vacancy';
+import VacancySalary from '~/components/vacancy/VacancySalary/VacancySalary.vue';
 
 
 interface Props extends /* @vue-ignore */ HTMLAttributes {
@@ -90,14 +85,6 @@ article {
     .tags {
         display : flex;
         gap     : var(--offset-small);
-    }
-
-    .salary {
-        font-size : var(--font-size-l);
-
-        .text {
-            font-size : var(--font-size-m);
-        }
     }
 }
 </style>
