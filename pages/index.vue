@@ -367,7 +367,7 @@ useSeoMeta({
     position        : relative;
     display         : flex;
     flex-direction  : column;
-    min-height      : calc(100dvh - var(--offset-medium) * 2);
+    min-height      : calc(100dvh - var(--offset-medium) * 3 - var(--all-input-height-medium));
     align-items     : center;
     justify-content : center;
     z-index         : 0;

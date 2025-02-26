@@ -36,14 +36,12 @@ import AuthorizationForm from '~/components/authorization/AuthorizationForm/Auth
 import SwitchTheme from '~/components/app/theme/SwitchTheme.vue';
 import AppModal from '~/components/app/modal/AppModal/AppModal.vue';
 import { useCookieAsStore } from '~/hooks/useCookieAsStore';
-import { userModel, logoutEffect, authPendingModel } from '~/model/user/user.model';
-import { useStore } from '@vanyamate/sec-vue';
+import { userModel } from '~/model/user/user.model';
 import OpenUserMenuButton from '~/components/user/widget/OpenUserMenuButton/OpenUserMenuButton.vue';
 
 
-const authPending = useStore(authPendingModel);
-const user        = useCookieAsStore(userModel, 'user-data');
-const theme       = useCookie('theme', {
+const user  = useCookieAsStore(userModel, 'user-data');
+const theme = useCookie('theme', {
     default () {
         return 'auto';
     },
@@ -58,17 +56,18 @@ useHead({
 
 <style scoped>
 .container {
+    display        : flex;
+    flex-direction : column;
+    gap            : var(--offset-medium);
+
     > nav {
-        position        : absolute;
         z-index         : 100;
-        width           : calc(100% - var(--offset-medium) * 2);
+        width           : 100%;
         display         : flex;
         gap             : var(--offset-medium);
         justify-content : space-between;
         align-items     : center;
-        padding         : var(--offset-medium);
-        background      : color-mix(in srgb, var(--bg-main), transparent 60%);
-        border-radius   : var(--offset-medium);
+        height          : var(--all-input-height-medium);
 
         .logo {
             padding    : var(--offset-small) var(--offset-medium);

@@ -1,8 +1,9 @@
 <template>
     <div class="userMenu-container">
-        <NuxtLink to="/profile">Мой профиль</NuxtLink>
-        <NuxtLink to="/resume">Мои резюме</NuxtLink>
-        <NuxtLink to="/company">Мои компании</NuxtLink>
+        <AppLinkButton to="/profile">Мой профиль</AppLinkButton>
+        <AppLinkButton to="/resume">Мои резюме</AppLinkButton>
+        <AppLinkButton to="/company">Мои компании</AppLinkButton>
+        <AppDivider/>
         <UserLogoutButton/>
     </div>
 </template>
@@ -11,6 +12,8 @@
 import type { HTMLAttributes } from 'vue';
 import type { User } from '~/types/user/user';
 import UserLogoutButton from '~/components/user/feature/UserLogoutButton/UserLogoutButton.vue';
+import AppLinkButton from '~/components/app/link/AppLinkButton/AppLinkButton.vue';
+import AppDivider from '~/components/app/divider/AppDivider/AppDivider.vue';
 
 
 interface Props extends /* @vue-ignore */ HTMLAttributes {

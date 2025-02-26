@@ -179,7 +179,7 @@ defineOptions({
     }
 
     > .label {
-        padding         : var(--offset-small);
+        padding         : 0 var(--offset-medium);
         background      : var(--bg-main);
         border          : 1px solid var(--border-color);
         transition      : var(--fast);
@@ -223,7 +223,7 @@ defineOptions({
         transform       : translateY(0);
         background      : var(--bg-main);
         border          : 1px solid var(--border-color);
-        border-radius   : var(--offset-small);
+        border-radius   : var(--offset-medium);
         display         : flex;
         flex-direction  : column;
         gap             : var(--offset-small);
@@ -239,7 +239,7 @@ defineOptions({
         &.preopened {
             width   : auto;
             height  : auto;
-            padding : var(--offset-small);
+            padding : var(--offset-medium);
         }
     }
 }

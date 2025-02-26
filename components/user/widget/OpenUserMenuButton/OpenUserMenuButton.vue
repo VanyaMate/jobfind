@@ -10,7 +10,6 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue';
 import AppDropdown from '~/components/app/dropdown/AppDropdown/AppDropdown.vue';
-import AppButton from '~/components/app/buttons/AppButton.vue';
 import type { User } from '~/types/user/user';
 import UserMenu from '~/components/user/widget/UserMenu/UserMenu.vue';
 
