@@ -320,7 +320,7 @@ defineOptions({
                 }
             }
 
-            &.selected {
+            &.hasSelected {
                 background : var(--primary-color);
                 color      : var(--primary-color-inv);
             }

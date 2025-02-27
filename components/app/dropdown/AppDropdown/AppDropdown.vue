@@ -5,8 +5,7 @@
         :aria-expanded="isOpen"
         tabindex="0"
         @keydown.esc="close"
-        @keydown.space.prevent="open"
-        @keydown.tab="smartClose"
+        @keydown.space.prevent.self="toggleDropdown"
         @blur="blurClose"
     >
         <div
@@ -76,27 +75,21 @@ const getElementSize   = function (size: number | string) {
     return size + 'px';
 };
 
-const props               = defineProps<Props>();
-const modalPositionType   = props.modalPosition ?? 'bottom-left';
-const isOpen              = ref(false);
-const parent              = useTemplateRef<HTMLDivElement>('parent');
-const modal               = useTemplateRef<HTMLDivElement>('modal');
-const modalPosition       = ref<ModalPosition>(getModalPosition(parent.value, modal.value, modalPositionType));
-const toggleTimer         = ref<number>(0);
-const preopen             = ref(false);
-const handler             = function (event: Event) {
+const props             = defineProps<Props>();
+const modalPositionType = props.modalPosition ?? 'bottom-left';
+const isOpen            = ref(false);
+const parent            = useTemplateRef<HTMLDivElement>('parent');
+const modal             = useTemplateRef<HTMLDivElement>('modal');
+const modalPosition     = ref<ModalPosition>(getModalPosition(parent.value, modal.value, modalPositionType));
+const toggleTimer       = ref<number>(0);
+const preopen           = ref(false);
+const handler           = function (event: Event) {
     const target = event.target as HTMLElement;
     if (!isChildOf(target, parent.value!)) {
         close();
     }
 };
-const smartClose          = function (event: Event) {
-    if (isOpen.value) {
-        event.preventDefault();
-    }
 
-    close();
-};
 const toggleDropdown      = function () {
     // 50ms - minimal toggle interval (fix for mobile)
     if (toggleTimer.value < (Date.now() - 50)) {

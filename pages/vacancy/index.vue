@@ -1,6 +1,6 @@
 <template>
     <div class="index-container">
-        Get companies of current user
+        Get vacancy
     </div>
 </template>
 
@@ -20,5 +20,7 @@ defineOptions({
 </script>
 
 <style scoped>
+.index-container {
 
+}
 </style>

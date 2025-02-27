@@ -95,11 +95,11 @@ defineOptions({
         color           : var(--color-invisible);
         transition      : var(--fast);
 
-        &.selected {
+        &.hasSelected {
             color : var(--primary-color-inv);
         }
 
-        &:hover:not(.selected) {
+        &:hover:not(.hasSelected) {
             color : var(--color-main);
         }
     }

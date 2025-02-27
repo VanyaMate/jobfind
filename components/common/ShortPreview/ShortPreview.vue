@@ -27,7 +27,7 @@ const props = withDefaults(
 );
 
 defineOptions({
-    inheritAttrs: false,
+    inheritAttrs: true,
 });
 </script>
 
@@ -52,7 +52,6 @@ defineOptions({
 
     > span {
         display : inline-block;
-        height  : 100%;
     }
 }
 </style>

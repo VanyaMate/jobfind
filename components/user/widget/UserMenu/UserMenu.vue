@@ -1,8 +1,8 @@
 <template>
     <div class="userMenu-container">
-        <AppLinkButton to="/profile">Мой профиль</AppLinkButton>
-        <AppLinkButton to="/resume">Мои резюме</AppLinkButton>
-        <AppLinkButton to="/company">Мои компании</AppLinkButton>
+        <AppLinkButton to="/my/profile">Мой профиль</AppLinkButton>
+        <AppLinkButton to="/my/resume">Мои резюме</AppLinkButton>
+        <AppLinkButton to="/my/company">Мои компании</AppLinkButton>
         <AppDivider/>
         <UserLogoutButton/>
     </div>
