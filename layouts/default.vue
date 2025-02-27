@@ -59,6 +59,7 @@ useHead({
     display        : flex;
     flex-direction : column;
     gap            : var(--offset-medium);
+    min-height     : calc(100dvh - var(--offset-medium) * 2);
 
     > nav {
         z-index         : 100;

@@ -21,14 +21,14 @@ body {
     background : var(--bg-main);
     color      : var(--color-main); /* Temp */
     min-height : 100dvh;
-    max-height : 100%;
     max-width  : 100dvw;
     overflow-x : hidden;
 }
 
 #__nuxt {
-    width   : 100%;
-    padding : var(--offset-medium);
+    width      : 100%;
+    padding    : var(--offset-medium);
+    min-height : 100%;
 }
 
 h1 {
